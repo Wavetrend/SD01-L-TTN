@@ -24,10 +24,10 @@ const OFFSET_SEQUENCE = 2
 const OFFSET_TIMESTAMP = 3
 
 function Decode_SD01L_PayloadHeader(data) {
-    var i;
-    var obj = { data: [] };
+    let i;
+    let obj = { data: [] };
 
-    for(i=0 ; i<data.length ; i++) {
+    for(i=0 ; i < data.length ; i++) {
         switch (i) {
             case OFFSET_TYPE:
                 obj.type = data[i];
@@ -50,10 +50,10 @@ function Decode_SD01L_PayloadHeader(data) {
 }
 
 function Decode_SD01L_Payload(data) {
-    var obj = Decode_SD01L_PayloadHeader(data);
+    let obj = Decode_SD01L_PayloadHeader(data);
     data = obj.data;
     delete obj.data;
-    var i = 0
+    let i = 0
 
     switch (obj.type) {
         case TYPE_INSTALL_REQUEST:
@@ -62,19 +62,25 @@ function Decode_SD01L_Payload(data) {
                 obj.battery_mV = (data[i++] * 2 ** 8) + data[i++];
                 obj.temperature = [];
                 for (sensor = 0; sensor < 3; sensor++) {
-                    var temp_index = (data[i++] * 2 ** 8) + data[i++];
+                    let temp_index = (data[i++] * 2 ** 8) + data[i++];
                     obj.temperature[sensor] = (temp_index - 270) / 10
                 }
                 obj.reset_reason = (data[i++] * 2 ** 8) + data[i++];
+            }
+            break;
+
+        case TYPE_INSTALL_RESPONSE:
+            if (obj.version === 3) {
+                obj.error_code = data[i++]
             }
             break;
     }
     return obj;
 }
 
-// TTN V3 function
+// TTN V3
 function decodeUplink(input) {
-    d=Decode_SD01L_Payload(input.bytes);
+    let d = Decode_SD01L_Payload(input.bytes);
     return {
         data: d,
         warnings: [],
@@ -82,7 +88,7 @@ function decodeUplink(input) {
     };
 }
 
-/*TTN V2 function
+/*TTN V2
 function Decoder(bytes, port) {
   return Decode_SD01L_Payload(bytes);
 }

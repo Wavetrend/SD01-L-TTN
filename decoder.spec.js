@@ -8,8 +8,8 @@ describe('Install Request', () => {
     const OFFSET_NONCE = 7
     const OFFSET_BATTERY_MV = 11
     const OFFSET_SENSOR_1_TEMP = 13
-    const OFFSET_SENSOR_2_TEMP = 15
-    const OFFSET_SENSOR_3_TEMP = 17
+    // const OFFSET_SENSOR_2_TEMP = 15
+    // const OFFSET_SENSOR_3_TEMP = 17
     const OFFSET_RESET_REASON = 19
 
     beforeEach(() => {
@@ -85,7 +85,7 @@ describe('Install Request', () => {
     test.each([ 1850, 2040, 2240, 2440, 2640, 2830, 3050, 3300, 3600 ])(
         "with battery mV = %p",
         (mv) => {
-            payload.bytes[OFFSET_BATTERY_MV] = (mv & 0xFF00) >> 8;
+            payload.bytes[OFFSET_BATTERY_MV] = (mv & 0xFF00) >>> 8;
             payload.bytes[OFFSET_BATTERY_MV+1] = (mv & 0xFF);
             expected.data.battery_mV = mv;
             expect(decodeUplink(payload)).toEqual(expected);
@@ -99,7 +99,7 @@ describe('Install Request', () => {
             test.each([-27, 0, 20, 100])(
                 `with sensor ${sensor+1} temp = %p`,
                 (temp) => {
-                    var index = (sensor - 1) * 2;
+                    const index = (sensor - 1) * 2;
                     payload.bytes[OFFSET_SENSOR_1_TEMP + index] = (((temp + 27) * 10) & 0xFF00) >> 8
                     payload.bytes[OFFSET_SENSOR_1_TEMP + index + 1] = ((temp + 27) * 10) & 0x00FF;
                     expected.data.temperature[sensor-1] = temp;
@@ -110,5 +110,60 @@ describe('Install Request', () => {
         }
     )
 
+    test.each([ 0, 0x1234, 0xFFFF ])(
+        "with reset_reason = %p",
+        (mv) => {
+            payload.bytes[OFFSET_RESET_REASON] = (mv & 0xFF00) >>> 8;
+            payload.bytes[OFFSET_RESET_REASON+1] = (mv & 0xFF);
+            expected.data.reset_reason = mv;
+            expect(decodeUplink(payload)).toEqual(expected);
+        }
+    )
 });
 
+describe("Install Response", () => {
+
+    let payload, expected;
+    const OFFSET_ERROR_CODE = 7;
+
+    beforeEach(() => {
+        payload = {
+            bytes: [
+                0x02,                   // 00 - type install response
+                0x03,                   // 01 - version
+                0x00,                   // 02 - sequence
+                0x00, 0x00, 0x00, 0x00, // 03 - timestamp
+                0x00,                   // 07 - error
+            ],
+            fPort: 1
+        };
+
+        expected = {
+            data: {
+                type: 2,
+                version: 3,
+                sequence: 0,
+                timestamp: 0,
+                error_code: 0,
+            },
+            errors: [],
+            warnings: []
+        };
+
+    })
+
+    test('base line', () => {
+        expect(decodeUplink(payload)).toEqual(expected);
+    });
+
+    test.each([ 0, 15, 255 ])(
+        "with error code = %p",
+        (error_code) => {
+            payload.bytes[OFFSET_ERROR_CODE] = error_code;
+            expected.data.error_code = error_code;
+            expect(decodeUplink(payload)).toEqual(expected);
+        }
+    )
+
+    // TODO: Refactor to move header tests into reusable function
+});
