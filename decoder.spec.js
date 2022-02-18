@@ -58,39 +58,57 @@ describe('Install Request', () => {
         expect(decodeUplink(payload)).toEqual(expected);
     });
 
-    test('with max nonce', () => {
-        payload.bytes[OFFSET_NONCE] = 0xFF;
-        payload.bytes[OFFSET_NONCE+1] = 0xFF;
-        payload.bytes[OFFSET_NONCE+2] = 0xFF;
-        payload.bytes[OFFSET_NONCE+3] = 0xFF;
-        expected.data.nonce = 0xFFFFFFFF;
-        expect(decodeUplink(payload)).toEqual(expected);
-    });
+    test.each([ 0xFFFFFFFF, 1645197794 ])(
+        "with timestamp = %p",
+        (timestamp) => {
+            payload.bytes[OFFSET_TIMESTAMP] = (timestamp & 0xFF000000) >>> 24;
+            payload.bytes[OFFSET_TIMESTAMP+1] = (timestamp & 0x00FF0000) >>> 16;
+            payload.bytes[OFFSET_TIMESTAMP+2] = (timestamp & 0x0000FF00) >>> 8;
+            payload.bytes[OFFSET_TIMESTAMP+3] = timestamp & 0xFF;
+            expected.data.timestamp = timestamp;
+            expect(decodeUplink(payload)).toEqual(expected);
+        }
+    );
 
-    test('with arbitrary nonce', () => {
-        payload.bytes[OFFSET_NONCE] = 0x12;
-        payload.bytes[OFFSET_NONCE+1] = 0x34;
-        payload.bytes[OFFSET_NONCE+2] = 0x56;
-        payload.bytes[OFFSET_NONCE+3] = 0x78;
-        expected.data.nonce = 0x12345678;
-        expect(decodeUplink(payload)).toEqual(expected);
-    });
+    test.each([ 0xFFFFFFFF, 0x12345678 ])(
+        "with nonce = %p",
+        (nonce) => {
+            payload.bytes[OFFSET_NONCE] = (nonce & 0xFF000000) >>> 24;
+            payload.bytes[OFFSET_NONCE+1] = (nonce & 0x00FF0000) >>> 16;
+            payload.bytes[OFFSET_NONCE+2] = (nonce & 0x0000FF00) >>> 8;
+            payload.bytes[OFFSET_NONCE+3] = nonce & 0x000000FF;
+            expected.data.nonce = nonce;
+            expect(decodeUplink(payload)).toEqual(expected);
+        }
+    );
 
-    test('with min battery', () => {
-        const mv = 1850;
-        payload.bytes[OFFSET_BATTERY_MV] = (mv & 0xFF00) >> 8;
-        payload.bytes[OFFSET_BATTERY_MV+1] = (mv & 0xFF);
-        expected.data.battery_mV = mv;
-        expect(decodeUplink(payload)).toEqual(expected);
-    });
+    test.each([ 1850, 2040, 2240, 2440, 2640, 2830, 3050, 3300, 3600 ])(
+        "with battery mV = %p",
+        (mv) => {
+            payload.bytes[OFFSET_BATTERY_MV] = (mv & 0xFF00) >> 8;
+            payload.bytes[OFFSET_BATTERY_MV+1] = (mv & 0xFF);
+            expected.data.battery_mV = mv;
+            expect(decodeUplink(payload)).toEqual(expected);
+        }
+    )
 
-    test('with max battery', () => {
-        const mv = 3600;
-        payload.bytes[OFFSET_BATTERY_MV] = (mv & 0xFF00) >> 8;
-        payload.bytes[OFFSET_BATTERY_MV+1] = (mv & 0xFF);
-        expected.data.battery_mV = mv;
-        expect(decodeUplink(payload)).toEqual(expected);
-    });
+    // Test each sensor with expected values
+    describe.each([1, 2, 3])(
+        "sensor %p",
+        (sensor) => {
+            test.each([-27, 0, 20, 100])(
+                `with sensor ${sensor+1} temp = %p`,
+                (temp) => {
+                    var index = (sensor - 1) * 2;
+                    payload.bytes[OFFSET_SENSOR_1_TEMP + index] = (((temp + 27) * 10) & 0xFF00) >> 8
+                    payload.bytes[OFFSET_SENSOR_1_TEMP + index + 1] = ((temp + 27) * 10) & 0x00FF;
+                    expected.data.temperature[sensor-1] = temp;
+                    expect(decodeUplink(payload)).toEqual(expected);
+                }
+            )
+
+        }
+    )
 
 });
 

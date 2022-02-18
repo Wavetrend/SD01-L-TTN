@@ -39,7 +39,7 @@ function Decode_SD01L_PayloadHeader(data) {
                 obj.sequence = data[i];
                 break;
             case OFFSET_TIMESTAMP:
-                obj.timestamp = (data[i++]<<24)+(data[i++]<<16)+(data[i++]<<8)+data[i];
+                obj.timestamp = (data[i++]*2**24)+(data[i++]*2**16)+(data[i++]*2**8)+data[i];
                 break;
             default:
                 obj.data = data.slice(i)
@@ -59,13 +59,13 @@ function Decode_SD01L_Payload(data) {
         case TYPE_INSTALL_REQUEST:
             if (obj.version === 4) {
                 obj.nonce = (data[i++] * 2 ** 24) + (data[i++] * 2 ** 16) + (data[i++] * 2 ** 8) + data[i++];
-                obj.battery_mV = (data[i++] << 8) + data[i++];
+                obj.battery_mV = (data[i++] * 2 ** 8) + data[i++];
                 obj.temperature = [];
                 for (sensor = 0; sensor < 3; sensor++) {
-                    var temp_index = (data[i++] << 8) + data[i++];
+                    var temp_index = (data[i++] * 2 ** 8) + data[i++];
                     obj.temperature[sensor] = (temp_index - 270) / 10
                 }
-                obj.reset_reason = (data[i++] << 8) + data[i++];
+                obj.reset_reason = (data[i++] * 2 ** 8) + data[i++];
             }
             break;
     }
