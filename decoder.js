@@ -76,6 +76,78 @@ function Decode_SD01L_Payload(data) {
             break;
 
         case TYPE_STANDARD_REPORT:
+            if (obj.version === 1) {
+                obj.current = {
+                    sensor: [
+                        {
+                            minC: data[i++],
+                            maxC: data[i++],
+                            events: data[i++],
+                            reports: data[i++],
+                        },
+                        {
+                            minC: data[i++],
+                            maxC: data[i++],
+                            events: data[i++],
+                            reports: data[i++],
+                        },
+                        {
+                            minC: data[i++],
+                            maxC: data[i++],
+                            events: data[i++],
+                            reports: data[i++],
+                        },
+                    ],
+                }
+                obj.history = [
+                    {
+                        timestamp: (data[i++]*2**24)+(data[i++]*2**16)+(data[i++]*2**8)+data[i++],
+                        sensor: [
+                            {
+                                minC: data[i++],
+                                maxC: data[i++],
+                                events: data[i++],
+                                reports: data[i++],
+                            },
+                            {
+                                minC: data[i++],
+                                maxC: data[i++],
+                                events: data[i++],
+                                reports: data[i++],
+                            },
+                            {
+                                minC: data[i++],
+                                maxC: data[i++],
+                                events: data[i++],
+                                reports: data[i++],
+                            },
+                        ],
+                    },
+                    {
+                        timestamp: (data[i++]*2**24)+(data[i++]*2**16)+(data[i++]*2**8)+data[i++],
+                        sensor: [
+                            {
+                                minC: data[i++],
+                                maxC: data[i++],
+                                events: data[i++],
+                                reports: data[i++],
+                            },
+                            {
+                                minC: data[i++],
+                                maxC: data[i++],
+                                events: data[i++],
+                                reports: data[i++],
+                            },
+                            {
+                                minC: data[i++],
+                                maxC: data[i++],
+                                events: data[i++],
+                                reports: data[i++],
+                            },
+                        ],
+                    },
+                ]
+            }
             break;
     }
     return obj;
