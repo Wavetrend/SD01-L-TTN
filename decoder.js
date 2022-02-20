@@ -74,6 +74,9 @@ function Decode_SD01L_Payload(data) {
                 obj.error_code = data[i++]
             }
             break;
+
+        case TYPE_STANDARD_REPORT:
+            break;
     }
     return obj;
 }
