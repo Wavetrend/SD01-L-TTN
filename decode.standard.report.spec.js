@@ -195,6 +195,19 @@ describe("Standard Report", () => {
                     )
                 }
             )
+
+            test.each`
+                title              | data_length | histories
+                ${'No Histories'}  | ${19}       | ${0}
+                ${'1 History'}     | ${35}       | ${1}
+            `(
+                "%p",
+                ({ data_length, histories }) => {
+                    payload.bytes = payload.bytes.slice(0, data_length);
+                    expected.data.history = expected.data.history.slice(0, histories)
+                    expect(decodeUplink(payload)).toEqual(expected)
+                }
+            )
         }
     )
 
