@@ -15,7 +15,7 @@ const TYPE_SCALD_REPORT = 5
 const TYPE_FREEZE_REPORT = 6
 // const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
 const TYPE_SENSOR_ERROR_REPORT = 8
-// const TYPE_GENERAL_ERROR_REPORT = 9
+const TYPE_GENERAL_ERROR_REPORT = 9
 // const TYPE_SENSOR_DATA_DEBUG = 10
 
 const OFFSET_TYPE = 0
@@ -128,6 +128,21 @@ function Decode_SD01L_Payload(data) {
                 }
             }
             break;
+
+        case TYPE_GENERAL_ERROR_REPORT:
+            if (obj.version === 1) {
+                obj.error_code = data[i++];
+                obj.file = "";
+                for (let pos = 0, append = true; pos < 32; pos++) {
+                    if (append && data[i] !== 0) {
+                        obj.file += data[i++];
+                    } else {
+                        append = false;
+                        i++;
+                    }
+                }
+                obj.line = (data[i++] * 2 ** 8) + data[i++];
+            }
     }
     return obj;
 }
