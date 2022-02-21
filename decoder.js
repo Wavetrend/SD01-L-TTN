@@ -14,7 +14,7 @@ const TYPE_AMBIENT_REPORT = 4
 const TYPE_SCALD_REPORT = 5
 const TYPE_FREEZE_REPORT = 6
 // const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
-// const TYPE_SENSOR_ERROR_REPORT = 8
+const TYPE_SENSOR_ERROR_REPORT = 8
 // const TYPE_GENERAL_ERROR_REPORT = 9
 // const TYPE_SENSOR_DATA_DEBUG = 10
 
@@ -118,6 +118,16 @@ function Decode_SD01L_Payload(data) {
                 obj.sensor = data[i++];
                 obj.temperature = data[i++];
             }
+            break;
+
+        case TYPE_SENSOR_ERROR_REPORT:
+            if (obj.version === 1) {
+                obj.sensor = [];
+                for (let sensor = 0; sensor < 3; sensor++) {
+                    obj.sensor[sensor] = data[i++]
+                }
+            }
+            break;
     }
     return obj;
 }
