@@ -3,7 +3,6 @@ const decodeUplink = require('./decoder')
 describe("Standard Report", () => {
 
     let payload, expected;
-    const OFFSET_CURRENT = 7
 
     beforeEach(() => {
         payload = {

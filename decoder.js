@@ -77,76 +77,30 @@ function Decode_SD01L_Payload(data) {
 
         case TYPE_STANDARD_REPORT:
             if (obj.version === 1) {
-                obj.current = {
-                    sensor: [
-                        {
-                            minC: data[i++],
-                            maxC: data[i++],
-                            events: data[i++],
-                            reports: data[i++],
-                        },
-                        {
-                            minC: data[i++],
-                            maxC: data[i++],
-                            events: data[i++],
-                            reports: data[i++],
-                        },
-                        {
-                            minC: data[i++],
-                            maxC: data[i++],
-                            events: data[i++],
-                            reports: data[i++],
-                        },
-                    ],
+                obj.current = { sensor: [] };
+                for (let sensor = 0; sensor < 3; sensor++) {
+                    obj.current.sensor[sensor] = {
+                        minC: data[i++],
+                        maxC: data[i++],
+                        events: data[i++],
+                        reports: data[i++],
+                    };
                 }
-                obj.history = [
-                    {
-                        timestamp: (data[i++]*2**24)+(data[i++]*2**16)+(data[i++]*2**8)+data[i++],
-                        sensor: [
-                            {
-                                minC: data[i++],
-                                maxC: data[i++],
-                                events: data[i++],
-                                reports: data[i++],
-                            },
-                            {
-                                minC: data[i++],
-                                maxC: data[i++],
-                                events: data[i++],
-                                reports: data[i++],
-                            },
-                            {
-                                minC: data[i++],
-                                maxC: data[i++],
-                                events: data[i++],
-                                reports: data[i++],
-                            },
-                        ],
-                    },
-                    {
-                        timestamp: (data[i++]*2**24)+(data[i++]*2**16)+(data[i++]*2**8)+data[i++],
-                        sensor: [
-                            {
-                                minC: data[i++],
-                                maxC: data[i++],
-                                events: data[i++],
-                                reports: data[i++],
-                            },
-                            {
-                                minC: data[i++],
-                                maxC: data[i++],
-                                events: data[i++],
-                                reports: data[i++],
-                            },
-                            {
-                                minC: data[i++],
-                                maxC: data[i++],
-                                events: data[i++],
-                                reports: data[i++],
-                            },
-                        ],
-                    },
-                ]
+                obj.history = [];
+                for (let history = 0; history < 2 && i < data.length; history++) {
+                    obj.history[history] = {
+                        timestamp: (data[i++] * 2 ** 24) + (data[i++] * 2 ** 16) + (data[i++] * 2 ** 8) + data[i++],
+                        sensor: [],
+                    };
+                    for (let sensor = 0; sensor < 3; sensor++) {
+                        obj.history[history].sensor[sensor] = {
+                            minC: data[i++],
+                            maxC: data[i++],
+                            events: data[i++],
+                            reports: data[i++],
+                        };
+                    }
+                }
             }
             break;
     }
