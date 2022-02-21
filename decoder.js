@@ -11,8 +11,8 @@ const TYPE_INSTALL_REQUEST = 0
 const TYPE_INSTALL_RESPONSE = 2
 const TYPE_STANDARD_REPORT = 3
 const TYPE_AMBIENT_REPORT = 4
-// const TYPE_SCALD_REPORT = 5
-// const TYPE_FREEZE_REPORT = 6
+const TYPE_SCALD_REPORT = 5
+const TYPE_FREEZE_REPORT = 6
 // const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
 // const TYPE_SENSOR_ERROR_REPORT = 8
 // const TYPE_GENERAL_ERROR_REPORT = 9
@@ -111,6 +111,13 @@ function Decode_SD01L_Payload(data) {
                 obj.avgC = data[i++];
             }
             break;
+
+        case TYPE_FREEZE_REPORT:
+        case TYPE_SCALD_REPORT:
+            if (obj.version === 1) {
+                obj.sensor = data[i++];
+                obj.temperature = data[i++];
+            }
     }
     return obj;
 }
