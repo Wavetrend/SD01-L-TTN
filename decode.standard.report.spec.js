@@ -1,4 +1,4 @@
-const decodeUplink = require('./decoder')
+const { v2, v3 } = require('./decoder')
 
 describe("Standard Report", () => {
 
@@ -139,43 +139,58 @@ describe("Standard Report", () => {
 
     })
 
-    test('base line', () => {
-        expect(decodeUplink(payload)).toEqual(expected);
-    });
+    describe.each([
+        ['TTN v3', (input) => v3(input)],
+        ['TTN v2', (input) => {
+            return {
+                data: v2(input.bytes, input.fPort),
+                warnings: [],
+                errors: [],
+            };
+        }],
+    ])(
+        "Decode %p",
+        (name, decodeUplink) => {
 
-    describe.each`
-        group                  | base_offset    | is_history | history_index
-        ${'Current'}           | ${7}           | ${false}   | ${-1}
-        ${'History 1'}         | ${19}          | ${true}    | ${0}
-        ${'History 2'}         | ${35}          | ${true}    | ${1}
-    `(
-        "$group",
-        ({group, base_offset, is_history, history_index}) => {
-            describe.each([1, 2, 3])(
-                "Sensor %p",
-                (sensor) => {
+            test('base line', () => {
+                expect(decodeUplink(payload)).toEqual(expected);
+            });
 
-                    describe.each`
-                    keyword      | offset   | values
-                    ${'minC'}    | ${0}     | ${[ -27, 0 , 20, 100 ]}
-                    ${'maxC'}    | ${1}     | ${[ -27, 0 , 20, 100 ]}
-                    ${'events'}  | ${2}     | ${[ 0, 1, 255 ]}
-                    ${'reports'} | ${3}     | ${[ 0, 1, 255 ]}
-                `(
-                        "$keyword",
-                        ({keyword, offset, values}) => {
-                            values.forEach(value => {
-                                let index = base_offset + (is_history ? 4 : 0) + ((sensor-1)*4) + offset;
-                                test(`count = ${value}`, () => {
-                                    payload.bytes[index] = value;
-                                    if (is_history) {
-                                        expected.data.history[history_index].sensor[sensor-1][keyword] = value;
-                                    } else {
-                                        expected.data.current.sensor[sensor-1][keyword] = value;
-                                    }
-                                    expect(decodeUplink(payload)).toEqual(expected)
-                                })
-                            })
+            describe.each`
+                group                  | base_offset    | is_history | history_index
+                ${'Current'}           | ${7}           | ${false}   | ${-1}
+                ${'History 1'}         | ${19}          | ${true}    | ${0}
+                ${'History 2'}         | ${35}          | ${true}    | ${1}
+            `(
+                "$group",
+                ({ base_offset, is_history, history_index }) => {
+                    describe.each([1, 2, 3])(
+                        "Sensor %p",
+                        (sensor) => {
+
+                            describe.each`
+                                keyword      | offset   | values
+                                ${'minC'}    | ${0}     | ${[ -27, 0 , 20, 100 ]}
+                                ${'maxC'}    | ${1}     | ${[ -27, 0 , 20, 100 ]}
+                                ${'events'}  | ${2}     | ${[ 0, 1, 255 ]}
+                                ${'reports'} | ${3}     | ${[ 0, 1, 255 ]}
+                            `(
+                                "$keyword",
+                                ({keyword, offset, values}) => {
+                                    values.forEach(value => {
+                                        let index = base_offset + (is_history ? 4 : 0) + ((sensor-1)*4) + offset;
+                                        test(`count = ${value}`, () => {
+                                            payload.bytes[index] = value;
+                                            if (is_history) {
+                                                expected.data.history[history_index].sensor[sensor-1][keyword] = value;
+                                            } else {
+                                                expected.data.current.sensor[sensor-1][keyword] = value;
+                                            }
+                                            expect(decodeUplink(payload)).toEqual(expected)
+                                        })
+                                    })
+                                }
+                            )
                         }
                     )
                 }

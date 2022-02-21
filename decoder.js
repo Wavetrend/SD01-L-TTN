@@ -117,13 +117,13 @@ function decodeUplink(input) {
     };
 }
 
-/*TTN V2
-function Decoder(bytes, port) {
+function Decoder(bytes /*, port */) {
   return Decode_SD01L_Payload(bytes);
 }
-*/
 
-// function sum(a, b) {
-//     return a + b;
-// }
-module.exports = decodeUplink;
+// NB: Not used for TTN production, required for Unit Testing
+
+module.exports = {
+    v2: Decoder,
+    v3: decodeUplink,
+};

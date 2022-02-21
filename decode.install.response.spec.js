@@ -1,4 +1,4 @@
-const decodeUplink = require('./decoder')
+const { v2, v3 } = require('./decoder')
 
 describe("Install Response", () => {
 
@@ -31,17 +31,33 @@ describe("Install Response", () => {
 
     })
 
-    test('base line', () => {
-        expect(decodeUplink(payload)).toEqual(expected);
-    });
+    describe.each([
+        ['TTN v3', (input) => v3(input)],
+        ['TTN v2', (input) => {
+            return {
+                data: v2(input.bytes, input.fPort),
+                warnings: [],
+                errors: [],
+            };
+        }],
+    ])(
+        "Decode %p",
+        (name, decodeUplink) => {
 
-    test.each([ 0, 15, 255 ])(
-        "with error code = %p",
-        (error_code) => {
-            payload.bytes[OFFSET_ERROR_CODE] = error_code;
-            expected.data.error_code = error_code;
-            expect(decodeUplink(payload)).toEqual(expected);
+            test('base line', () => {
+                expect(decodeUplink(payload)).toEqual(expected);
+            });
+
+            test.each([ 0, 15, 255 ])(
+                "with error code = %p",
+                (error_code) => {
+                    payload.bytes[OFFSET_ERROR_CODE] = error_code;
+                    expected.data.error_code = error_code;
+                    expect(decodeUplink(payload)).toEqual(expected);
+                }
+            )
+
         }
-    )
+    );
 
 });
