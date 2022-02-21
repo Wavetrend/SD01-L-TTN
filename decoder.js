@@ -10,7 +10,7 @@ const TYPE_INSTALL_REQUEST = 0
 // const TYPE_CONFIGURATION = 1
 const TYPE_INSTALL_RESPONSE = 2
 const TYPE_STANDARD_REPORT = 3
-// const TYPE_AMBIENT_REPORT = 4
+const TYPE_AMBIENT_REPORT = 4
 // const TYPE_SCALD_REPORT = 5
 // const TYPE_FREEZE_REPORT = 6
 // const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
@@ -101,6 +101,14 @@ function Decode_SD01L_Payload(data) {
                         };
                     }
                 }
+            }
+            break;
+
+        case TYPE_AMBIENT_REPORT:
+            if (obj.version === 1) {
+                obj.minC = data[i++];
+                obj.maxC = data[i++];
+                obj.avgC = data[i++];
             }
             break;
     }
