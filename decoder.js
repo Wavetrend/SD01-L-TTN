@@ -7,16 +7,16 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
 */
 
 const TYPE_INSTALL_REQUEST = 0
-const TYPE_CONFIGURATION = 1
+// const TYPE_CONFIGURATION = 1
 const TYPE_INSTALL_RESPONSE = 2
 const TYPE_STANDARD_REPORT = 3
-const TYPE_AMBIENT_REPORT = 4
-const TYPE_SCALD_REPORT = 5
-const TYPE_FREEZE_REPORT = 6
-const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
-const TYPE_SENSOR_ERROR_REPORT = 8
-const TYPE_GENERAL_ERROR_REPORT = 9
-const TYPE_SENSOR_DATA_DEBUG = 10
+// const TYPE_AMBIENT_REPORT = 4
+// const TYPE_SCALD_REPORT = 5
+// const TYPE_FREEZE_REPORT = 6
+// const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
+// const TYPE_SENSOR_ERROR_REPORT = 8
+// const TYPE_GENERAL_ERROR_REPORT = 9
+// const TYPE_SENSOR_DATA_DEBUG = 10
 
 const OFFSET_TYPE = 0
 const OFFSET_VERSION = 1
@@ -61,7 +61,7 @@ function Decode_SD01L_Payload(data) {
                 obj.nonce = (data[i++] * 2 ** 24) + (data[i++] * 2 ** 16) + (data[i++] * 2 ** 8) + data[i++];
                 obj.battery_mV = (data[i++] * 2 ** 8) + data[i++];
                 obj.temperature = [];
-                for (sensor = 0; sensor < 3; sensor++) {
+                for (let sensor = 0; sensor < 3; sensor++) {
                     let temp_index = (data[i++] * 2 ** 8) + data[i++];
                     obj.temperature[sensor] = (temp_index - 270) / 10
                 }
