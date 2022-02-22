@@ -17,8 +17,8 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
 /**
  * @typedef {Object} Payload
  * @property {SD01L_PAYLOAD_TYPE}   type - payload type
- * @property {number}   version - payload version
- * @property {number}   sequence - payload sequence 0-254
+ * @property {number}   version - payload version 0-255
+ * @property {number}   sequence - payload sequence 0-255
  * @property {number}   timestamp - seconds since Unix epoch
  * @property {undefined|*} [string] - properties depending on payload type
  */

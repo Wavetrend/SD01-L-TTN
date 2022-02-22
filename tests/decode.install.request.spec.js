@@ -67,8 +67,8 @@ describe('Install Request', () => {
             });
 
             test('with max sequence', () => {
-                payload.bytes[OFFSET_SEQUENCE] = 0xFE;
-                expected.data.sequence = 254;
+                payload.bytes[OFFSET_SEQUENCE] = 0xFF;
+                expected.data.sequence = 255;
                 expect(decodeUplink(payload)).toEqual(expected);
             });
 
