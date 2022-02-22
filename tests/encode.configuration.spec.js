@@ -1,4 +1,5 @@
 const { v2, v3 } = require('../src/encoder.js');
+const { SD01L_PAYLOAD_TYPE } = require('../src/decoder.js');
 
 describe("Configuration", () => {
 
@@ -28,7 +29,7 @@ describe("Configuration", () => {
             beforeEach(() => {
                 payload = {
                     data: {
-                        type: 1,
+                        type: SD01L_PAYLOAD_TYPE.CONFIGURATION,
                         version: 4,
                         sequence: 0,
                         timestamp: 0,
@@ -64,7 +65,8 @@ describe("Configuration", () => {
 
                 expected = {
                     bytes: [
-                        0x01,                       // 00 - type - configuration
+                                                    // 00 - type
+                        SD01L_PAYLOAD_TYPE.CONFIGURATION,
                         0x04,                       // 01 - version
                         0x00,                       // 02 - sequence
                         0x00, 0x00, 0x00, 0x00,     // 03 - timestamp

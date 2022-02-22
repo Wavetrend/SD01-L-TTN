@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/decoder')
+const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/decoder')
 
 describe("Freeze/Scald Report", () => {
 
@@ -7,9 +7,9 @@ describe("Freeze/Scald Report", () => {
     const OFFSET_TEMPERATURE = 8;
 
     describe.each`
-        name            | type        | version
-        ${'Freeze'}     | ${6}        | ${1}
-        ${'Scald'}      | ${5}        | ${1}
+        name            | type                                   | version
+        ${'Freeze'}     | ${SD01L_PAYLOAD_TYPE.FREEZE_REPORT}    | ${1}
+        ${'Scald'}      | ${SD01L_PAYLOAD_TYPE.SCALD_REPORT}     | ${1}
     `(
         "$name",
         ({ type, version }) => {

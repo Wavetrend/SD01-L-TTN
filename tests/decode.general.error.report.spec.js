@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/decoder')
+const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/decoder')
 
 describe("General Error Report", () => {
 
@@ -10,7 +10,8 @@ describe("General Error Report", () => {
     beforeEach(() => {
         payload = {
             bytes: [
-                0x09,                   // 00 - type ambient report
+                                        // 00 - type
+                SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT,
                 0x01,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
@@ -27,7 +28,7 @@ describe("General Error Report", () => {
 
         expected = {
             data: {
-                type: 9,
+                type: SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT,
                 version: 1,
                 sequence: 0,
                 timestamp: 0,

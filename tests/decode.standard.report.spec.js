@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/decoder')
+const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/decoder')
 
 describe("Standard Report", () => {
 
@@ -7,7 +7,8 @@ describe("Standard Report", () => {
     beforeEach(() => {
         payload = {
             bytes: [
-                0x03,                   // 00 - type standard report
+                                        // 00 - type
+                SD01L_PAYLOAD_TYPE.STANDARD_REPORT,
                 0x01,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
@@ -58,7 +59,7 @@ describe("Standard Report", () => {
 
         expected = {
             data: {
-                type: 3,
+                type: SD01L_PAYLOAD_TYPE.STANDARD_REPORT,
                 version: 1,
                 sequence: 0,
                 timestamp: 0,

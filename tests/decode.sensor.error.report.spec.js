@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/decoder')
+const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/decoder')
 
 describe("Sensor Error Report", () => {
 
@@ -8,7 +8,8 @@ describe("Sensor Error Report", () => {
     beforeEach(() => {
         payload = {
             bytes: [
-                0x08,                   // 00 - type ambient report
+                                        // 00 - type
+                SD01L_PAYLOAD_TYPE.SENSOR_ERROR_REPORT,
                 0x01,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
@@ -21,7 +22,7 @@ describe("Sensor Error Report", () => {
 
         expected = {
             data: {
-                type: 8,
+                type: SD01L_PAYLOAD_TYPE.SENSOR_ERROR_REPORT,
                 version: 1,
                 sequence: 0,
                 timestamp: 0,

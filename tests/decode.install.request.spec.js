@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/decoder')
+const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/decoder')
 
 describe('Install Request', () => {
 
@@ -15,7 +15,8 @@ describe('Install Request', () => {
     beforeEach(() => {
         payload = {
             bytes: [
-                0x00,                   // 00 - type install request
+                                        // 00 - type
+                SD01L_PAYLOAD_TYPE.INSTALL_REQUEST,
                 0x04,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
@@ -31,7 +32,7 @@ describe('Install Request', () => {
 
         expected = {
             data: {
-                type: 0,
+                type: SD01L_PAYLOAD_TYPE.INSTALL_REQUEST,
                 version: 4,
                 sequence: 0,
                 timestamp: 0,

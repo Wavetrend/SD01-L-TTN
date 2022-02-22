@@ -4,11 +4,13 @@
   "description": "",
   "main": "src/decoder.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "jsdoc": "jsdoc src -r -d docs"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "jsdoc": "^3.6.10"
   }
 }
