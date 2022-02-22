@@ -201,7 +201,7 @@ describe("Standard Report", () => {
                 ${'No Histories'}  | ${19}       | ${0}
                 ${'1 History'}     | ${35}       | ${1}
             `(
-                "%p",
+                "$title",
                 ({ data_length, histories }) => {
                     payload.bytes = payload.bytes.slice(0, data_length);
                     expected.data.history = expected.data.history.slice(0, histories)
