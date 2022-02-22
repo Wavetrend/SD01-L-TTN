@@ -21,13 +21,13 @@ const TYPE_CONFIGURATION = 1
 
 function Encode_SD01L_PayloadHeader(object) {
     let bytes = [];
-    bytes[0] = object.type;
-    bytes[1] = object.version;
-    bytes[2] = object.sequence;
-    bytes[3] = (object.timestamp & 0xFF000000) >>> 24;
-    bytes[4] = (object.timestamp & 0x00FF0000) >>> 16;
-    bytes[5] = (object.timestamp & 0x0000FF00) >>> 8;
-    bytes[6] = object.timestamp & 0x000000FF;
+    bytes.push(object.type);
+    bytes.push(object.version);
+    bytes.push(object.sequence);
+    bytes.push((object.timestamp & 0xFF000000) >>> 24);
+    bytes.push((object.timestamp & 0x00FF0000) >>> 16);
+    bytes.push((object.timestamp & 0x0000FF00) >>> 8);
+    bytes.push(object.timestamp & 0x000000FF);
     return bytes;
 }
 
