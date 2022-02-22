@@ -79,5 +79,6 @@ fabric.properties
 # Node Package Manager (NPM)
 node_modules/
 
+# JSDOC generated directory
 /docs/*
 !/**/.gitkeep
