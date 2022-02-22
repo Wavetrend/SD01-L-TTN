@@ -2,7 +2,7 @@
   "name": "sd01-l-ttn",
   "version": "1.0.0",
   "description": "",
-  "main": "decoder.js",
+  "main": "src/decoder.js",
   "scripts": {
     "test": "jest"
   },

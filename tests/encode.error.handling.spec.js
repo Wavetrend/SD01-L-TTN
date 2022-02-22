@@ -1,4 +1,4 @@
-const { v2, v3 } = require('./encoder.js');
+const { v2, v3 } = require('../src/encoder.js');
 
 describe("Encoder Error Handling", () => {
 

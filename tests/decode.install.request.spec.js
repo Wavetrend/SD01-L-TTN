@@ -1,4 +1,4 @@
-const { v2, v3 } = require('./decoder')
+const { v2, v3 } = require('../src/decoder')
 
 describe('Install Request', () => {
 
