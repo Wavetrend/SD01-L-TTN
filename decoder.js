@@ -7,16 +7,16 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
 */
 
 const TYPE_INSTALL_REQUEST = 0
-// const TYPE_CONFIGURATION = 1
+const TYPE_CONFIGURATION = 1
 const TYPE_INSTALL_RESPONSE = 2
 const TYPE_STANDARD_REPORT = 3
 const TYPE_AMBIENT_REPORT = 4
 const TYPE_SCALD_REPORT = 5
 const TYPE_FREEZE_REPORT = 6
-// const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
+const TYPE_LOW_BATTERY_REPORT_DEPRECATED = 7
 const TYPE_SENSOR_ERROR_REPORT = 8
 const TYPE_GENERAL_ERROR_REPORT = 9
-// const TYPE_SENSOR_DATA_DEBUG = 10
+const TYPE_SENSOR_DATA_DEBUG = 10
 
 const OFFSET_TYPE = 0
 const OFFSET_VERSION = 1
@@ -143,22 +143,45 @@ function Decode_SD01L_Payload(data) {
                 }
                 obj.line = (data[i++] * 2 ** 8) + data[i++];
             }
+            break;
+
+        case TYPE_CONFIGURATION:
+            throw "Configuration type is not a valid uplink message";
+
+        case TYPE_LOW_BATTERY_REPORT_DEPRECATED:
+            throw "Low Battery Report is deprecated"
+
+        case TYPE_SENSOR_DATA_DEBUG:
+            throw "Sensor Data Debug is not supported for decode"
+
+        default:
+            throw "Unrecognised Type Code"
     }
     return obj;
 }
 
 // TTN V3
 function decodeUplink(input) {
-    let d = Decode_SD01L_Payload(input.bytes);
-    return {
-        data: d,
+    let obj = {
         warnings: [],
-        errors: []
-    };
+        errors: [],
+    }
+
+    try {
+        obj.data = Decode_SD01L_Payload(input.bytes);
+    } catch (error) {
+        obj.errors.push(error);
+    }
+
+    return obj;
 }
 
 function Decoder(bytes /*, port */) {
-  return Decode_SD01L_Payload(bytes);
+  try {
+      return Decode_SD01L_Payload(bytes);
+  } catch {
+      return null
+  }
 }
 
 // NB: Not used for TTN production, required for Unit Testing
