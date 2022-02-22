@@ -1,6 +1,6 @@
 const { v2, v3 } = require('./decoder')
 
-describe("Error Handling", () => {
+describe("Decode Error Handling", () => {
 
     let payload, expected;
 
