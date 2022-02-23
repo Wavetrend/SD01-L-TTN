@@ -10,7 +10,8 @@ describe('Install Request', () => {
     const OFFSET_SENSOR_1_TEMP = 13
     // const OFFSET_SENSOR_2_TEMP = 15
     // const OFFSET_SENSOR_3_TEMP = 17
-    const OFFSET_RESET_REASON = 19
+    const OFFSET_VERSION = 19
+    const OFFSET_RESET_REASON = 23
 
     beforeEach(() => {
         payload = {
@@ -25,7 +26,8 @@ describe('Install Request', () => {
                 0x01, 0x0E,             // 13 - sensor 1 temp (0degC)
                 0x01, 0x0E,             // 15 - sensor 2 temp (0degC)
                 0x01, 0x0E,             // 17 - sensor 3 temp (0degC)
-                0x00, 0x00,             // 19 - reset reason
+                0x00, 0x00, 0x00, 0x00, // 19 - version
+                0x00, 0x00,             // 23 - reset reason
             ],
             fPort: 1
         };
@@ -41,6 +43,11 @@ describe('Install Request', () => {
                 temperature: [
                     0, 0, 0
                 ],
+                firmware_version: {
+                    major: 0,
+                    minor: 0,
+                    build: 0,
+                },
                 reset_reason: 0
             },
             errors: [],
@@ -123,6 +130,31 @@ describe('Install Request', () => {
 
                 }
             )
+
+            describe.each`
+                field           | offset | width | values
+                ${'major'}      | ${0}   | ${1}  | ${[0, 127, 255]}
+                ${'minor'}      | ${1}   | ${1}  | ${[0, 127, 255]}
+                ${'build'}      | ${2}   | ${2}  | ${[0, 255, 65535]}
+            `(
+                "version $field",
+                ({field, offset, width, values}) => {
+                    test.each(values)(
+                        "value = %p",
+                        (value) => {
+                            for (let pos = 0; pos < width; pos++) {
+                                let shift = (width-(pos+1))*8
+                                let mask = 0xFF << shift;
+                                let byte = (value & mask);
+                                byte >>>= shift;
+                                payload.bytes[OFFSET_VERSION + offset + pos] = byte;
+                            }
+                            expected.data.firmware_version[field] = value;
+                            expect(decodeUplink(payload)).toEqual(expected);
+                        }
+                    )
+                }
+            );
 
             test.each([ 0, 0x1234, 0xFFFF ])(
                 "with reset_reason = %p",

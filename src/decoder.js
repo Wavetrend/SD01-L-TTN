@@ -7,11 +7,18 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
 */
 
 /**
+ * @typedef {Object} Wavetrend.SD01L.Version
+ * @property {number} major
+ * @property {number} minor
+ * @property {number} build
+ */
+/**
  * Issued by device when installed to acquire operating configuration
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.InstallRequest
  * @property {number} nonce
  * @property {number} battery_mV
  * @property {number[]} temperature
+ * @property {Wavetrend.SD01L.Version} firmware_version
  * @property {number} reset_reason
  */
 
@@ -176,6 +183,11 @@ function Decode_SD01L_Payload(bytes) {
                 for (let sensor = 0; sensor < 3; sensor++) {
                     let temp_index = (bytes[i++] << 8 >>> 0) + bytes[i++];
                     payload.temperature[sensor] = (temp_index - 270) / 10
+                }
+                payload.firmware_version = {
+                    major: bytes[i++],
+                    minor: bytes[i++],
+                    build: (bytes[i++] << 8 >>> 0) + bytes[i++],
                 }
                 payload.reset_reason = (bytes[i++] << 8 >>> 0) + bytes[i++];
             }
