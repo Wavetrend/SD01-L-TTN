@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/decoder.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest tests",
     "jsdoc": "jsdoc -a all -c jsdoc.json -r -R README.md src -d docs && jsdoc2md --files src/* > docs/API.md"
   },
   "author": "",
