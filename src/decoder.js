@@ -15,6 +15,7 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
  */
 
 /**
+ * Base type for SD01L Message Payloads
  * @typedef {Object} Payload
  * @property {SD01L_PAYLOAD_TYPE}   type - payload type
  * @property {number}   version - payload version 0-255
@@ -24,6 +25,7 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
  */
 
 /**
+ * Issued by device when installed to acquire operating configuration
  * @typedef {Payload} SD01L_InstallRequest
  * @property {number} nonce
  * @property {number} battery_mV
@@ -32,11 +34,13 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
  */
 
 /**
+ * Issued by device after successfully receiving operating configuration
  * @typedef {Payload} SD01L_InstallResponse
  * @property {number} error
  */
 
 /**
+ * Standard sensor temperature readings
  * @typedef {Object} SensorReadings
  * @property {number} minC
  * @property {number} maxC
@@ -45,16 +49,19 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
  */
 
 /**
+ * Sensor reading histories (if enabled)
  * @typedef {{ timestamp: number, sensor: SensorReadings[] }} SensorHistory
  */
 
 /**
+ * Issued by the device at the standard report interval
  * @typedef {Payload} SD01L_StandardReport
  * @property {{ sensor: SensorReadings[] }} current
  * @property {SensorHistory[]} history
  */
 
 /**
+ * Issued by the device if ambient reporting is enabled
  * @typedef {Payload} SD01L_AmbientReport
  * @property {number} minC
  * @property {number} maxC
@@ -62,23 +69,27 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
  */
 
 /**
+ * Issued by the device if freeze reporting is enabled
  * @typedef {Payload} SD01L_FreezeReport
  * @property {number} sensor
  * @property {number} temperature
  */
 
 /**
+ * Issued by the device if scald reporting is enabled
  * @typedef {Payload} SD01L_ScaldReport
  * @property {number} sensor
  * @property {number} temperature
  */
 
 /**
+ * Issued by the device if a sensor error is detected
  * @typedef {Payload} SD01L_SensorErrorReport
  * @property {number[]} sensor
  */
 
 /**
+ * Issued by the device if a general device error is detected
  * @typedef {Payload} SD01L_GeneralErrorReport
  * @property {number} error_code
  * @property {string} file
@@ -86,16 +97,19 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
  */
 
 /**
+ * Format of data provided to the V3 decoder by TTN
  * @typedef {Object} DecoderInput
  * @property {number[]} bytes - array of received bytes
  * @property {number} fPort - LoRaWAN port number
  */
 
 /**
+ * Composite of all SD01L uplink messages
  * @typedef {SD01L_InstallRequest|SD01L_InstallResponse|SD01L_StandardReport|SD01L_AmbientReport|SD01L_FreezeReport|SD01L_ScaldReport|SD01L_SensorErrorReport|SD01L_GeneralErrorReport} SD01L_Payloads
  */
 
 /**
+ * Format of the result data expected by the V2 TTN decoder
  * @typedef {Object} DecoderOutput
  * @property {SD01L_Payloads} [data] - Decoded payload
  * @property {number} [fPort] - LoRaWAN port number
