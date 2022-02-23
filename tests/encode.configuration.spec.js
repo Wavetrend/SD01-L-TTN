@@ -129,7 +129,7 @@ describe("Configuration", () => {
                 "message flag: history count = %p",
                 (count) => {
                     payload.data.message_flags.history_count = count;
-                    expected.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) * 2 ** 6;
+                    expected.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) << 6 >>> 0;
                     expect(encodeDownlink(payload)).toEqual(expected);
                 }
             );
@@ -176,7 +176,7 @@ describe("Configuration", () => {
                                     payload.data.config_type[sensor-1].config = config;
                                     payload.data.config_type[sensor-1].flow_settling_count = count;
                                     expected.bytes[OFFSET_SENSOR_CONFIG + (sensor-1)] =
-                                        (count & 0x0F) * 2 ** 4 | config & 0x0F;
+                                        (count & 0x0F) << 4 >>> 0 | config & 0x0F;
                                 }
                             )
                         }

@@ -164,7 +164,7 @@ function Decode_SD01L_PayloadHeader(bytes) {
                 payload.sequence = bytes[i];
                 break;
             case OFFSET_TIMESTAMP:
-                payload.timestamp = (bytes[i++]*2**24)+(bytes[i++]*2**16)+(bytes[i++]*2**8)+bytes[i];
+                payload.timestamp = (bytes[i++] << 24 >>> 0)+(bytes[i++] << 16 >>> 0)+(bytes[i++] << 8 >>> 0)+bytes[i];
                 break;
             default:
                 payload.bytes = bytes.slice(i)
@@ -189,14 +189,14 @@ function Decode_SD01L_Payload(bytes) {
     switch (payload.type) {
         case SD01L_PAYLOAD_TYPE.INSTALL_REQUEST:
             if (payload.version === 4) {
-                payload.nonce = (bytes[i++] * 2 ** 24) + (bytes[i++] * 2 ** 16) + (bytes[i++] * 2 ** 8) + bytes[i++];
-                payload.battery_mV = (bytes[i++] * 2 ** 8) + bytes[i++];
+                payload.nonce = (bytes[i++] << 24 >>> 0) + (bytes[i++] << 16 >>> 0) + (bytes[i++] << 8 >>> 0) + bytes[i++];
+                payload.battery_mV = (bytes[i++] << 8 >>> 0) + bytes[i++];
                 payload.temperature = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
-                    let temp_index = (bytes[i++] * 2 ** 8) + bytes[i++];
+                    let temp_index = (bytes[i++] << 8 >>> 0) + bytes[i++];
                     payload.temperature[sensor] = (temp_index - 270) / 10
                 }
-                payload.reset_reason = (bytes[i++] * 2 ** 8) + bytes[i++];
+                payload.reset_reason = (bytes[i++] << 8 >>> 0) + bytes[i++];
             }
             break;
 
@@ -220,7 +220,7 @@ function Decode_SD01L_Payload(bytes) {
                 payload.history = [];
                 for (let history = 0; history < 2 && i < bytes.length; history++) {
                     payload.history[history] = {
-                        timestamp: (bytes[i++] * 2 ** 24) + (bytes[i++] * 2 ** 16) + (bytes[i++] * 2 ** 8) + bytes[i++],
+                        timestamp: (bytes[i++] << 24 >>> 0) + (bytes[i++] << 16 >>> 0) + (bytes[i++] << 8 >>> 0) + bytes[i++],
                         sensor: [],
                     };
                     for (let sensor = 0; sensor < 3; sensor++) {
@@ -272,7 +272,7 @@ function Decode_SD01L_Payload(bytes) {
                         i++;
                     }
                 }
-                payload.line = (bytes[i++] * 2 ** 8) + bytes[i++];
+                payload.line = (bytes[i++] << 8 >>> 0) + bytes[i++];
             }
             break;
 
