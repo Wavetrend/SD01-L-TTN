@@ -57,12 +57,12 @@ const SD01L_PAYLOAD_TYPE = {
 
 /**
  * @typedef {Object} Wavetrend.SD01L.Message_Flags
- * @property {boolean} scald - scald reporting enabled
- * @property {boolean} freeze - freeze reporting enabled
- * @property {boolean} ambient - ambient reporting enabled
- * @property {boolean} debug - debug reporting enabled
- * @property {boolean} lora_confirmed - LoRa confirmed message enabled (NB: must be false)
- * @property {number} history_count - number of history messages in standard report (0, 1, or 2)
+ * @property {boolean} scald - scald reporting enabled (default disabled)
+ * @property {boolean} freeze - freeze reporting enabled (default disabled)
+ * @property {boolean} ambient - ambient reporting enabled (default disabled)
+ * @property {boolean} debug - debug reporting enabled (default disabled)
+ * @property {boolean} lora_confirmed - LoRa confirmed message enabled (NB: strongly advise disabled) (default disabled)
+ * @property {number} history_count - number of history messages in standard report (default = 0, otherwise 1 or 2)
  */
 
 /**
@@ -95,18 +95,18 @@ const SD01L_SENSOR_TYPE = {
 
 /**
  * @typedef {Object} Wavetrend.SD01L.Sensor_Config
- * @property {number} flow_settling_count - number of readings to allow flow to settle
- * @property {SD01L_SENSOR_TYPE} config - identity of the sensor configuration
+ * @property {number} flow_settling_count - number of readings to allow flow to settle (default 0)
+ * @property {SD01L_SENSOR_TYPE} config - identity of the sensor configuration (default disabled)
  */
 
 /**
- * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrned.SD01L.Configuration
+ * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.Configuration
  * @property {number} nonce - same value as contained in the install request
- * @property {number} downlink_hours - number of hours between configuration requests
+ * @property {number} downlink_hours - number of hours between configuration requests (default 24)
  * @property {Wavetrend.SD01L.Message_Flags} message_flags - option flags
- * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled)
- * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled)
- * @property {number} reporting_period - number of minutes between reports
+ * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
+ * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
+ * @property {number} reporting_period - number of minutes between reports (default 60)
  * @property {Wavetrend.SD01L.Sensor_Config[]} config_type - configuration for each sensor
  */
 
