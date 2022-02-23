@@ -115,6 +115,24 @@ const SD01L_SENSOR_TYPE = {
  */
 
 /**
+ * Deep merge of config objects to allow defaults to be supplied for anything missing
+ * @param {*} arg1
+ * @param {*} arg2
+ * @returns {*}
+ * @memberOf Wavetrend.SD01L
+ */
+function mergeConfigs(arg1, arg2) {
+
+    if ((Array.isArray(arg1) && Array.isArray(arg2))
+        || (typeof arg1 === 'object' && typeof arg2 === 'object')) {
+        for (let key in arg2) {
+            arg1[key] = mergeConfigs(arg1[key], arg2[key]);
+        }
+        return arg1;
+    }
+    return arg2;
+}
+/**
  * Encode the common header fields
  * @param {Wavetrend.SD01L.Downlink_Payloads} object
  * @returns {number[]} - header fields encoded to byte array
@@ -143,6 +161,26 @@ function Encode_SD01L_Payload(object) {
 
     switch (object.type) {
         case SD01L_PAYLOAD_TYPE.CONFIGURATION:
+            const defaults = {
+                nonce: 0,
+                downlink_hours: 24,
+                message_flags: {
+                    scald: false,
+                    freeze: false,
+                    ambient: false,
+                    history_count: 0,
+                },
+                scald_threshold: 60,
+                freeze_threshold: 4,
+                reporting_period: 60,
+                config_type: [
+                    { flow_settling_count: 0, config: 0, },
+                    { flow_settling_count: 0, config: 0, },
+                    { flow_settling_count: 0, config: 0, },
+                ]
+            }
+            object = mergeConfigs(defaults, object);
+
             bytes.push((object.nonce & 0xFF000000) >>> 24);
             bytes.push((object.nonce & 0x00FF0000) >>> 16);
             bytes.push((object.nonce & 0x0000FF00) >>> 8);
@@ -233,5 +271,6 @@ if (typeof module !== 'undefined') {
         v2: Encoder,
         v3: encodeDownlink,
         SD01L_PAYLOAD_TYPE,
+        mergeConfigs: mergeConfigs,
     };
 }

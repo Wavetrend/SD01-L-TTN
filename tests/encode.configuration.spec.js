@@ -32,33 +32,7 @@ describe("Configuration", () => {
                         version: 4,
                         sequence: 0,
                         timestamp: 0,
-                        nonce: 0,
-                        downlink_hours: 0,
-                        message_flags: {
-                            scald: false,
-                            freeze: false,
-                            ambient: false,
-                            debug: false,
-                            lora_confirmed: false,
-                            history_count: 0,
-                        },
-                        scald_threshold: 0,
-                        freeze_threshold: 0,
-                        reporting_period: 0,
-                        config_type: [
-                            {
-                                flow_settling_count: 0,
-                                config: 0,
-                            },
-                            {
-                                flow_settling_count: 0,
-                                config: 0,
-                            },
-                            {
-                                flow_settling_count: 0,
-                                config: 0,
-                            },
-                        ],
+                        // NB: Encoder copes with missing properties by supplying defaults
                     },
                 };
 
@@ -70,11 +44,11 @@ describe("Configuration", () => {
                         0x00,                       // 02 - sequence
                         0x00, 0x00, 0x00, 0x00,     // 03 - timestamp
                         0x00, 0x00, 0x00, 0x00,     // 07 - nonce
-                        0x00,                       // 11 - downlink hours
+                        24,                         // 11 - downlink hours
                         0x00,                       // 12 - message flags
-                        0x00,                       // 13 - scald threshold
-                        0x00,                       // 14 - freeze threshold
-                        0x00, 0x00,                 // 15 - reporting period
+                        60,                         // 13 - scald threshold
+                        4,                          // 14 - freeze threshold
+                        0x00, 60,                   // 15 - reporting period
                         0x00, 0x00, 0x00            // 16 - sensor configs
                     ],
                     fPort: 1,
@@ -118,6 +92,7 @@ describe("Configuration", () => {
             `(
                 "message flag: $flag",
                 ({ flag, bit }) => {
+                    payload.data.message_flags = payload.data.message_flags || {};
                     payload.data.message_flags[flag] = true;
                     expected.bytes[OFFSET_MESSAGE_FLAGS] = 2 ** bit;
                     expect(encodeDownlink(payload)).toEqual(expected);
@@ -127,6 +102,7 @@ describe("Configuration", () => {
             test.each([ 0, 1, 2 ])(
                 "message flag: history count = %p",
                 (count) => {
+                    payload.data.message_flags = payload.data.message_flags || {};
                     payload.data.message_flags.history_count = count;
                     expected.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) << 6 >>> 0;
                     expect(encodeDownlink(payload)).toEqual(expected);
@@ -172,6 +148,8 @@ describe("Configuration", () => {
                             test.each([0, 5, 15])(
                                 "flow throttling count = %p",
                                 (count) => {
+                                    payload.data.config_type = payload.data.config_type || [];
+                                    payload.data.config_type[sensor-1] = payload.data.config_type[sensor-1] || {}
                                     payload.data.config_type[sensor-1].config = config;
                                     payload.data.config_type[sensor-1].flow_settling_count = count;
                                     expected.bytes[OFFSET_SENSOR_CONFIG + (sensor-1)] =
