@@ -61,7 +61,6 @@ const SD01L_PAYLOAD_TYPE = {
  * @property {boolean} freeze - freeze reporting enabled (default disabled)
  * @property {boolean} ambient - ambient reporting enabled (default disabled)
  * @property {boolean} debug - debug reporting enabled (default disabled)
- * @property {boolean} lora_confirmed - LoRa confirmed message enabled (NB: strongly advise disabled) (default disabled)
  * @property {number} history_count - number of history messages in standard report (default = 0, otherwise 1 or 2)
  */
 
@@ -191,7 +190,6 @@ function Encode_SD01L_Payload(object) {
                 | object.message_flags.freeze << 2 >>> 0
                 | object.message_flags.ambient << 3 >>> 0
                 | object.message_flags.debug << 4 >>> 0
-                | object.message_flags.lora_confirmed << 5 >>> 0
                 | (object.message_flags.history_count & 0x03) << 6 >>> 0
             );
             bytes.push(object.scald_threshold);     // NB: signed

@@ -88,7 +88,6 @@ describe("Configuration", () => {
                 ${'freeze'}             | ${2}
                 ${'ambient'}            | ${3}
                 ${'debug'}              | ${4}
-                ${'lora_confirmed'}     | ${5}
             `(
                 "message flag: $flag",
                 ({ flag, bit }) => {
