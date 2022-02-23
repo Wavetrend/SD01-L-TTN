@@ -1,7 +1,7 @@
 /*
 Wavetrend
 
-SD01-L Water Temperature Monitor Payload Encoder for TTN
+SD01-L Water Temperature Monitor Downlink Payload Formatter for TTN
 
 https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/
 https://www.youtube.com/watch?v=nT2FnwCoP7w
