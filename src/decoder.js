@@ -295,7 +295,7 @@ function Decode_SD01L_Payload(bytes) {
  * Entry point for TTN V3 uplink decoder
  * @memberOf TTN.Decoder
  * @param {DecoderInput} input
- * @returns {DecoderOutput}
+ * @returns {DecoderOutput} - object containing the result of the decode, which might include warnings or errors
  */
 function decodeUplink(input) {
     let payload = {
@@ -316,7 +316,7 @@ function decodeUplink(input) {
  * Entry point for TTN V2 uplink decoder
  * @memberOf TTN.Decoder
  * @param {number[]} bytes - array of received bytes
- * @returns {SD01L_Payloads|null}
+ * @returns {SD01L_Payloads|null} - object containing decoded payload, or null if an error is encountered
  */
 function Decoder(bytes /*, port */) {
   try {
@@ -328,8 +328,10 @@ function Decoder(bytes /*, port */) {
 
 // NB: Not used for TTN production, required for Unit Testing
 
-module.exports = {
-    v2: Decoder,
-    v3: decodeUplink,
-    SD01L_PAYLOAD_TYPE,
-};
+if (typeof module !== 'undefined') {
+    module.exports = {
+        v2: Decoder,
+        v3: decodeUplink,
+        SD01L_PAYLOAD_TYPE,
+    };
+}
