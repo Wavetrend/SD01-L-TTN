@@ -229,7 +229,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.AMBIENT_REPORT:
-            if (payload.version === 1) {
+            if (payload.version === 0) {
                 payload.minC = bytes[i++];
                 payload.maxC = bytes[i++];
                 payload.avgC = bytes[i++];
