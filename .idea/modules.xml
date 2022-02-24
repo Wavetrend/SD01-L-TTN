@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/SD01-L-TTN.iml" filepath="$PROJECT_DIR$/.idea/SD01-L-TTN.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../TTN/lorawan-devices/.idea/lorawan-devices.iml" filepath="$PROJECT_DIR$/../TTN/lorawan-devices/.idea/lorawan-devices.iml" />
     </modules>
   </component>
 </project>
