@@ -29,7 +29,7 @@ describe("Configuration", () => {
                 payload = {
                     data: {
                         type: SD01L_PAYLOAD_TYPE.CONFIGURATION,
-                        version: 4,
+                        version: 3,
                         sequence: 0,
                         timestamp: 0,
                         // NB: Encoder copes with missing properties by supplying defaults
@@ -40,7 +40,7 @@ describe("Configuration", () => {
                     bytes: [
                                                     // 00 - type
                         SD01L_PAYLOAD_TYPE.CONFIGURATION,
-                        0x04,                       // 01 - version
+                        0x03,                       // 01 - version
                         0x00,                       // 02 - sequence
                         0x00, 0x00, 0x00, 0x00,     // 03 - timestamp
                         0x00, 0x00, 0x00, 0x00,     // 07 - nonce
@@ -61,7 +61,7 @@ describe("Configuration", () => {
                 expect(encodeDownlink(payload)).toEqual(expected);
             });
 
-            test.each([ 0, 1, 2, 3, 5, 255 ])(
+            test.each([ 0, 1, 2, 4, 255 ])(
                 "incorrect version",
                 (version) => {
                 payload.data.version = version;
