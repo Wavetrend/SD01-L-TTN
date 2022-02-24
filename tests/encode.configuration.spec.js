@@ -1,4 +1,4 @@
-const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/encoder.js');
+const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/downlink.js');
 
 describe("Configuration", () => {
 

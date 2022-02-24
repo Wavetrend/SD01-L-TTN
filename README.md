@@ -4,23 +4,32 @@
 
 1. Login to TTN Console
 2. Navigate to 'Payload Formatters'
-3. Cut & Paste the contents of the 'encoder.js' as the Downlink formatter
-4. Cut & Paste the contents of the 'decoder.js' as the Uplink formatter
+3. Cut & Paste the contents of the 'downlink.js' as the Downlink formatter
+4. Cut & Paste the contents of the 'uplink.js' as the Uplink formatter
 
 The 'Live Data' view will show both the raw and decoded elements on any messages.
 
+## Prerequisites
+
+If you want to develop, test or generate documentation for the project, 
+you will need to install:
+
+* [Node.js and NPM (the Node package manager)](https://nodejs.org/en/download/)
+* Clone the repo (`git clone http://github.com/wavetrend/SD01-L-TTN` or via 
+  your preferred Git client)
+
 ## Testing
 
-1. Clone the repo
-2. Change to the directory holding the repo on your local system
-3. Run 'npm install' to install/update all of the dependencies
-4. Run 'npm test' to run the tests and view the output
+1. Using your command line/terminal, change to the directory holding
+   the repo on your local system
+2. Run `npm install` to install/update all of the dependencies
+3. Run `npm test` to run the tests and view the output
 
 ## Documentation
 
-1. Clone the repo
-2. Change to the directory holding the repo on your local system
-3. Run 'npm install' to install/update all of the dependencies
-4. Run 'npm jsdoc' to generate the documentation in the 'docs' directory
-5. Open 'index.html' to view the documentation (most comprehensive), or
-6. Open 'API.md' to view the simplified API in Markdown format.
+1. Using your command line/terminal, change to the directory holding 
+   the repo on your local system
+2. Run `npm install` to install/update all of the dependencies
+3. Run `npm jsdoc` to generate the documentation in the 'docs' directory
+4. Open `index.html` to view the documentation (most comprehensive), or
+5. Open `API.md` to view the simplified API in Markdown format.

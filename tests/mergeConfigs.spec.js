@@ -1,4 +1,4 @@
-const { mergeConfigs } = require('../src/encoder.js');
+const { mergeConfigs } = require('../src/downlink.js');
 
 describe('mergeConfigs', () => {
 
