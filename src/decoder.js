@@ -143,16 +143,20 @@ function Decode_SD01L_PayloadHeader(bytes) {
     for(i=0 ; i < bytes.length ; i++) {
         switch (i) {
             case OFFSET_TYPE:
-                payload.type = bytes[i];
+                payload.type = unsignedByte(bytes[i]);
                 break;
             case OFFSET_VERSION:
-                payload.version = bytes[i];
+                payload.version = unsignedByte(bytes[i]);
                 break;
             case OFFSET_SEQUENCE:
-                payload.sequence = bytes[i];
+                payload.sequence = unsignedByte(bytes[i]);
                 break;
             case OFFSET_TIMESTAMP:
-                payload.timestamp = (bytes[i++] << 24 >>> 0)+(bytes[i++] << 16 >>> 0)+(bytes[i++] << 8 >>> 0)+bytes[i];
+                payload.timestamp =
+                    (unsignedByte(bytes[i++]) << 24 >>> 0)
+                    + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                    + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                    + unsignedByte(bytes[i]);
                 break;
             default:
                 payload.bytes = bytes.slice(i)
@@ -160,6 +164,24 @@ function Decode_SD01L_PayloadHeader(bytes) {
         }
     }
     return payload;
+}
+
+/**
+ * @memberOf Wavetrend.SD01L
+ * @param {number} input - unsigned value
+ * @returns {number} - signed representation of LSB of input
+ */
+function signedByte(input) {
+    return (input & 0xFF) << 24 >> 24;
+}
+
+/**
+ * @memberOf Wavetrend.SD01L
+ * @param {number} input - unsigned value
+ * @returns {number} - unsigned representation of LSB of input
+ */
+function unsignedByte(input) {
+    return (input & 0xFF) >>> 0;
 }
 
 /**
@@ -177,25 +199,29 @@ function Decode_SD01L_Payload(bytes) {
     switch (payload.type) {
         case SD01L_PAYLOAD_TYPE.INSTALL_REQUEST:
             if (payload.version === 4) {
-                payload.nonce = (bytes[i++] << 24 >>> 0) + (bytes[i++] << 16 >>> 0) + (bytes[i++] << 8 >>> 0) + bytes[i++];
-                payload.battery_mV = (bytes[i++] << 8 >>> 0) + bytes[i++];
+                payload.nonce =
+                    (unsignedByte(bytes[i++]) << 24 >>> 0)
+                    + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                    + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                    + unsignedByte(bytes[i++]);
+                payload.battery_mV = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
                 payload.temperature = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
-                    let temp_index = (bytes[i++] << 8 >>> 0) + bytes[i++];
+                    let temp_index = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
                     payload.temperature[sensor] = (temp_index - 270) / 10
                 }
                 payload.firmware_version = {
-                    major: bytes[i++],
-                    minor: bytes[i++],
-                    build: (bytes[i++] << 8 >>> 0) + bytes[i++],
+                    major: unsignedByte(bytes[i++]),
+                    minor: unsignedByte(bytes[i++]),
+                    build: (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]),
                 }
-                payload.reset_reason = (bytes[i++] << 8 >>> 0) + bytes[i++];
+                payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
             }
             break;
 
         case SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE:
             if (payload.version === 1) {
-                payload.error_code = bytes[i++]
+                payload.error_code = unsignedByte(bytes[i++])
             }
             break;
 
@@ -204,24 +230,28 @@ function Decode_SD01L_Payload(bytes) {
                 payload.current = { sensor: [] };
                 for (let sensor = 0; sensor < 3; sensor++) {
                     payload.current.sensor[sensor] = {
-                        minC: bytes[i++],
-                        maxC: bytes[i++],
-                        events: bytes[i++],
-                        reports: bytes[i++],
+                        minC: signedByte(bytes[i++]),
+                        maxC: signedByte(bytes[i++]),
+                        events: unsignedByte(bytes[i++]),
+                        reports: unsignedByte(bytes[i++]),
                     };
                 }
                 payload.history = [];
                 for (let history = 0; history < 2 && i < bytes.length; history++) {
                     payload.history[history] = {
-                        timestamp: (bytes[i++] << 24 >>> 0) + (bytes[i++] << 16 >>> 0) + (bytes[i++] << 8 >>> 0) + bytes[i++],
+                        timestamp:
+                            (unsignedByte(bytes[i++]) << 24 >>> 0)
+                            + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                            + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                            + unsignedByte(bytes[i++]),
                         sensor: [],
                     };
                     for (let sensor = 0; sensor < 3; sensor++) {
                         payload.history[history].sensor[sensor] = {
-                            minC: bytes[i++],
-                            maxC: bytes[i++],
-                            events: bytes[i++],
-                            reports: bytes[i++],
+                            minC: signedByte(bytes[i++]),
+                            maxC: signedByte(bytes[i++]),
+                            events: unsignedByte(bytes[i++]),
+                            reports: unsignedByte(bytes[i++]),
                         };
                     }
                 }
@@ -230,17 +260,17 @@ function Decode_SD01L_Payload(bytes) {
 
         case SD01L_PAYLOAD_TYPE.AMBIENT_REPORT:
             if (payload.version === 0) {
-                payload.minC = bytes[i++];
-                payload.maxC = bytes[i++];
-                payload.avgC = bytes[i++];
+                payload.minC = signedByte(bytes[i++]);
+                payload.maxC = signedByte(bytes[i++]);
+                payload.avgC = signedByte(bytes[i++]);
             }
             break;
 
         case SD01L_PAYLOAD_TYPE.FREEZE_REPORT:
         case SD01L_PAYLOAD_TYPE.SCALD_REPORT:
             if (payload.version === 0) {
-                payload.sensor = bytes[i++];
-                payload.temperature = bytes[i++];
+                payload.sensor = unsignedByte(bytes[i++]);
+                payload.temperature = signedByte(bytes[i++]);
             }
             break;
 
@@ -248,24 +278,24 @@ function Decode_SD01L_Payload(bytes) {
             if (payload.version === 0) {
                 payload.sensor = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
-                    payload.sensor[sensor] = bytes[i++]
+                    payload.sensor[sensor] = unsignedByte(bytes[i++])
                 }
             }
             break;
 
         case SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
             if (payload.version === 0) {
-                payload.error_code = (bytes[i++] << 8 >>> 0) + bytes[i++];
+                payload.error_code = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
                 payload.file = "";
                 for (let pos = 0, append = true; pos < 32; pos++) {
                     if (append && bytes[i] !== 0) {
-                        payload.file += bytes[i++];
+                        payload.file += String.fromCharCode(unsignedByte(bytes[i++]));
                     } else {
                         append = false;
                         i++;
                     }
                 }
-                payload.line = (bytes[i++] << 8 >>> 0) + bytes[i++];
+                payload.line = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
             }
             break;
 

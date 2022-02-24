@@ -59,11 +59,11 @@ describe("General Error Report", () => {
                 expect(decodeUplink(payload)).toEqual(expected);
             });
 
-            test.each([ 0, 255 ])(
+            test.each([ 0, 255, 65535 ])(
                 "error_code = %p",
                 (error_code) => {
-                    payload.bytes[OFFSET_ERROR_CODE] = (error_code & 0xFF) >>> 8;
-                    payload.bytes[OFFSET_ERROR_CODE+1] = error_code & 0xFF;
+                    payload.bytes[OFFSET_ERROR_CODE] = (error_code & 0xFF00) >>> 8;
+                    payload.bytes[OFFSET_ERROR_CODE+1] = (error_code & 0x00FF) >>> 0;
                     expected.data.error_code = error_code;
                     expect(decodeUplink(payload)).toEqual(expected);
                 }
@@ -73,7 +73,7 @@ describe("General Error Report", () => {
                 "file = %p",
                 (file) => {
                     for (let pos = 0; pos < file.length && pos < 32; pos++) {
-                        payload.bytes[OFFSET_FILE+pos] = file[pos];
+                        payload.bytes[OFFSET_FILE+pos] = file.charCodeAt(pos);
                     }
                     expected.data.file = file.slice(0, 32);
                     expect(decodeUplink(payload)).toEqual(expected);
@@ -84,7 +84,7 @@ describe("General Error Report", () => {
                 "line = %p",
                 (line) => {
                     payload.bytes[OFFSET_LINE] = (line & 0xFF00) >>> 8;
-                    payload.bytes[OFFSET_LINE+1] = line & 0x00FF;
+                    payload.bytes[OFFSET_LINE+1] = (line & 0x00FF) >>> 0;
                     expected.data.line = line;
                     expect(decodeUplink(payload)).toEqual(expected)
                 }

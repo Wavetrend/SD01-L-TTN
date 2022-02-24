@@ -87,7 +87,7 @@ describe('Install Request', () => {
                     payload.bytes[OFFSET_TIMESTAMP] = (timestamp & 0xFF000000) >>> 24;
                     payload.bytes[OFFSET_TIMESTAMP+1] = (timestamp & 0x00FF0000) >>> 16;
                     payload.bytes[OFFSET_TIMESTAMP+2] = (timestamp & 0x0000FF00) >>> 8;
-                    payload.bytes[OFFSET_TIMESTAMP+3] = timestamp & 0xFF;
+                    payload.bytes[OFFSET_TIMESTAMP+3] = (timestamp & 0xFF) >>> 0;
                     expected.data.timestamp = timestamp;
                     expect(decodeUplink(payload)).toEqual(expected);
                 }
@@ -99,7 +99,7 @@ describe('Install Request', () => {
                     payload.bytes[OFFSET_NONCE] = (nonce & 0xFF000000) >>> 24;
                     payload.bytes[OFFSET_NONCE+1] = (nonce & 0x00FF0000) >>> 16;
                     payload.bytes[OFFSET_NONCE+2] = (nonce & 0x0000FF00) >>> 8;
-                    payload.bytes[OFFSET_NONCE+3] = nonce & 0x000000FF;
+                    payload.bytes[OFFSET_NONCE+3] = (nonce & 0x000000FF) >>> 0;
                     expected.data.nonce = nonce;
                     expect(decodeUplink(payload)).toEqual(expected);
                 }
@@ -109,7 +109,7 @@ describe('Install Request', () => {
                 "with battery mV = %p",
                 (mv) => {
                     payload.bytes[OFFSET_BATTERY_MV] = (mv & 0xFF00) >>> 8;
-                    payload.bytes[OFFSET_BATTERY_MV+1] = (mv & 0xFF);
+                    payload.bytes[OFFSET_BATTERY_MV+1] = (mv & 0x00FF) >>> 0;
                     expected.data.battery_mV = mv;
                     expect(decodeUplink(payload)).toEqual(expected);
                 }
@@ -123,8 +123,8 @@ describe('Install Request', () => {
                         `with sensor ${sensor+1} temp = %p`,
                         (temp) => {
                             const index = (sensor - 1) * 2;
-                            payload.bytes[OFFSET_SENSOR_1_TEMP + index] = (((temp + 27) * 10) & 0xFF00) >> 8
-                            payload.bytes[OFFSET_SENSOR_1_TEMP + index + 1] = ((temp + 27) * 10) & 0x00FF;
+                            payload.bytes[OFFSET_SENSOR_1_TEMP + index] = (((temp + 27) * 10) & 0xFF00) >>> 8
+                            payload.bytes[OFFSET_SENSOR_1_TEMP + index + 1] = (((temp + 27) * 10) & 0x00FF) >>> 0;
                             expected.data.temperature[sensor-1] = temp;
                             expect(decodeUplink(payload)).toEqual(expected);
                         }
@@ -155,11 +155,11 @@ describe('Install Request', () => {
                 }
             );
 
-            test.each([ 0, 0x1234, 0xFFFF ])(
+            test.each([ 0, 127, 255, 256, 65535 ])(
                 "with reset_reason = %p",
                 (mv) => {
                     payload.bytes[OFFSET_RESET_REASON] = (mv & 0xFF00) >>> 8;
-                    payload.bytes[OFFSET_RESET_REASON+1] = (mv & 0xFF);
+                    payload.bytes[OFFSET_RESET_REASON+1] = (mv & 0xFF) >>> 0;
                     expected.data.reset_reason = mv;
                     expect(decodeUplink(payload)).toEqual(expected);
                 }

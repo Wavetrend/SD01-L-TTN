@@ -64,8 +64,8 @@ describe("Freeze/Scald Report", () => {
                             test.each([ -27, 0, 20, 100 ])(
                                 "temperature = %p",
                                 (tempC) => {
-                                    payload.bytes[OFFSET_SENSOR] = sensor - 1;
-                                    payload.bytes[OFFSET_TEMPERATURE] = tempC;
+                                    payload.bytes[OFFSET_SENSOR] = ((sensor - 1) & 0xFF) >>> 0;
+                                    payload.bytes[OFFSET_TEMPERATURE] = (tempC & 0xFF) >>> 0;
                                     expected.data.sensor = sensor - 1;
                                     expected.data.temperature = tempC;
                                     expect(decodeUplink(payload)).toEqual(expected);

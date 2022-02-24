@@ -65,7 +65,7 @@ describe("Ambient Report", () => {
                     test.each([ -27, 0, 20, 100 ])(
                         "tempC = %p",
                         (tempC) => {
-                            payload.bytes[offset] = tempC;
+                            payload.bytes[offset] = (tempC & 0xFF) >>> 0;
                             expected.data[keyword] = tempC;
                             expect(decodeUplink(payload)).toEqual(expected);
                         }

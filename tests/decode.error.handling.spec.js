@@ -33,7 +33,7 @@ describe("Decode Error Handling", () => {
         ({ type, error }) => {
 
             beforeEach(() => {
-                payload.bytes[0] = type;
+                payload.bytes[0] = (type & 0xFF) >>> 0;
                 expected.errors[0] = error;
             })
 

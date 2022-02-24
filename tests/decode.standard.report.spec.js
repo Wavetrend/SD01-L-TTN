@@ -181,7 +181,7 @@ describe("Standard Report", () => {
                                     values.forEach(value => {
                                         let index = base_offset + (is_history ? 4 : 0) + ((sensor-1)*4) + offset;
                                         test(`count = ${value}`, () => {
-                                            payload.bytes[index] = value;
+                                            payload.bytes[index] = value & 0xFF >>> 0;
                                             if (is_history) {
                                                 expected.data.history[history_index].sensor[sensor-1][keyword] = value;
                                             } else {
