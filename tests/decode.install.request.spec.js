@@ -10,7 +10,9 @@ describe('Install Request', () => {
     const OFFSET_SENSOR_1_TEMP = 13
     // const OFFSET_SENSOR_2_TEMP = 15
     // const OFFSET_SENSOR_3_TEMP = 17
-    const OFFSET_VERSION = 19
+    const OFFSET_VERSION_MAJOR = 19
+    const OFFSET_VERSION_MINOR = 20
+    const OFFSET_VERSION_BUILD = 21
     const OFFSET_RESET_REASON = 23
 
     beforeEach(() => {
@@ -132,22 +134,19 @@ describe('Install Request', () => {
             )
 
             describe.each`
-                field           | offset | width | values
-                ${'major'}      | ${0}   | ${1}  | ${[0, 127, 255]}
-                ${'minor'}      | ${1}   | ${1}  | ${[0, 127, 255]}
-                ${'build'}      | ${2}   | ${2}  | ${[0, 255, 65535]}
+                field           | position                  | width | values
+                ${'major'}      | ${OFFSET_VERSION_MAJOR}   | ${1}  | ${[0, 127, 255]}
+                ${'minor'}      | ${OFFSET_VERSION_MINOR}   | ${1}  | ${[0, 127, 255]}
+                ${'build'}      | ${OFFSET_VERSION_BUILD}   | ${2}  | ${[0, 255, 256, 65535]}
             `(
                 "version $field",
-                ({field, offset, width, values}) => {
+                ({field, position, width, values}) => {
                     test.each(values)(
                         "value = %p",
                         (value) => {
-                            for (let pos = 0; pos < width; pos++) {
-                                let shift = (width-(pos+1))*8
-                                let mask = 0xFF << shift;
-                                let byte = (value & mask);
-                                byte >>>= shift;
-                                payload.bytes[OFFSET_VERSION + offset + pos] = byte;
+                            for (let offset = 0; offset < width; offset++) {
+                                let shift = (width-(offset+1))*8
+                                payload.bytes[position + offset] = ((value >>> shift) & 0xFF) >>> 0;
                             }
                             expected.data.firmware_version[field] = value;
                             expect(decodeUplink(payload)).toEqual(expected);
