@@ -4,8 +4,8 @@ describe("General Error Report", () => {
 
     let payload, expected;
     const OFFSET_ERROR_CODE = 7;
-    const OFFSET_FILE = 8;
-    const OFFSET_LINE = 40;
+    const OFFSET_FILE = 9;
+    const OFFSET_LINE = 41;
 
     beforeEach(() => {
         payload = {
@@ -15,13 +15,13 @@ describe("General Error Report", () => {
                 0x01,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
-                0x00,                   // 07 - error_code
-                                        // 08 - file
+                0x00, 0x00,             // 07 - error_code
+                                        // 09 - file
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00,             // 40 - line
+                0x00, 0x00,             // 41 - line
             ],
             fPort: 1
         };
@@ -62,7 +62,8 @@ describe("General Error Report", () => {
             test.each([ 0, 255 ])(
                 "error_code = %p",
                 (error_code) => {
-                    payload.bytes[OFFSET_ERROR_CODE] = error_code;
+                    payload.bytes[OFFSET_ERROR_CODE] = (error_code & 0xFF) >>> 8;
+                    payload.bytes[OFFSET_ERROR_CODE+1] = error_code & 0xFF;
                     expected.data.error_code = error_code;
                     expect(decodeUplink(payload)).toEqual(expected);
                 }
