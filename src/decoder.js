@@ -314,7 +314,7 @@ function decodeUplink(input) {
 function Decoder(bytes /*, port */) {
   try {
       return Decode_SD01L_Payload(bytes);
-  } catch {
+  } catch(e) {
       return null
   }
 }
