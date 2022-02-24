@@ -238,7 +238,7 @@ function Decode_SD01L_Payload(bytes) {
 
         case SD01L_PAYLOAD_TYPE.FREEZE_REPORT:
         case SD01L_PAYLOAD_TYPE.SCALD_REPORT:
-            if (payload.version === 1) {
+            if (payload.version === 0) {
                 payload.sensor = bytes[i++];
                 payload.temperature = bytes[i++];
             }

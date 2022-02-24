@@ -8,8 +8,8 @@ describe("Freeze/Scald Report", () => {
 
     describe.each`
         name            | type                                   | version
-        ${'Freeze'}     | ${SD01L_PAYLOAD_TYPE.FREEZE_REPORT}    | ${1}
-        ${'Scald'}      | ${SD01L_PAYLOAD_TYPE.SCALD_REPORT}     | ${1}
+        ${'Freeze'}     | ${SD01L_PAYLOAD_TYPE.FREEZE_REPORT}    | ${0}
+        ${'Scald'}      | ${SD01L_PAYLOAD_TYPE.SCALD_REPORT}     | ${0}
     `(
         "$name",
         ({ type, version }) => {
