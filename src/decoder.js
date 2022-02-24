@@ -245,7 +245,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
-            if (payload.version === 1) {
+            if (payload.version === 0) {
                 payload.sensor = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
                     payload.sensor[sensor] = bytes[i++]
