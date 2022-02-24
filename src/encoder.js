@@ -160,6 +160,9 @@ function Encode_SD01L_Payload(object) {
 
     switch (object.type) {
         case SD01L_PAYLOAD_TYPE.CONFIGURATION:
+            if (object.version !== 4) {
+                throw `Unsupported configuration version ${object.version}`
+            }
             const defaults = {
                 nonce: 0,
                 downlink_hours: 24,

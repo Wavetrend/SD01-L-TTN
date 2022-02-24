@@ -12,8 +12,8 @@ describe("Configuration", () => {
     const OFFSET_SENSOR_CONFIG = 16;
 
     describe.each([
-        ['TTN v3', (input) => v3(input)],
-        ['TTN v2', (input) => {
+        [3, (input) => v3(input)],
+        [2, (input) => {
             return {
                 bytes: v2(input.data),
                 fPort: 1,
@@ -22,8 +22,8 @@ describe("Configuration", () => {
             };
         }],
     ])(
-        "%p",
-        (name, encodeDownlink) => {
+        "TTN v%p",
+        (ttnVersion, encodeDownlink) => {
 
             beforeEach(() => {
                 payload = {
@@ -58,6 +58,23 @@ describe("Configuration", () => {
             })
 
             test("base line", () => {
+                expect(encodeDownlink(payload)).toEqual(expected);
+            });
+
+            test.each([ 0, 1, 2, 3, 5, 255 ])(
+                "incorrect version",
+                (version) => {
+                payload.data.version = version;
+                switch (ttnVersion) {
+                    case 2:
+                        expected.bytes = [];
+                        break;
+                    case 3:
+                        expected.errors.push(`Unsupported configuration version ${version}`);
+                        delete expected.bytes;
+                        delete expected.fPort;
+                        break;
+                }
                 expect(encodeDownlink(payload)).toEqual(expected);
             });
 
