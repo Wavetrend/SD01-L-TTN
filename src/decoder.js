@@ -254,7 +254,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
-            if (payload.version === 1) {
+            if (payload.version === 0) {
                 payload.error_code = (bytes[i++] << 8 >>> 0) + bytes[i++];
                 payload.file = "";
                 for (let pos = 0, append = true; pos < 32; pos++) {

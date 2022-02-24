@@ -12,7 +12,7 @@ describe("General Error Report", () => {
             bytes: [
                                         // 00 - type
                 SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT,
-                0x01,                   // 01 - version
+                0x00,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
                 0x00, 0x00,             // 07 - error_code
@@ -29,7 +29,7 @@ describe("General Error Report", () => {
         expected = {
             data: {
                 type: SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT,
-                version: 1,
+                version: 0,
                 sequence: 0,
                 timestamp: 0,
                 error_code: 0,
