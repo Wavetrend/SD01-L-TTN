@@ -10,7 +10,7 @@ describe("Install Response", () => {
             bytes: [
                                         // 00 - type
                 SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE,
-                0x03,                   // 01 - version
+                0x01,                   // 01 - version
                 0x00,                   // 02 - sequence
                 0x00, 0x00, 0x00, 0x00, // 03 - timestamp
                 0x00,                   // 07 - error
@@ -21,7 +21,7 @@ describe("Install Response", () => {
         expected = {
             data: {
                 type: SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE,
-                version: 3,
+                version: 1,
                 sequence: 0,
                 timestamp: 0,
                 error_code: 0,

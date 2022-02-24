@@ -194,7 +194,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE:
-            if (payload.version === 3) {
+            if (payload.version === 1) {
                 payload.error_code = bytes[i++]
             }
             break;
