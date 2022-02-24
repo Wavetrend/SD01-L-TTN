@@ -260,7 +260,7 @@ function encodeDownlink(input) {
 function Encoder(object /*, port */) {
     try {
         return Encode_SD01L_Payload(object);
-    } catch {
+    } catch(e) {
         return [];
     }
 }
