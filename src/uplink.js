@@ -15,26 +15,63 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
 /**
  * Issued by device when installed to acquire operating configuration
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.InstallRequest
- * @property {number} nonce
- * @property {number} battery_mV
- * @property {number[]} temperature
- * @property {Wavetrend.SD01L.Version} firmware_version
- * @property {number} reset_reason
+ * @property {number} nonce - random nonce value to exchange with server
+ * @property {number} battery_mV - current battery level in millivolts
+ * @property {number[]} temperature - current temperature for each sensor (degrees C)
+ * @property {Wavetrend.SD01L.Version} firmware_version - current firmware version
+ * @property {number} reset_reason - Reason for last device reset (manufacturer internal)
  */
+
+/**
+ * @typedef {number} Wavetrend.SD01L.InstallationErrorCode
+ * @readonly
+ * @enum {number}
+ * @property {Wavetrend.SD01L.InstallationErrorCode} NONE - 0
+ * @property {Wavetrend.SD01L.InstallationErrorCode} SENSOR_DISABLED - 1 - Installed sensor cannot be disabled
+ * @property {Wavetrend.SD01L.InstallationErrorCode} SENSOR_MISSING - 2 - Non-installed sensor cannot be configured
+ * @property {Wavetrend.SD01L.InstallationErrorCode} DOWNLINK - 3 - Downlink interval out of range
+ * @property {Wavetrend.SD01L.InstallationErrorCode} MESSAGE_FLAGS - 4 - Illegal message flags specified
+ * @property {Wavetrend.SD01L.InstallationErrorCode} SCALD_THRESHOLD - 5 - Scald threshold out of range
+ * @property {Wavetrend.SD01L.InstallationErrorCode} FREEZE_THRESHOLD - 6 - Freeze threshold out of range
+ * @property {Wavetrend.SD01L.InstallationErrorCode} REPORT_PERIOD - 7 - Report period out of range
+ * @property {Wavetrend.SD01L.InstallationErrorCode} CONFIG_TYPE - 8 - Sensor configuration type invalid
+ * @property {Wavetrend.SD01L.InstallationErrorCode} MISC - 9 - Miscellaneous error
+ * @property {Wavetrend.SD01L.InstallationErrorCode} DOWNLINK_LATE - 10 - Downlink arrived too late
+ * @property {Wavetrend.SD01L.InstallationErrorCode} DOWNLINK_NONCE - 11 - Downlink nonce mismatch
+ * @property {Wavetrend.SD01L.InstallationErrorCode} DOWNLINK_DUPLICATE - 12 - Downlink duplicate received
+ * @property {Wavetrend.SD01L.InstallationErrorCode} HISTORY_COUNT - 13 - History Count out of range
+ *
+ */
+const SD01L_INSTALLATION_ERROR_CODE = {
+    NONE: 0,
+    SENSOR_DISABLED: 1,
+    SENSOR_MISSING: 2,
+    DOWNLINK: 3,
+    MESSAGE_FLAGS: 4,
+    SCALD_THRESHOLD: 5,
+    FREEZE_THRESHOLD: 6,
+    REPORT_PERIOD: 7,
+    CONFIG_TYPE: 8,
+    MISC: 9,
+    DOWNLINK_LATE: 10,
+    DOWNLINK_NONCE: 11,
+    DOWNLINK_DUPLICATE: 12,
+    HISTORY_COUNT: 13,
+}
 
 /**
  * Issued by device after successfully receiving operating configuration
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.InstallResponse
- * @property {number} error
+ * @property {Wavetrend.SD01L.InstallationErrorCode} error
  */
 
 /**
  * Standard sensor temperature readings
  * @typedef {Object} Wavetrend.SD01L.SensorReadings
- * @property {number} minC
- * @property {number} maxC
- * @property {number} events
- * @property {number} reports
+ * @property {number} minC - degrees C
+ * @property {number} maxC - degrees C
+ * @property {number} events - count of flow events
+ * @property {number} reports - count of non-compliant reports
  */
 
 /**
@@ -52,37 +89,37 @@ https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascr
 /**
  * Issued by the device if ambient reporting is enabled
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.AmbientReport
- * @property {number} minC
- * @property {number} maxC
- * @property {number} avgC
+ * @property {number} minC - degrees C
+ * @property {number} maxC - degrees C
+ * @property {number} avgC - degrees C
  */
 
 /**
  * Issued by the device if freeze reporting is enabled
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.FreezeReport
- * @property {number} sensor
- * @property {number} temperature
+ * @property {number} sensor - sensor number, zero based
+ * @property {number} temperature - degrees C
  */
 
 /**
  * Issued by the device if scald reporting is enabled
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.ScaldReport
- * @property {number} sensor
- * @property {number} temperature
+ * @property {number} sensor - sensor number, zero based
+ * @property {number} temperature - degrees C
  */
 
 /**
  * Issued by the device if a sensor error is detected
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.SensorErrorReport
- * @property {number[]} sensor
+ * @property {number[]} sensor - value for each sensor, 1=error, 0=no error
  */
 
 /**
  * Issued by the device if a general device error is detected
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.GeneralErrorReport
- * @property {number} error_code
- * @property {string} file
- * @property {number} line
+ * @property {number} error_code - Error code (manufacturer internal)
+ * @property {string} file - source file (manufacturer internal)
+ * @property {number} line - source line (manufacturer internal)
  */
 
 /**
