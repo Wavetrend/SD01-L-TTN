@@ -161,7 +161,7 @@ function Encode_SD01L_Payload(object) {
     switch (object.type) {
         case SD01L_PAYLOAD_TYPE.CONFIGURATION:
             if (object.version !== 3) {
-                throw `Unsupported configuration version ${object.version}`
+                throw 'Unsupported configuration version ' + object.version;
             }
             const defaults = {
                 nonce: 0,
