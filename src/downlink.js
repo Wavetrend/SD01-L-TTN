@@ -335,11 +335,16 @@ function Decode_SD01L_Payload(bytes) {
 }
 
 /**
- * @typedef {TTN.Downlink.EncoderOutput} TTN.Downlink.DecoderInput
+ * @typedef {Object} TTN.Downlink.DecoderInput
+ * @property {number[]} bytes - byte array of encoded data
+ * @property {number} [fPort] - LoRaWAN port number
  */
 
 /**
- * @typedef {TTN.Downlink.EncoderInput} TTN.Downlink.DecoderOutput
+ * @typedef {Object} TTN.Downlink.DecoderOutput
+ * @property {Wavetrend.SD01L.Downlink_Payloads} [data]
+ * @property {string[]} errors
+ * @property {string[]} warnings
  */
 
 /**
@@ -350,7 +355,6 @@ function Decode_SD01L_Payload(bytes) {
  */
 function decodeDownlink(input) {
     let payload = {
-        data: {},
         warnings: [],
         errors: [],
     };
