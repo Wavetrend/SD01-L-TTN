@@ -224,7 +224,7 @@ function Encode_SD01L_Payload(object) {
 
 /**
  * @typedef {Object} TTN.Downlink.EncoderOutput
- * @property {number} [bytes] - byte array of encoded data
+ * @property {number[]} [bytes] - byte array of encoded data
  * @property {number} [fPort] - LoRaWAN port number
  * @property {string[]} warnings - any warnings encountered during encoding
  * @property {string[]} errors - any errors encountered during encoding
