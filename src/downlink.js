@@ -196,8 +196,8 @@ function Encode_SD01L_Payload(object) {
                 | object.message_flags.debug << 4 >>> 0
                 | (object.message_flags.history_count & 0x03) << 6 >>> 0
             );
-            bytes.push(object.scald_threshold);     // NB: signed
-            bytes.push(object.freeze_threshold);    // NB: signed
+            bytes.push((object.scald_threshold & 0xFF) >>> 0);
+            bytes.push((object.freeze_threshold & 0xFF) >>> 0);
             bytes.push((object.reporting_period & 0xFF00) >>> 8);
             bytes.push(object.reporting_period & 0x00FF);
             for (let sensor = 0; sensor < 3; sensor++) {

@@ -129,7 +129,7 @@ describe("Configuration", () => {
                 "scald threshold = %p",
                 (threshold) => {
                     payload.data.scald_threshold = threshold;
-                    expected.bytes[OFFSET_SCALD_THRESHOLD] = threshold;
+                    expected.bytes[OFFSET_SCALD_THRESHOLD] = (threshold & 0xFF) >>> 0;
                     expect(encodeDownlink(payload)).toEqual(expected);
                 }
             )
@@ -138,7 +138,7 @@ describe("Configuration", () => {
                 "freeze threshold = %p",
                 (threshold) => {
                     payload.data.freeze_threshold = threshold;
-                    expected.bytes[OFFSET_FREEZE_THRESHOLD] = threshold;
+                    expected.bytes[OFFSET_FREEZE_THRESHOLD] = (threshold & 0xFF) >>> 0;
                     expect(encodeDownlink(payload)).toEqual(expected);
                 }
             )
