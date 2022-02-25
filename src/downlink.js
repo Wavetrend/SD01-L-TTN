@@ -139,15 +139,15 @@ function mergeConfigs(arg1, arg2) {
  * @memberOf Wavetrend.SD01L
  */
 function Encode_SD01L_PayloadHeader(object) {
-    let bytes = [];
-    bytes.push(object.type);
-    bytes.push(object.version);
-    bytes.push(object.sequence);
-    bytes.push((object.timestamp & 0xFF000000) >>> 24);
-    bytes.push((object.timestamp & 0x00FF0000) >>> 16);
-    bytes.push((object.timestamp & 0x0000FF00) >>> 8);
-    bytes.push(object.timestamp & 0x000000FF);
-    return bytes;
+    return [
+        object.type,
+        object.version,
+        object.sequence,
+        (object.timestamp & 0xFF000000) >>> 24,
+        (object.timestamp & 0x00FF0000) >>> 16,
+        (object.timestamp & 0x0000FF00) >>> 8,
+        (object.timestamp & 0x000000FF),
+    ]
 }
 
 /**
