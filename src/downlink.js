@@ -8,7 +8,7 @@ https://www.youtube.com/watch?v=nT2FnwCoP7w
 */
 
 /**
- * @namespace TTN
+ * @namespace TTN.Downlink
  */
 
 /**
@@ -217,12 +217,12 @@ function Encode_SD01L_Payload(object) {
 }
 
 /**
- * @typedef {Object} TTN.EncoderInput
+ * @typedef {Object} TTN.Downlink.EncoderInput
  * @property {Wavetrend.SD01L.Downlink_Payloads} data
  */
 
 /**
- * @typedef {Object} TTN.EncoderOutput
+ * @typedef {Object} TTN.Downlink.EncoderOutput
  * @property {number} [bytes] - byte array of encoded data
  * @property {number} [fPort] - LoRaWAN port number
  * @property {string[]} warnings - any warnings encountered during encoding
@@ -231,9 +231,9 @@ function Encode_SD01L_Payload(object) {
 
 /**
  * Entry point for TTN V3 downlink encoder
- * @memberOf TTN
- * @param {TTN.EncoderInput} input
- * @returns {TTN.EncoderOutput}
+ * @memberOf TTN.Downlink
+ * @param {TTN.Downlink.EncoderInput} input
+ * @returns {TTN.Downlink.EncoderOutput}
  */
 function encodeDownlink(input) {
     let obj = {
@@ -253,7 +253,7 @@ function encodeDownlink(input) {
 
 /**
  * Entry point for TTN V2 downlink encoder
- * @memberOf TTN
+ * @memberOf TTN.Downlink
  * @param {Wavetrend.SD01L.Downlink_Payloads} object
  * @returns {number[]} - byte array of encoded payload or empty array
  */
@@ -265,6 +265,103 @@ function Encoder(object /*, port */) {
     }
 }
 
+/**
+ * Decode SD01L specific payloads
+ * @param {number[]} bytes
+ * @return {Wavetrend.SD01L.Downlink_Payloads}
+ * @memberOf Wavetrend.SD01L
+ */
+function Decode_SD01L_Payload(bytes) {
+
+    let i = 0;
+    let object = {
+        type: (bytes[i++] & 0xFF) >>> 0,
+        version: (bytes[i++] & 0xFF) >>> 0,
+        sequence: (bytes[i++] & 0xFF) >>> 0,
+        timestamp:
+            ((bytes[i++] & 0xFF) << 24 >>> 0)
+            + ((bytes[i++] & 0xFF) << 16 >>> 0)
+            + ((bytes[i++] & 0xFF) << 8 >>> 0)
+            + ((bytes[i++] & 0xFF) >>> 0)
+    };
+
+    switch (object.type) {
+        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
+            if (object.version !== 3) {
+                throw "Unsupported configuration version " + object.version;
+            }
+
+            object.nonce =
+                ((bytes[i++] & 0xFF) << 24 >>> 0)
+                + ((bytes[i++] & 0xFF) << 16 >>> 0)
+                + ((bytes[i++] & 0xFF) << 8 >>> 0)
+                + ((bytes[i++] & 0xFF) >>> 0);
+
+            object.downlink_hours = (bytes[i++] & 0xFF) >>> 0;
+            let flags = (bytes[i++] & 0xFF) >>> 0;
+            object.message_flags = {
+                scald: (flags & 0x01) === 0x01,
+                freeze: (flags & 0x02) === 0x02,
+                ambient: (flags & 0x04) === 0x04,
+                debug: (flags & 0x08) === 0x08,
+                history_count: (flags >>> 6) & 0x03,
+            };
+
+            object.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
+            object.freeze_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
+            object.reporting_period =
+                ((bytes[i++] & 0xFF) << 8 >>> 0)
+                + ((bytes[i++] & 0xFF) >>> 0);
+
+            object.config_type = [];
+            for (let sensor = 0; sensor < 3; sensor++) {
+                let config = (bytes[i++] & 0xFF) >>> 0;
+                object.config_type[sensor] = {
+                    flow_settling_count: (config >>> 4) & 0x0F >>> 0,
+                    config: (config & 0x0F) >>> 0,
+                };
+            }
+            break;
+
+        default:
+            if (object.type > 10) {
+                throw "Unrecognised type for downlink decoding"
+            }
+            throw "Unsupported type for downlink decoding"
+    }
+
+    return object;
+}
+
+/**
+ * @typedef {TTN.Downlink.EncoderOutput} TTN.Downlink.DecoderInput
+ */
+
+/**
+ * @typedef {TTN.Downlink.EncoderInput} TTN.Downlink.DecoderOutput
+ */
+
+/**
+ * Entry point for TTN V3 downlink decoder (inverse of encodeDownlink)
+ * @param {TTN.Downlink.DecoderInput} input
+ * @returns {TTN.Downlink.DecoderOutput}
+ * @memberOf TTN.Downlink
+ */
+function decodeDownlink(input) {
+    let payload = {
+        warnings: [],
+        errors: [],
+    };
+
+    try {
+        payload.data = Decode_SD01L_Payload(input.bytes);
+    } catch (e) {
+        payload.errors.push(e);
+    }
+
+    return payload;
+}
+
 // NB: Not used for TTN production, required for Unit Testing
 
 if (typeof module !== 'undefined') {
@@ -273,5 +370,6 @@ if (typeof module !== 'undefined') {
         v3: encodeDownlink,
         SD01L_PAYLOAD_TYPE,
         mergeConfigs: mergeConfigs,
+        decodeDownlink,
     };
 }

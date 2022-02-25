@@ -31,7 +31,7 @@ describe("Encoder Error Handling", () => {
         ${7}    | ${"Low Battery Deprecated"}   | ${"Unsupported type for downlink encoding"}
         ${8}    | ${"Sensor Error Report"}      | ${"Unsupported type for downlink encoding"}
         ${9}    | ${"General Error Report"}     | ${"Unsupported type for downlink encoding"}
-        ${10}   | ${"Sensor Data Debug"}       | ${"Unsupported type for downlink encoding"}
+        ${10}   | ${"Sensor Data Debug"}        | ${"Unsupported type for downlink encoding"}
         ${11}   | ${"Unrecognised"}             | ${"Unrecognised type for downlink encoding"}
     `(
         "Encoding $name",
