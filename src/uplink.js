@@ -173,7 +173,7 @@ const OFFSET_TIMESTAMP = 3;
 /**
  * Decode the common header fields
  * @param {number[]} bytes
- * @returns {Wavetrend.SD01L.Payload_Header}
+ * @returns {{bytes: number[], type: number, version: number, sequence: number, timestamp: number}}
  * @memberOf Wavetrend.SD01L
  */
 function Decode_SD01L_PayloadHeader(bytes) {
