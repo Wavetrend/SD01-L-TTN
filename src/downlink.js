@@ -358,6 +358,7 @@ function decodeDownlink(input) {
     try {
         payload.data = Decode_SD01L_Payload(input.bytes);
     } catch (e) {
+        delete payload.data;
         payload.errors.push(e);
     }
 
