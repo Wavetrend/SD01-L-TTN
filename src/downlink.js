@@ -337,7 +337,7 @@ function Decode_SD01L_Payload(bytes) {
 /**
  * @typedef {Object} TTN.Downlink.DecoderInput
  * @property {number[]} bytes - byte array of encoded data
- * @property {number} [fPort] - LoRaWAN port number
+ * @property {number} fPort - LoRaWAN port number
  */
 
 /**
