@@ -61,7 +61,7 @@ const SD01L_INSTALLATION_ERROR_CODE = {
     DOWNLINK_NONCE: 11,
     DOWNLINK_DUPLICATE: 12,
     HISTORY_COUNT: 13,
-}
+};
 
 /**
  * Issued by device after successfully receiving operating configuration
@@ -166,10 +166,10 @@ const SD01L_PAYLOAD_TYPE = {
     SENSOR_DATA_DEBUG: 10,
 };
 
-const OFFSET_TYPE = 0
-const OFFSET_VERSION = 1
-const OFFSET_SEQUENCE = 2
-const OFFSET_TIMESTAMP = 3
+const OFFSET_TYPE = 0;
+const OFFSET_VERSION = 1;
+const OFFSET_SEQUENCE = 2;
+const OFFSET_TIMESTAMP = 3;
 
 /**
  * Decode the common header fields
@@ -179,9 +179,9 @@ const OFFSET_TIMESTAMP = 3
  */
 function Decode_SD01L_PayloadHeader(bytes) {
     let i;
-    let payload = { bytes: [] };
+    let payload = {bytes: []};
 
-    for(i=0 ; i < bytes.length ; i++) {
+    for (i = 0; i < bytes.length; i++) {
         switch (i) {
             case OFFSET_TYPE:
                 payload.type = unsignedByte(bytes[i]);
@@ -200,8 +200,8 @@ function Decode_SD01L_PayloadHeader(bytes) {
                     + unsignedByte(bytes[i]);
                 break;
             default:
-                payload.bytes = bytes.slice(i)
-                i = bytes.length
+                payload.bytes = bytes.slice(i);
+                i = bytes.length;
         }
     }
     return payload;
@@ -235,7 +235,7 @@ function Decode_SD01L_Payload(bytes) {
     let payload = Decode_SD01L_PayloadHeader(bytes);
     bytes = payload.bytes;
     delete payload.bytes;
-    let i = 0
+    let i = 0;
 
     switch (payload.type) {
         case SD01L_PAYLOAD_TYPE.INSTALL_REQUEST:
@@ -249,26 +249,26 @@ function Decode_SD01L_Payload(bytes) {
                 payload.temperature = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
                     let temp_index = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-                    payload.temperature[sensor] = (temp_index - 270) / 10
+                    payload.temperature[sensor] = (temp_index - 270) / 10;
                 }
                 payload.firmware_version = {
                     major: unsignedByte(bytes[i++]),
                     minor: unsignedByte(bytes[i++]),
                     build: (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]),
-                }
+                };
                 payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
             }
             break;
 
         case SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE:
             if (payload.version === 1) {
-                payload.error_code = unsignedByte(bytes[i++])
+                payload.error_code = unsignedByte(bytes[i++]);
             }
             break;
 
         case SD01L_PAYLOAD_TYPE.STANDARD_REPORT:
             if (payload.version === 1) {
-                payload.current = { sensor: [] };
+                payload.current = {sensor: []};
                 for (let sensor = 0; sensor < 3; sensor++) {
                     payload.current.sensor[sensor] = {
                         minC: signedByte(bytes[i++]),
@@ -319,7 +319,7 @@ function Decode_SD01L_Payload(bytes) {
             if (payload.version === 0) {
                 payload.sensor = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
-                    payload.sensor[sensor] = unsignedByte(bytes[i++])
+                    payload.sensor[sensor] = unsignedByte(bytes[i++]);
                 }
             }
             break;
@@ -344,13 +344,13 @@ function Decode_SD01L_Payload(bytes) {
             throw "Configuration type is not a valid uplink message";
 
         case SD01L_PAYLOAD_TYPE.LOW_BATTERY_REPORT_DEPRECATED:
-            throw "Low Battery Report is deprecated"
+            throw "Low Battery Report is deprecated";
 
         case SD01L_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
-            throw "Sensor Data Debug is not supported for decode"
+            throw "Sensor Data Debug is not supported for decode";
 
         default:
-            throw "Unrecognised Type Code"
+            throw "Unrecognised Type Code";
     }
     return payload;
 }
@@ -365,7 +365,7 @@ function decodeUplink(input) {
     let payload = {
         warnings: [],
         errors: [],
-    }
+    };
 
     try {
         payload.data = Decode_SD01L_Payload(input.bytes);
@@ -383,11 +383,11 @@ function decodeUplink(input) {
  * @returns {Wavetrend.SD01L.Uplink_Payloads|null} - object containing decoded payload, or null if an error is encountered
  */
 function Decoder(bytes /*, port */) {
-  try {
-      return Decode_SD01L_Payload(bytes);
-  } catch(e) {
-      return null
-  }
+    try {
+        return Decode_SD01L_Payload(bytes);
+    } catch (e) {
+        return null;
+    }
 }
 
 // NB: Not used for TTN production, required for Unit Testing
