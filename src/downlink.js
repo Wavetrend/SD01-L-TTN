@@ -72,7 +72,7 @@ const SD01L_PAYLOAD_TYPE = {
  * @memberOf Wavetrend.SD01L
  * @property {Wavetrend.SD01L.Sensor_Type} Disabled - 0
  * @property {Wavetrend.SD01L.Sensor_Type} HotOutletStandard - 1
- * @property {Wavetrend.SD01L.Sensor_Type} HotOutletHealthcase - 2
+ * @property {Wavetrend.SD01L.Sensor_Type} HotOutletHealthcare - 2
  * @property {Wavetrend.SD01L.Sensor_Type} ColdOutlet - 3
  * @property {Wavetrend.SD01L.Sensor_Type} ColdUnitRising - 4
  * @property {Wavetrend.SD01L.Sensor_Type} BlendedRisingScaldCheck - 5
@@ -100,7 +100,7 @@ const SD01L_SENSOR_TYPE = {
 
 /**
  * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.Configuration
- * @property {number} nonce - same value as contained in the install request
+ * @property {number} nonce - same value as contained in the installation request
  * @property {number} downlink_hours - number of hours between configuration requests (default 24)
  * @property {Wavetrend.SD01L.Message_Flags} message_flags - option flags
  * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
@@ -131,6 +131,7 @@ function mergeConfigs(arg1, arg2) {
     }
     return arg2;
 }
+
 /**
  * Encode the common header fields
  * @param {Wavetrend.SD01L.Downlink_Payloads} object
@@ -176,11 +177,11 @@ function Encode_SD01L_Payload(object) {
                 freeze_threshold: 4,
                 reporting_period: 60,
                 config_type: [
-                    { flow_settling_count: 0, config: 0, },
-                    { flow_settling_count: 0, config: 0, },
-                    { flow_settling_count: 0, config: 0, },
+                    {flow_settling_count: 0, config: 0,},
+                    {flow_settling_count: 0, config: 0,},
+                    {flow_settling_count: 0, config: 0,},
                 ]
-            }
+            };
             object = mergeConfigs(defaults, object);
 
             bytes.push((object.nonce & 0xFF000000) >>> 24);
@@ -209,9 +210,9 @@ function Encode_SD01L_Payload(object) {
 
         default:
             if (object.type > 10) {
-                throw "Unrecognised type for downlink encoding"
+                throw "Unrecognised type for downlink encoding";
             }
-            throw "Unsupported type for downlink encoding"
+            throw "Unsupported type for downlink encoding";
     }
     return bytes;
 }
@@ -260,7 +261,7 @@ function encodeDownlink(input) {
 function Encoder(object /*, port */) {
     try {
         return Encode_SD01L_Payload(object);
-    } catch(e) {
+    } catch (e) {
         return [];
     }
 }
@@ -325,9 +326,9 @@ function Decode_SD01L_Payload(bytes) {
 
         default:
             if (object.type > 10) {
-                throw "Unrecognised type for downlink decoding"
+                throw "Unrecognised type for downlink decoding";
             }
-            throw "Unsupported type for downlink decoding"
+            throw "Unsupported type for downlink decoding";
     }
 
     return object;
@@ -349,6 +350,7 @@ function Decode_SD01L_Payload(bytes) {
  */
 function decodeDownlink(input) {
     let payload = {
+        data: {},
         warnings: [],
         errors: [],
     };
