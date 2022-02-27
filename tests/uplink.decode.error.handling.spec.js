@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/uplink')
+const { Decoder: v2, decodeUplink: v3 } = require('../src/uplink')
 
 describe("Decode Error Handling", () => {
 

@@ -393,8 +393,8 @@ function Decoder(bytes /*, port */) {
 
 if (typeof module !== 'undefined') {
     module.exports = {
-        v2: Decoder,
-        v3: decodeUplink,
+        Decoder,
+        decodeUplink,
         SD01L_PAYLOAD_TYPE,
     };
 }

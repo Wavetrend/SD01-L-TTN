@@ -1,4 +1,4 @@
-const { v2, v3 } = require('../src/downlink.js');
+const { Encoder: v2, encodeDownlink: v3 } = require('../src/downlink.js');
 
 describe("Encoder Error Handling", () => {
 

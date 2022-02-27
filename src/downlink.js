@@ -366,10 +366,10 @@ function decodeDownlink(input) {
 
 if (typeof module !== 'undefined') {
     module.exports = {
-        v2: Encoder,
-        v3: encodeDownlink,
-        SD01L_PAYLOAD_TYPE,
-        mergeConfigs: mergeConfigs,
+        Encoder,
+        encodeDownlink,
         decodeDownlink,
+        SD01L_PAYLOAD_TYPE,
+        mergeConfigs,
     };
 }

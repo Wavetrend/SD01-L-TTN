@@ -1,4 +1,4 @@
-const { v2, v3, SD01L_PAYLOAD_TYPE } = require('../src/uplink')
+const { Decoder: v2, decodeUplink: v3, SD01L_PAYLOAD_TYPE } = require('../src/uplink')
 
 describe("Standard Report", () => {
 
