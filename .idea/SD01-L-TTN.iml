@@ -9,6 +9,7 @@
       <excludeFolder url="file://$MODULE_DIR$/docs/scripts" />
       <excludeFolder url="file://$MODULE_DIR$/docs/styles" />
       <excludeFolder url="file://$MODULE_DIR$/docs" />
+      <excludeFolder url="file://$MODULE_DIR$/coverage" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

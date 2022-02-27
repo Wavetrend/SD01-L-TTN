@@ -82,3 +82,6 @@ node_modules/
 # JSDOC generated directory
 /docs/*
 !/**/.gitkeep
+
+# Code Coverage
+coverage/
