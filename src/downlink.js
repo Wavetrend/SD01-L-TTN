@@ -364,6 +364,7 @@ function decodeDownlink(input) {
 
 // NB: Not used for TTN production, required for Unit Testing
 
+/* istanbul ignore else */
 if (typeof module !== 'undefined') {
     module.exports = {
         Encoder,

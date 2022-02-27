@@ -46,7 +46,7 @@ describe("Encoder Error Handling", () => {
                 expect(v2(payload.bytes, payload.fPort)).toEqual([]);
             });
 
-            test("v3 return expected error", () => {
+            test("v3 returns expected error", () => {
                 let actual = v3(payload);
                 expect(actual).toEqual(expected);
                 expect(actual).not.toHaveProperty('bytes');
@@ -54,6 +54,6 @@ describe("Encoder Error Handling", () => {
             })
 
         }
-    )
+    );
 
 });

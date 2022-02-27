@@ -1,4 +1,4 @@
-const { decodeDownlink } = require('../src/downlink.js');
+const { decodeDownlink, SD01L_PAYLOAD_TYPE } = require('../src/downlink.js');
 
 describe("Encoder Error Handling", () => {
 
@@ -50,6 +50,22 @@ describe("Encoder Error Handling", () => {
             })
 
         }
-    )
+    );
+
+    describe.each([ 0, 1, 2, 4 ])(
+        "Configuration version = %p",
+        (version) => {
+            beforeEach(() => {
+                payload.bytes[0] = SD01L_PAYLOAD_TYPE.CONFIGURATION;
+                payload.bytes[1] = version;
+                expected.errors.push("Unsupported configuration version " + version);
+            });
+
+            test("decodeDownlink returns error", () => {
+                expect(decodeDownlink(payload)).toEqual(expected);
+            });
+
+        }
+    );
 
 });
