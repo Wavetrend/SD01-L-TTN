@@ -5,7 +5,8 @@
   "main": "src/decoder.js",
   "scripts": {
     "test": "jest tests",
-    "jsdoc": "jsdoc -a all -c jsdoc.json -r -R README.md src -d docs && jsdoc2md --files src/* > docs/API.md"
+    "docs": "jsdoc -a all -c jsdoc.json -r -R README.md src -d docs && jsdoc2md --files src/* > docs/API.md",
+    "watch:docs": "nodemon --exec 'npm run docs' --watch src"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +14,7 @@
     "docdash": "^1.2.0",
     "jest": "^27.5.1",
     "jsdoc": "^3.6.10",
-    "jsdoc-to-markdown": "^7.1.1"
+    "jsdoc-to-markdown": "^7.1.1",
+    "nodemon": "^2.0.15"
   }
 }

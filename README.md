@@ -30,6 +30,8 @@ you will need to install:
 1. Using your command line/terminal, change to the directory holding 
    the repo on your local system
 2. Run `npm install` to install/update all of the dependencies
-3. Run `npm jsdoc` to generate the documentation in the 'docs' directory
-4. Open `index.html` to view the documentation (most comprehensive), or
-5. Open `API.md` to view the simplified API in Markdown format.
+3. Run `npm docs` to generate the documentation in the 'docs' directory
+4. Optional - Run `npm watch:docs` to continually monitor for `src` changes 
+and regenerate docs (useful for active development)
+5. Open `index.html` to view the documentation (most comprehensive), or
+6. Open `API.md` to view the simplified API in Markdown format.
