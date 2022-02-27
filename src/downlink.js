@@ -98,7 +98,7 @@ const SD01L_SENSOR_TYPE = {
  * @typedef {Wavetrend.SD01L.PayloadHeader} Wavetrend.SD01L.Configuration
  * @property {number} nonce - same value as contained in the installation request
  * @property {number} downlink_hours - number of hours between configuration requests (default 24)
- * @property {Wavetrend.SD01L.MessageFlags} MessageFlags - option flags
+ * @property {Wavetrend.SD01L.MessageFlags} message_flags - option flags
  * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
  * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
  * @property {number} reporting_period - number of minutes between reports (default 60)
@@ -163,7 +163,7 @@ function Encode_SD01L_Payload(object) {
             const defaults = {
                 nonce: 0,
                 downlink_hours: 24,
-                MessageFlags: {
+                message_flags: {
                     scald: false,
                     freeze: false,
                     ambient: false,
@@ -186,11 +186,11 @@ function Encode_SD01L_Payload(object) {
             bytes.push(object.nonce & 0x000000FF);
             bytes.push(object.downlink_hours & 0xFF);
             bytes.push(
-                object.MessageFlags.scald << 1 >>> 0
-                | object.MessageFlags.freeze << 2 >>> 0
-                | object.MessageFlags.ambient << 3 >>> 0
-                | object.MessageFlags.debug << 4 >>> 0
-                | (object.MessageFlags.history_count & 0x03) << 6 >>> 0
+                object.message_flags.scald << 1 >>> 0
+                | object.message_flags.freeze << 2 >>> 0
+                | object.message_flags.ambient << 3 >>> 0
+                | object.message_flags.debug << 4 >>> 0
+                | (object.message_flags.history_count & 0x03) << 6 >>> 0
             );
             bytes.push((object.scald_threshold & 0xFF) >>> 0);
             bytes.push((object.freeze_threshold & 0xFF) >>> 0);
@@ -294,7 +294,7 @@ function Decode_SD01L_Payload(bytes) {
 
             object.downlink_hours = (bytes[i++] & 0xFF) >>> 0;
             let flags = (bytes[i++] & 0xFF) >>> 0;
-            object.MessageFlags = {
+            object.message_flags = {
                 scald: (flags & 0x01) === 0x01,
                 freeze: (flags & 0x02) === 0x02,
                 ambient: (flags & 0x04) === 0x04,
