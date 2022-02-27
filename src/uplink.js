@@ -240,6 +240,7 @@ function Decode_SD01L_Payload(bytes) {
 
     switch (payload.type) {
         case SD01L_PAYLOAD_TYPE.INSTALL_REQUEST:
+            /* istanbul ignore else */
             if (payload.version === 4) {
                 payload.nonce =
                     (unsignedByte(bytes[i++]) << 24 >>> 0)
@@ -262,12 +263,14 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE:
+            /* istanbul ignore else */
             if (payload.version === 1) {
                 payload.error_code = unsignedByte(bytes[i++]);
             }
             break;
 
         case SD01L_PAYLOAD_TYPE.STANDARD_REPORT:
+            /* istanbul ignore else */
             if (payload.version === 1) {
                 payload.current = {sensor: []};
                 for (let sensor = 0; sensor < 3; sensor++) {
@@ -301,6 +304,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.AMBIENT_REPORT:
+            /* istanbul ignore else */
             if (payload.version === 0) {
                 payload.minC = signedByte(bytes[i++]);
                 payload.maxC = signedByte(bytes[i++]);
@@ -310,6 +314,7 @@ function Decode_SD01L_Payload(bytes) {
 
         case SD01L_PAYLOAD_TYPE.FREEZE_REPORT:
         case SD01L_PAYLOAD_TYPE.SCALD_REPORT:
+            /* istanbul ignore else */
             if (payload.version === 0) {
                 payload.sensor = unsignedByte(bytes[i++]);
                 payload.temperature = signedByte(bytes[i++]);
@@ -317,6 +322,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
+            /* istanbul ignore else */
             if (payload.version === 0) {
                 payload.sensor = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
@@ -326,6 +332,7 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
+            /* istanbul ignore else */
             if (payload.version === 0) {
                 payload.error_code = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
                 payload.file = "";
@@ -390,7 +397,7 @@ function Decoder(bytes /*, port */) {
 }
 
 // NB: Not used for TTN production, required for Unit Testing
-
+/* istanbul ignore else */
 if (typeof module !== 'undefined') {
     module.exports = {
         Decoder,
