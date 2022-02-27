@@ -9,7 +9,7 @@ describe("Configuration", () => {
     const OFFSET_SCALD_THRESHOLD = 13;
     const OFFSET_FREEZE_THRESHOLD = 14;
     const OFFSET_REPORTING_PERIOD = 15;
-    const OFFSET_SENSOR_CONFIG = 16;
+    const OFFSET_SENSOR_CONFIG = 17;
 
     describe.each([
         [3, (input) => v3(input)],
@@ -170,6 +170,7 @@ describe("Configuration", () => {
                                     payload.data.config_type[sensor-1].flow_settling_count = count;
                                     expected.bytes[OFFSET_SENSOR_CONFIG + (sensor-1)] =
                                         (count & 0x0F) << 4 >>> 0 | config & 0x0F;
+                                    expect(encodeDownlink(payload)).toEqual(expected);
                                 }
                             )
                         }
