@@ -1,15 +1,11 @@
-/*
-Wavetrend
-
-SD01-L Water Temperature Monitor Downlink Payload Formatter for TTN
-
-https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/
-https://www.youtube.com/watch?v=nT2FnwCoP7w
-*/
-
 /**
- * @namespace TTN.Downlink
- */
+@file SD01-L Water Temperature Monitor Downlink Payload Formatter for TTN
+@module src/downlink.js
+@author Dave Meehan
+@copyright Wavetrend Europe Ltd
+@see {@link https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/}
+@see {@link https://www.youtube.com/watch?v=nT2FnwCoP7w}
+*/
 
 /**
  * @namespace Wavetrend.SD01L
@@ -17,21 +13,21 @@ https://www.youtube.com/watch?v=nT2FnwCoP7w
 
 /**
  * Wavetrend SD01L Payload Type
- * @typedef {number} Wavetrend.SD01L.Payload_Type
+ * @typedef {number} Wavetrend.SD01L.PayloadType
  * @readonly
  * @memberOf Wavetrend.SD01L
- * @enum {Wavetrend.SD01L.Payload_Type}
- * @property {Wavetrend.SD01L.Payload_Type} INSTALL_REQUEST - 0
- * @property {Wavetrend.SD01L.Payload_Type} CONFIGURATION - 1
- * @property {Wavetrend.SD01L.Payload_Type} INSTALL_RESPONSE - 2
- * @property {Wavetrend.SD01L.Payload_Type} STANDARD_REPORT - 3
- * @property {Wavetrend.SD01L.Payload_Type} AMBIENT_REPORT - 4
- * @property {Wavetrend.SD01L.Payload_Type} SCALD_REPORT - 5
- * @property {Wavetrend.SD01L.Payload_Type} FREEZE_REPORT - 6
- * @property {Wavetrend.SD01L.Payload_Type} LOW_BATTERY_REPORT_DEPRECATED - 7
- * @property {Wavetrend.SD01L.Payload_Type} SENSOR_ERROR_REPORT - 8
- * @property {Wavetrend.SD01L.Payload_Type} GENERAL_ERROR_REPORT - 9
- * @property {Wavetrend.SD01L.Payload_Type} SENSOR_DATA_DEBUG - 10
+ * @enum {Wavetrend.SD01L.PayloadType}
+ * @property {Wavetrend.SD01L.PayloadType} INSTALL_REQUEST - 0
+ * @property {Wavetrend.SD01L.PayloadType} CONFIGURATION - 1
+ * @property {Wavetrend.SD01L.PayloadType} INSTALL_RESPONSE - 2
+ * @property {Wavetrend.SD01L.PayloadType} STANDARD_REPORT - 3
+ * @property {Wavetrend.SD01L.PayloadType} AMBIENT_REPORT - 4
+ * @property {Wavetrend.SD01L.PayloadType} SCALD_REPORT - 5
+ * @property {Wavetrend.SD01L.PayloadType} FREEZE_REPORT - 6
+ * @property {Wavetrend.SD01L.PayloadType} LOW_BATTERY_REPORT_DEPRECATED - 7
+ * @property {Wavetrend.SD01L.PayloadType} SENSOR_ERROR_REPORT - 8
+ * @property {Wavetrend.SD01L.PayloadType} GENERAL_ERROR_REPORT - 9
+ * @property {Wavetrend.SD01L.PayloadType} SENSOR_DATA_DEBUG - 10
  */
 const SD01L_PAYLOAD_TYPE = {
     INSTALL_REQUEST: 0,
@@ -48,15 +44,15 @@ const SD01L_PAYLOAD_TYPE = {
 };
 
 /**
- * @typedef {Object} Wavetrend.SD01L.Payload_Header
- * @property {Wavetrend.SD01L.Payload_Type} type - payload type
+ * @typedef {Object} Wavetrend.SD01L.PayloadHeader
+ * @property {Wavetrend.SD01L.PayloadType} type - payload type
  * @property {number} version - message payload version 0-255
  * @property {number} sequence - message payload sequence 0-255
  * @property {number} timestamp - seconds since Unix epoch
  */
 
 /**
- * @typedef {Object} Wavetrend.SD01L.Message_Flags
+ * @typedef {Object} Wavetrend.SD01L.MessageFlags
  * @property {boolean} scald - scald reporting enabled (default disabled)
  * @property {boolean} freeze - freeze reporting enabled (default disabled)
  * @property {boolean} ambient - ambient reporting enabled (default disabled)
@@ -66,19 +62,19 @@ const SD01L_PAYLOAD_TYPE = {
 
 /**
  * SD01L Sensor Configuration Type
- * @typedef {number} Wavetrend.SD01L.Sensor_Type
+ * @typedef {number} Wavetrend.SD01L.SensorType
  * @readonly
  * @enum {number}
  * @memberOf Wavetrend.SD01L
- * @property {Wavetrend.SD01L.Sensor_Type} Disabled - 0
- * @property {Wavetrend.SD01L.Sensor_Type} HotOutletStandard - 1
- * @property {Wavetrend.SD01L.Sensor_Type} HotOutletHealthcare - 2
- * @property {Wavetrend.SD01L.Sensor_Type} ColdOutlet - 3
- * @property {Wavetrend.SD01L.Sensor_Type} ColdUnitRising - 4
- * @property {Wavetrend.SD01L.Sensor_Type} BlendedRisingScaldCheck - 5
- * @property {Wavetrend.SD01L.Sensor_Type} HotUnitOutletFalling - 6
- * @property {Wavetrend.SD01L.Sensor_Type} HotUnitReturnFalling - 7
- * @property {Wavetrend.SD01L.Sensor_Type} HotUnitReturnHealthcareFalling - 8
+ * @property {Wavetrend.SD01L.SensorType} Disabled - 0
+ * @property {Wavetrend.SD01L.SensorType} HotOutletStandard - 1
+ * @property {Wavetrend.SD01L.SensorType} HotOutletHealthcare - 2
+ * @property {Wavetrend.SD01L.SensorType} ColdOutlet - 3
+ * @property {Wavetrend.SD01L.SensorType} ColdUnitRising - 4
+ * @property {Wavetrend.SD01L.SensorType} BlendedRisingScaldCheck - 5
+ * @property {Wavetrend.SD01L.SensorType} HotUnitOutletFalling - 6
+ * @property {Wavetrend.SD01L.SensorType} HotUnitReturnFalling - 7
+ * @property {Wavetrend.SD01L.SensorType} HotUnitReturnHealthcareFalling - 8
  */
 const SD01L_SENSOR_TYPE = {
     Disabled: 0,
@@ -93,24 +89,24 @@ const SD01L_SENSOR_TYPE = {
 };
 
 /**
- * @typedef {Object} Wavetrend.SD01L.Sensor_Config
+ * @typedef {Object} Wavetrend.SD01L.SensorConfig
  * @property {number} flow_settling_count - number of readings to allow flow to settle (default 0)
  * @property {SD01L_SENSOR_TYPE} config - identity of the sensor configuration (default disabled)
  */
 
 /**
- * @typedef {Wavetrend.SD01L.Payload_Header} Wavetrend.SD01L.Configuration
+ * @typedef {Wavetrend.SD01L.PayloadHeader} Wavetrend.SD01L.Configuration
  * @property {number} nonce - same value as contained in the installation request
  * @property {number} downlink_hours - number of hours between configuration requests (default 24)
- * @property {Wavetrend.SD01L.Message_Flags} message_flags - option flags
+ * @property {Wavetrend.SD01L.MessageFlags} MessageFlags - option flags
  * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
  * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
  * @property {number} reporting_period - number of minutes between reports (default 60)
- * @property {Wavetrend.SD01L.Sensor_Config[]} config_type - configuration for each sensor
+ * @property {Wavetrend.SD01L.SensorConfig[]} config_type - configuration for each sensor
  */
 
 /**
- * @typedef {Wavetrend.SD01L.Configuration} Wavetrend.SD01L.Downlink_Payloads
+ * @typedef {Wavetrend.SD01L.Configuration} Wavetrend.SD01L.DownlinkPayloads
  */
 
 /**
@@ -134,7 +130,7 @@ function mergeConfigs(arg1, arg2) {
 
 /**
  * Encode the common header fields
- * @param {Wavetrend.SD01L.Downlink_Payloads} object
+ * @param {Wavetrend.SD01L.DownlinkPayloads} object
  * @returns {number[]} - header fields encoded to byte array
  * @memberOf Wavetrend.SD01L
  */
@@ -152,7 +148,7 @@ function Encode_SD01L_PayloadHeader(object) {
 
 /**
  * Encode SD01L specific message payloads
- * @param {Wavetrend.SD01L.Downlink_Payloads} object
+ * @param {Wavetrend.SD01L.DownlinkPayloads} object
  * @returns {number[]} - array of encoded bytes
  * @memberOf Wavetrend.SD01L
  */
@@ -167,7 +163,7 @@ function Encode_SD01L_Payload(object) {
             const defaults = {
                 nonce: 0,
                 downlink_hours: 24,
-                message_flags: {
+                MessageFlags: {
                     scald: false,
                     freeze: false,
                     ambient: false,
@@ -190,11 +186,11 @@ function Encode_SD01L_Payload(object) {
             bytes.push(object.nonce & 0x000000FF);
             bytes.push(object.downlink_hours & 0xFF);
             bytes.push(
-                object.message_flags.scald << 1 >>> 0
-                | object.message_flags.freeze << 2 >>> 0
-                | object.message_flags.ambient << 3 >>> 0
-                | object.message_flags.debug << 4 >>> 0
-                | (object.message_flags.history_count & 0x03) << 6 >>> 0
+                object.MessageFlags.scald << 1 >>> 0
+                | object.MessageFlags.freeze << 2 >>> 0
+                | object.MessageFlags.ambient << 3 >>> 0
+                | object.MessageFlags.debug << 4 >>> 0
+                | (object.MessageFlags.history_count & 0x03) << 6 >>> 0
             );
             bytes.push((object.scald_threshold & 0xFF) >>> 0);
             bytes.push((object.freeze_threshold & 0xFF) >>> 0);
@@ -219,7 +215,7 @@ function Encode_SD01L_Payload(object) {
 
 /**
  * @typedef {Object} TTN.Downlink.EncoderInput
- * @property {Wavetrend.SD01L.Downlink_Payloads} data
+ * @property {Wavetrend.SD01L.DownlinkPayloads} data
  */
 
 /**
@@ -232,7 +228,6 @@ function Encode_SD01L_Payload(object) {
 
 /**
  * Entry point for TTN V3 downlink encoder
- * @memberOf TTN.Downlink
  * @param {TTN.Downlink.EncoderInput} input
  * @returns {TTN.Downlink.EncoderOutput}
  */
@@ -254,8 +249,7 @@ function encodeDownlink(input) {
 
 /**
  * Entry point for TTN V2 downlink encoder
- * @memberOf TTN.Downlink
- * @param {Wavetrend.SD01L.Downlink_Payloads} object
+ * @param {Wavetrend.SD01L.DownlinkPayloads} object
  * @returns {number[]} - byte array of encoded payload or empty array
  */
 function Encoder(object /*, port */) {
@@ -269,7 +263,7 @@ function Encoder(object /*, port */) {
 /**
  * Decode SD01L specific payloads
  * @param {number[]} bytes
- * @return {Wavetrend.SD01L.Downlink_Payloads}
+ * @return {Wavetrend.SD01L.DownlinkPayloads}
  * @memberOf Wavetrend.SD01L
  */
 function Decode_SD01L_Payload(bytes) {
@@ -300,7 +294,7 @@ function Decode_SD01L_Payload(bytes) {
 
             object.downlink_hours = (bytes[i++] & 0xFF) >>> 0;
             let flags = (bytes[i++] & 0xFF) >>> 0;
-            object.message_flags = {
+            object.MessageFlags = {
                 scald: (flags & 0x01) === 0x01,
                 freeze: (flags & 0x02) === 0x02,
                 ambient: (flags & 0x04) === 0x04,
@@ -342,7 +336,7 @@ function Decode_SD01L_Payload(bytes) {
 
 /**
  * @typedef {Object} TTN.Downlink.DecoderOutput
- * @property {Wavetrend.SD01L.Downlink_Payloads} [data]
+ * @property {Wavetrend.SD01L.DownlinkPayloads} [data]
  * @property {string[]} errors
  * @property {string[]} warnings
  */
@@ -351,7 +345,6 @@ function Decode_SD01L_Payload(bytes) {
  * Entry point for TTN V3 downlink decoder (inverse of encodeDownlink)
  * @param {TTN.Downlink.DecoderInput} input
  * @returns {TTN.Downlink.DecoderOutput}
- * @memberOf TTN.Downlink
  */
 function decodeDownlink(input) {
     let payload = {
