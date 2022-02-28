@@ -214,6 +214,10 @@ function Encode_SD01L_Payload(object) {
 }
 
 /**
+ * @namespace TTN.Downlink
+ */
+
+/**
  * @typedef {Object} TTN.Downlink.EncoderInput
  * @property {Wavetrend.SD01L.DownlinkPayloads} data
  */

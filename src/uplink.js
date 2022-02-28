@@ -124,6 +124,10 @@ const SD01L_INSTALLATION_ERROR_CODE = {
  */
 
 /**
+ * @namespace TTN.Uplink
+ */
+
+/**
  * Format of data provided to the V3 decoder by TTN
  * @typedef {Object} TTN.Uplink.DecoderInput
  * @property {number[]} bytes - array of received bytes
