@@ -223,11 +223,19 @@ function Encode_SD01L_Payload(object) {
  */
 
 /**
- * @typedef {Object} TTN.Downlink.EncoderOutput
- * @property {number[]} [bytes] - byte array of encoded data
- * @property {number} [fPort] - LoRaWAN port number
- * @property {string[]} warnings - any warnings encountered during encoding
+ * @typedef {Object} TTN.Downlink.EncoderSuccess
+ * @property {number[]} bytes - byte array of encoded data
+ * @property {number} fPort - LoRaWAN port number
+ * @property {string[]} [warnings] - any warnings encountered during encoding
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.EncoderError
  * @property {string[]} errors - any errors encountered during encoding
+ */
+
+/**
+ * @typedef {TTN.Downlink.EncoderSuccess|TTN.Downlink.EncoderError} TTN.Downlink.EncoderOutput
  */
 
 /**
@@ -339,10 +347,18 @@ function Decode_SD01L_Payload(bytes) {
  */
 
 /**
- * @typedef {Object} TTN.Downlink.DecoderOutput
- * @property {Wavetrend.SD01L.DownlinkPayloads} [data]
+ * @typedef {Object} TTN.Downlink.DecoderSuccess
+ * @property {Wavetrend.SD01L.DownlinkPayloads} data
+ * @property {string[]} [warnings]
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.DecoderError
  * @property {string[]} errors
- * @property {string[]} warnings
+ */
+
+/**
+ * @typedef {TTN.Downlink.DecoderSuccess|TTN.Downlink.DecoderError} TTN.Downlink.DecoderOutput
  */
 
 /**
