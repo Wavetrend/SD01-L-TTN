@@ -399,9 +399,10 @@ function decodeUplink(input) {
 /**
  * Entry point for TTN V2 uplink decoder
  * @param {number[]} bytes - array of received bytes
+ * @param {number} port - LoRaWAN fPort number
  * @returns {Wavetrend.SD01L.UplinkPayloads|null} - object containing decoded payload, or null if an error is encountered
  */
-function Decoder(bytes /*, port */) {
+function Decoder(bytes, port) {
     try {
         return Decode_SD01L_Payload(bytes);
     } catch (e) {
