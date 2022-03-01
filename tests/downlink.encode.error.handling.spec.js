@@ -43,7 +43,7 @@ describe("Encoder Error Handling", () => {
             })
 
             test("v2 returns empty array", () => {
-                expect(v2(payload.bytes, payload.fPort)).toEqual([]);
+                expect(v2(payload.bytes)).toEqual([]);
             });
 
             test("v3 returns expected error", () => {
