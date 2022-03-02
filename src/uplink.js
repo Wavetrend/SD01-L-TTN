@@ -71,8 +71,8 @@ const SD01L_INSTALLATION_ERROR_CODE = {
  * @typedef {Object} Wavetrend.SD01L.SensorReadings
  * @property {number} minC - degrees C
  * @property {number} maxC - degrees C
- * @property {number} events - count of flow events
- * @property {number} reports - count of non-compliant reports
+ * @property {number} events - count of total events
+ * @property {number} reports - count of compliant events
  */
 
 /**
