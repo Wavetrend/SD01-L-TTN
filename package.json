@@ -11,10 +11,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cucumber/cucumber": "^7.3.2",
     "docdash": "^1.2.0",
     "jest": "^27.5.1",
     "jsdoc": "^3.6.10",
     "jsdoc-to-markdown": "^7.1.1",
+    "must": "^0.13.4",
     "nodemon": "^2.0.15"
   }
 }
