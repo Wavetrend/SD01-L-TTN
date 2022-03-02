@@ -1,5 +1,9 @@
 # Wavetrend TTN Payload Formatters
 
+---
+
+# For End Users
+
 ## Installation of Payload Formatters in TTN
 
 1. Login to TTN Console
@@ -8,6 +12,10 @@
 4. Cut & Paste the contents of the 'src/uplink.js' as the Uplink formatter
 
 The 'Live Data' view will show both the raw and decoded elements on any messages.
+
+---
+
+# For Developers
 
 ## Prerequisites
 
