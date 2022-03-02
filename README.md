@@ -13,6 +13,12 @@
 
 The 'Live Data' view will show both the raw and decoded elements on any messages.
 
+## Read the documentation
+
+To understand the decoded payload formats:
+
+1. Open [https://wavetrend.github.io/SD01-L-TTN/](https://wavetrend.github.io/SD01-L-TTN/)
+
 ---
 
 # For Developers

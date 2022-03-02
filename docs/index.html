@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/wavetrend/sd01-l-ttn" target="_blank" class="menu-item" id="repository" >Github repo</a></h2><h3>Modules</h3><ul><li><a href="src_downlink.module_js.html">src/downlink.js</a><ul class='methods'><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~decodeDownlink">decodeDownlink</a></li><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~encodeDownlink">encodeDownlink</a></li><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~Encoder">Encoder</a></li></ul></li><li><a href="src_uplink.module_js.html">src/uplink.js</a><ul class='methods'><li data-type='method' style='display: none;'><a href="src_uplink.module_js.html#~Decoder">Decoder</a></li><li data-type='method' style='display: none;'><a href="src_uplink.module_js.html#~decodeUplink">decodeUplink</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="TTN.Downlink.html">TTN.Downlink</a></li><li><a href="TTN.Uplink.html">TTN.Uplink</a></li><li><a href="Wavetrend.SD01L.html">Wavetrend.SD01L</a><ul class='methods'><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_Payload">Decode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_Payload">Decode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_PayloadHeader">Decode_SD01L_PayloadHeader</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Encode_SD01L_Payload">Encode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Encode_SD01L_PayloadHeader">Encode_SD01L_PayloadHeader</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.mergeConfigs">mergeConfigs</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.signedByte">signedByte</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.unsignedByte">unsignedByte</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    <section class="readme usertext">
+        <article><h1>Wavetrend TTN Payload Formatters</h1>
+<hr>
+<h1>For End Users</h1>
+<h2>Installation of Payload Formatters in TTN</h2>
+<ol>
+<li>Login to TTN Console</li>
+<li>Navigate to 'Payload Formatters'</li>
+<li>Cut &amp; Paste the contents of the 'src/downlink.js' as the Downlink formatter</li>
+<li>Cut &amp; Paste the contents of the 'src/uplink.js' as the Uplink formatter</li>
+</ol>
+<p>The 'Live Data' view will show both the raw and decoded elements on any messages.</p>
+<hr>
+<h1>For Developers</h1>
+<h2>Prerequisites</h2>
+<p>If you want to develop, test or generate documentation for the project,
+you will need to install:</p>
+<ul>
+<li><a href="https://nodejs.org/en/download/">Node.js and NPM (the Node package manager)</a></li>
+<li>Clone the repo (<code>git clone http://github.com/wavetrend/SD01-L-TTN</code> or via
+your preferred Git client)</li>
+</ul>
+<h2>Testing</h2>
+<ol>
+<li>Using your command line/terminal, change to the directory holding
+the repo on your local system</li>
+<li>Run <code>npm install</code> to install/update all of the dependencies</li>
+<li>Run <code>npm test</code> to run the tests and view the output</li>
+</ol>
+<h2>Documentation</h2>
+<ol>
+<li>Using your command line/terminal, change to the directory holding
+the repo on your local system</li>
+<li>Run <code>npm install</code> to install/update all of the dependencies</li>
+<li>Run <code>npm docs</code> to generate the documentation in the 'docs' directory</li>
+<li>Optional - Run <code>npm watch:docs</code> to continually monitor for <code>src</code> changes
+and regenerate docs (useful for active development)</li>
+<li>Open <code>index.html</code> to view the documentation (most comprehensive), or</li>
+<li>Open <code>API.md</code> to view the simplified API in Markdown format.</li>
+</ol></article>
+    </section>
+
+
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Wed Mar 02 2022 10:33:45 GMT+0000 (Greenwich Mean Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

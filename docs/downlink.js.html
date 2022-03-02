@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>downlink.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/wavetrend/sd01-l-ttn" target="_blank" class="menu-item" id="repository" >Github repo</a></h2><h3>Modules</h3><ul><li><a href="src_downlink.module_js.html">src/downlink.js</a><ul class='methods'><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~decodeDownlink">decodeDownlink</a></li><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~encodeDownlink">encodeDownlink</a></li><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~Encoder">Encoder</a></li></ul></li><li><a href="src_uplink.module_js.html">src/uplink.js</a><ul class='methods'><li data-type='method' style='display: none;'><a href="src_uplink.module_js.html#~Decoder">Decoder</a></li><li data-type='method' style='display: none;'><a href="src_uplink.module_js.html#~decodeUplink">decodeUplink</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="TTN.Downlink.html">TTN.Downlink</a></li><li><a href="TTN.Uplink.html">TTN.Uplink</a></li><li><a href="Wavetrend.SD01L.html">Wavetrend.SD01L</a><ul class='methods'><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_Payload">Decode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_Payload">Decode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_PayloadHeader">Decode_SD01L_PayloadHeader</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Encode_SD01L_Payload">Encode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Encode_SD01L_PayloadHeader">Encode_SD01L_PayloadHeader</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.mergeConfigs">mergeConfigs</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.signedByte">signedByte</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.unsignedByte">unsignedByte</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">downlink.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+@file SD01-L Water Temperature Monitor Downlink Payload Formatter for TTN
+@module src/downlink.js
+@author Dave Meehan
+@copyright Wavetrend Europe Ltd
+@see {@link https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/}
+@see {@link https://www.youtube.com/watch?v=nT2FnwCoP7w}
+*/
+
+/**
+ * @namespace Wavetrend.SD01L
+ */
+
+/**
+ * Wavetrend SD01L Payload Type
+ * @typedef {number} Wavetrend.SD01L.PayloadType
+ * @readonly
+ * @memberOf Wavetrend.SD01L
+ * @enum {Wavetrend.SD01L.PayloadType}
+ * @property {Wavetrend.SD01L.PayloadType} INSTALL_REQUEST - 0
+ * @property {Wavetrend.SD01L.PayloadType} CONFIGURATION - 1
+ * @property {Wavetrend.SD01L.PayloadType} INSTALL_RESPONSE - 2
+ * @property {Wavetrend.SD01L.PayloadType} STANDARD_REPORT - 3
+ * @property {Wavetrend.SD01L.PayloadType} AMBIENT_REPORT - 4
+ * @property {Wavetrend.SD01L.PayloadType} SCALD_REPORT - 5
+ * @property {Wavetrend.SD01L.PayloadType} FREEZE_REPORT - 6
+ * @property {Wavetrend.SD01L.PayloadType} LOW_BATTERY_REPORT_DEPRECATED - 7
+ * @property {Wavetrend.SD01L.PayloadType} SENSOR_ERROR_REPORT - 8
+ * @property {Wavetrend.SD01L.PayloadType} GENERAL_ERROR_REPORT - 9
+ * @property {Wavetrend.SD01L.PayloadType} SENSOR_DATA_DEBUG - 10
+ */
+const SD01L_PAYLOAD_TYPE = {
+    INSTALL_REQUEST: 0,
+    CONFIGURATION: 1,
+    INSTALL_RESPONSE: 2,
+    STANDARD_REPORT: 3,
+    AMBIENT_REPORT: 4,
+    SCALD_REPORT: 5,
+    FREEZE_REPORT: 6,
+    LOW_BATTERY_REPORT_DEPRECATED: 7,
+    SENSOR_ERROR_REPORT: 8,
+    GENERAL_ERROR_REPORT: 9,
+    SENSOR_DATA_DEBUG: 10,
+};
+
+/**
+ * @typedef {Object} Wavetrend.SD01L.PayloadHeader
+ * @property {Wavetrend.SD01L.PayloadType} type - payload type
+ * @property {number} version - message payload version 0-255
+ * @property {number} sequence - message payload sequence 0-255
+ * @property {number} timestamp - seconds since Unix epoch
+ */
+
+/**
+ * @typedef {Object} Wavetrend.SD01L.MessageFlags
+ * @property {boolean} scald - scald reporting enabled (default disabled)
+ * @property {boolean} freeze - freeze reporting enabled (default disabled)
+ * @property {boolean} ambient - ambient reporting enabled (default disabled)
+ * @property {boolean} debug - debug reporting enabled (default disabled)
+ * @property {number} history_count - number of history messages in standard report (default = 0, otherwise 1 or 2)
+ */
+
+/**
+ * SD01L Sensor Configuration Type
+ * @typedef {number} Wavetrend.SD01L.SensorType
+ * @readonly
+ * @enum {number}
+ * @memberOf Wavetrend.SD01L
+ * @property {Wavetrend.SD01L.SensorType} Disabled - 0
+ * @property {Wavetrend.SD01L.SensorType} HotOutletStandard - 1
+ * @property {Wavetrend.SD01L.SensorType} HotOutletHealthcare - 2
+ * @property {Wavetrend.SD01L.SensorType} ColdOutlet - 3
+ * @property {Wavetrend.SD01L.SensorType} ColdUnitRising - 4
+ * @property {Wavetrend.SD01L.SensorType} BlendedRisingScaldCheck - 5
+ * @property {Wavetrend.SD01L.SensorType} HotUnitOutletFalling - 6
+ * @property {Wavetrend.SD01L.SensorType} HotUnitReturnFalling - 7
+ * @property {Wavetrend.SD01L.SensorType} HotUnitReturnHealthcareFalling - 8
+ */
+const SD01L_SENSOR_TYPE = {
+    Disabled: 0,
+    HotOutletStandard: 1,
+    HotOutletHealthcare: 2,
+    ColdOutlet: 3,
+    ColdUnitRising: 4,
+    BlendedRisingScaldCheck: 5,
+    HotUnitOutletFalling: 6,
+    HotUnitReturnFalling: 7,
+    HotUnitReturnHealthcareFalling: 8,
+};
+
+/**
+ * @typedef {Object} Wavetrend.SD01L.SensorConfig
+ * @property {number} flow_settling_count - number of readings to allow flow to settle (default 0)
+ * @property {SD01L_SENSOR_TYPE} config - identity of the sensor configuration (default disabled)
+ */
+
+/**
+ * @typedef {Wavetrend.SD01L.PayloadHeader} Wavetrend.SD01L.Configuration
+ * @property {number} nonce - same value as contained in the installation request
+ * @property {number} downlink_hours - number of hours between configuration requests (default 24)
+ * @property {Wavetrend.SD01L.MessageFlags} message_flags - option flags
+ * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
+ * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
+ * @property {number} reporting_period - number of minutes between reports (default 60)
+ * @property {Wavetrend.SD01L.SensorConfig[]} config_type - configuration for each sensor
+ */
+
+/**
+ * @typedef {Wavetrend.SD01L.Configuration} Wavetrend.SD01L.DownlinkPayloads
+ */
+
+/**
+ * Deep merge of config objects to allow defaults to be supplied for anything missing
+ * @param {*} arg1
+ * @param {*} arg2
+ * @returns {*}
+ * @memberOf Wavetrend.SD01L
+ */
+function mergeConfigs(arg1, arg2) {
+
+    if ((Array.isArray(arg1) &amp;&amp; Array.isArray(arg2))
+        || (typeof arg1 === 'object' &amp;&amp; typeof arg2 === 'object')) {
+        for (let key in arg2) {
+            arg1[key] = mergeConfigs(arg1[key], arg2[key]);
+        }
+        return arg1;
+    }
+    return arg2;
+}
+
+/**
+ * Encode the common header fields
+ * @param {Wavetrend.SD01L.DownlinkPayloads} object
+ * @returns {number[]} - header fields encoded to byte array
+ * @memberOf Wavetrend.SD01L
+ */
+function Encode_SD01L_PayloadHeader(object) {
+    return [
+        object.type,
+        object.version,
+        object.sequence,
+        (object.timestamp &amp; 0xFF000000) >>> 24,
+        (object.timestamp &amp; 0x00FF0000) >>> 16,
+        (object.timestamp &amp; 0x0000FF00) >>> 8,
+        (object.timestamp &amp; 0x000000FF),
+    ]
+}
+
+/**
+ * Encode SD01L specific message payloads
+ * @param {Wavetrend.SD01L.DownlinkPayloads} object
+ * @returns {number[]} - array of encoded bytes
+ * @memberOf Wavetrend.SD01L
+ */
+function Encode_SD01L_Payload(object) {
+    let bytes = Encode_SD01L_PayloadHeader(object);
+
+    switch (object.type) {
+        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
+            if (object.version !== 3) {
+                throw 'Unsupported configuration version ' + object.version;
+            }
+            const defaults = {
+                nonce: 0,
+                downlink_hours: 24,
+                message_flags: {
+                    scald: false,
+                    freeze: false,
+                    ambient: false,
+                    history_count: 0,
+                },
+                scald_threshold: 60,
+                freeze_threshold: 4,
+                reporting_period: 60,
+                config_type: [
+                    {flow_settling_count: 0, config: 0,},
+                    {flow_settling_count: 0, config: 0,},
+                    {flow_settling_count: 0, config: 0,},
+                ]
+            };
+            object = mergeConfigs(defaults, object);
+
+            bytes.push((object.nonce &amp; 0xFF000000) >>> 24);
+            bytes.push((object.nonce &amp; 0x00FF0000) >>> 16);
+            bytes.push((object.nonce &amp; 0x0000FF00) >>> 8);
+            bytes.push(object.nonce &amp; 0x000000FF);
+            bytes.push(object.downlink_hours &amp; 0xFF);
+            bytes.push(
+                object.message_flags.scald &lt;&lt; 1 >>> 0
+                | object.message_flags.freeze &lt;&lt; 2 >>> 0
+                | object.message_flags.ambient &lt;&lt; 3 >>> 0
+                | object.message_flags.debug &lt;&lt; 4 >>> 0
+                | (object.message_flags.history_count &amp; 0x03) &lt;&lt; 6 >>> 0
+            );
+            bytes.push((object.scald_threshold &amp; 0xFF) >>> 0);
+            bytes.push((object.freeze_threshold &amp; 0xFF) >>> 0);
+            bytes.push((object.reporting_period &amp; 0xFF00) >>> 8);
+            bytes.push(object.reporting_period &amp; 0x00FF);
+            for (let sensor = 0; sensor &lt; 3; sensor++) {
+                bytes.push(
+                    (object.config_type[sensor].flow_settling_count &amp; 0x0F) &lt;&lt; 4 >>> 0
+                    | object.config_type[sensor].config &amp; 0x0F
+                );
+            }
+            break;
+
+        default:
+            if (object.type > 10) {
+                throw "Unrecognised type for downlink encoding";
+            }
+            throw "Unsupported type for downlink encoding";
+    }
+    return bytes;
+}
+
+/**
+ * @namespace TTN.Downlink
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.EncoderInput
+ * @property {Wavetrend.SD01L.DownlinkPayloads} data
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.EncoderSuccess
+ * @property {number[]} bytes - byte array of encoded data
+ * @property {number} fPort - LoRaWAN port number
+ * @property {string[]} [warnings] - any warnings encountered during encoding
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.EncoderError
+ * @property {string[]} errors - any errors encountered during encoding
+ */
+
+/**
+ * @typedef {TTN.Downlink.EncoderSuccess|TTN.Downlink.EncoderError} TTN.Downlink.EncoderOutput
+ */
+
+/**
+ * Entry point for TTN V3 downlink encoder
+ * @param {TTN.Downlink.EncoderInput} input
+ * @returns {TTN.Downlink.EncoderOutput}
+ */
+function encodeDownlink(input) {
+    let obj = {
+        warnings: [],
+        errors: [],
+    };
+
+    try {
+        obj.bytes = Encode_SD01L_Payload(input.data);
+        obj.fPort = 1;
+    } catch (error) {
+        obj.errors.push(error);
+    }
+
+    return obj;
+}
+
+/**
+ * Entry point for TTN V2 downlink encoder
+ * @param {Wavetrend.SD01L.DownlinkPayloads} object
+ * @returns {number[]} - byte array of encoded payload or empty array
+ */
+function Encoder(object /*, port */) {
+    try {
+        return Encode_SD01L_Payload(object);
+    } catch (e) {
+        return [];
+    }
+}
+
+/**
+ * Decode SD01L specific payloads
+ * @param {number[]} bytes
+ * @return {Wavetrend.SD01L.DownlinkPayloads}
+ * @memberOf Wavetrend.SD01L
+ */
+function Decode_SD01L_Payload(bytes) {
+
+    let i = 0;
+    let object = {
+        type: (bytes[i++] &amp; 0xFF) >>> 0,
+        version: (bytes[i++] &amp; 0xFF) >>> 0,
+        sequence: (bytes[i++] &amp; 0xFF) >>> 0,
+        timestamp:
+            ((bytes[i++] &amp; 0xFF) &lt;&lt; 24 >>> 0)
+            + ((bytes[i++] &amp; 0xFF) &lt;&lt; 16 >>> 0)
+            + ((bytes[i++] &amp; 0xFF) &lt;&lt; 8 >>> 0)
+            + ((bytes[i++] &amp; 0xFF) >>> 0)
+    };
+
+    switch (object.type) {
+        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
+            if (object.version !== 3) {
+                throw "Unsupported configuration version " + object.version;
+            }
+
+            object.nonce =
+                ((bytes[i++] &amp; 0xFF) &lt;&lt; 24 >>> 0)
+                + ((bytes[i++] &amp; 0xFF) &lt;&lt; 16 >>> 0)
+                + ((bytes[i++] &amp; 0xFF) &lt;&lt; 8 >>> 0)
+                + ((bytes[i++] &amp; 0xFF) >>> 0);
+
+            object.downlink_hours = (bytes[i++] &amp; 0xFF) >>> 0;
+            let flags = (bytes[i++] &amp; 0xFF) >>> 0;
+            object.message_flags = {
+                scald: (flags &amp; 0x01) === 0x01,
+                freeze: (flags &amp; 0x02) === 0x02,
+                ambient: (flags &amp; 0x04) === 0x04,
+                debug: (flags &amp; 0x08) === 0x08,
+                history_count: (flags >>> 6) &amp; 0x03,
+            };
+
+            object.scald_threshold = (bytes[i++] &amp; 0xFF) &lt;&lt; 24 >> 24;
+            object.freeze_threshold = (bytes[i++] &amp; 0xFF) &lt;&lt; 24 >> 24;
+            object.reporting_period =
+                ((bytes[i++] &amp; 0xFF) &lt;&lt; 8 >>> 0)
+                + ((bytes[i++] &amp; 0xFF) >>> 0);
+
+            object.config_type = [];
+            for (let sensor = 0; sensor &lt; 3; sensor++) {
+                let config = (bytes[i++] &amp; 0xFF) >>> 0;
+                object.config_type[sensor] = {
+                    flow_settling_count: (config >>> 4) &amp; 0x0F >>> 0,
+                    config: (config &amp; 0x0F) >>> 0,
+                };
+            }
+            break;
+
+        default:
+            if (object.type > 10) {
+                throw "Unrecognised type for downlink decoding";
+            }
+            throw "Unsupported type for downlink decoding";
+    }
+
+    return object;
+}
+
+/**
+ * @typedef {Object} TTN.Downlink.DecoderInput
+ * @property {number[]} bytes - byte array of encoded data
+ * @property {number} fPort - LoRaWAN port number
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.DecoderSuccess
+ * @property {Wavetrend.SD01L.DownlinkPayloads} data
+ * @property {string[]} [warnings]
+ */
+
+/**
+ * @typedef {Object} TTN.Downlink.DecoderError
+ * @property {string[]} errors
+ */
+
+/**
+ * @typedef {TTN.Downlink.DecoderSuccess|TTN.Downlink.DecoderError} TTN.Downlink.DecoderOutput
+ */
+
+/**
+ * Entry point for TTN V3 downlink decoder (inverse of encodeDownlink)
+ * @param {TTN.Downlink.DecoderInput} input
+ * @returns {TTN.Downlink.DecoderOutput}
+ */
+function decodeDownlink(input) {
+    let payload = {
+        warnings: [],
+        errors: [],
+    };
+
+    try {
+        payload.data = Decode_SD01L_Payload(input.bytes);
+    } catch (e) {
+        delete payload.data;
+        payload.errors.push(e);
+    }
+
+    return payload;
+}
+
+// NB: Not used for TTN production, required for Unit Testing
+
+/* istanbul ignore else */
+if (typeof module !== 'undefined') {
+    module.exports = {
+        Encoder,
+        encodeDownlink,
+        decodeDownlink,
+        SD01L_PAYLOAD_TYPE,
+        mergeConfigs,
+    };
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Wed Mar 02 2022 10:33:45 GMT+0000 (Greenwich Mean Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

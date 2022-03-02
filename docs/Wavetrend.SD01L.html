@@ -1,0 +1,5299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>SD01L - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/wavetrend/sd01-l-ttn" target="_blank" class="menu-item" id="repository" >Github repo</a></h2><h3>Modules</h3><ul><li><a href="src_downlink.module_js.html">src/downlink.js</a><ul class='methods'><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~decodeDownlink">decodeDownlink</a></li><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~encodeDownlink">encodeDownlink</a></li><li data-type='method' style='display: none;'><a href="src_downlink.module_js.html#~Encoder">Encoder</a></li></ul></li><li><a href="src_uplink.module_js.html">src/uplink.js</a><ul class='methods'><li data-type='method' style='display: none;'><a href="src_uplink.module_js.html#~Decoder">Decoder</a></li><li data-type='method' style='display: none;'><a href="src_uplink.module_js.html#~decodeUplink">decodeUplink</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="TTN.Downlink.html">TTN.Downlink</a></li><li><a href="TTN.Uplink.html">TTN.Uplink</a></li><li><a href="Wavetrend.SD01L.html">Wavetrend.SD01L</a><ul class='methods'><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_Payload">Decode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_Payload">Decode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Decode_SD01L_PayloadHeader">Decode_SD01L_PayloadHeader</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Encode_SD01L_Payload">Encode_SD01L_Payload</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.Encode_SD01L_PayloadHeader">Encode_SD01L_PayloadHeader</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.mergeConfigs">mergeConfigs</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.signedByte">signedByte</a></li><li data-type='method' style='display: none;'><a href="Wavetrend.SD01L.html#.unsignedByte">unsignedByte</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">SD01L</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        SD01L
+        </h2>
+        
+    
+</header>
+
+<article>
+    
+        <div class="container-overview">
+        
+            
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+            
+
+            
+        
+        </div>
+    
+
+    
+
+    
+
+    
+    
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".Decode_SD01L_Payload"><span class="type-signature">(static) </span>Decode_SD01L_Payload<span class="signature">(bytes)</span><span class="type-signature"> &rarr; {<a href="Wavetrend.SD01L.html#.DownlinkPayloads">Wavetrend.SD01L.DownlinkPayloads</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line281">line 281</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Decode SD01L specific payloads</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bytes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Wavetrend.SD01L.html#.DownlinkPayloads">Wavetrend.SD01L.DownlinkPayloads</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".Decode_SD01L_Payload"><span class="type-signature">(static) </span>Decode_SD01L_Payload<span class="signature">(bytes)</span><span class="type-signature"> &rarr; {<a href="Wavetrend.SD01L.html#.UplinkPayloads">Wavetrend.SD01L.UplinkPayloads</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line248">line 248</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Decode SD01L specific message payloads</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bytes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Wavetrend.SD01L.html#.UplinkPayloads">Wavetrend.SD01L.UplinkPayloads</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".Decode_SD01L_PayloadHeader"><span class="type-signature">(static) </span>Decode_SD01L_PayloadHeader<span class="signature">(bytes)</span><span class="type-signature"> &rarr; {<a href="Wavetrend.SD01L.html#.PartialPayloadDecode">Wavetrend.SD01L.PartialPayloadDecode</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line194">line 194</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Decode the common header fields</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bytes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PartialPayloadDecode">Wavetrend.SD01L.PartialPayloadDecode</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".Encode_SD01L_Payload"><span class="type-signature">(static) </span>Encode_SD01L_Payload<span class="signature">(object)</span><span class="type-signature"> &rarr; {Array.&lt;number>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line155">line 155</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Encode SD01L specific message payloads</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.DownlinkPayloads">Wavetrend.SD01L.DownlinkPayloads</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>array of encoded bytes</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;number></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".Encode_SD01L_PayloadHeader"><span class="type-signature">(static) </span>Encode_SD01L_PayloadHeader<span class="signature">(object)</span><span class="type-signature"> &rarr; {Array.&lt;number>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Encode the common header fields</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.DownlinkPayloads">Wavetrend.SD01L.DownlinkPayloads</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>header fields encoded to byte array</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;number></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".mergeConfigs"><span class="type-signature">(static) </span>mergeConfigs<span class="signature">(arg1, arg2)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Deep merge of config objects to allow defaults to be supplied for anything missing</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>arg1</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arg2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".signedByte"><span class="type-signature">(static) </span>signedByte<span class="signature">(input)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line229">line 229</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>unsigned value</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>signed representation of LSB of input</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".unsignedByte"><span class="type-signature">(static) </span>unsignedByte<span class="signature">(input)</span><span class="type-signature"> &rarr; {number}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line238">line 238</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>unsigned value</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>unsigned representation of LSB of input</li>
+</ul>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id=".AmbientReport">AmbientReport</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>minC</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxC</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>avgC</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by the device if ambient reporting is enabled</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".Configuration">Configuration</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line97">line 97</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nonce</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>same value as contained in the installation request</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>downlink_hours</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>number of hours between configuration requests (default 24)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message_flags</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.MessageFlags">Wavetrend.SD01L.MessageFlags</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>option flags</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>scald_threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>temperature above which scald reports will be sent (if enabled, default 60)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>freeze_threshold</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>temperature below which freeze reports will be sent (if enabled, default 4)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reporting_period</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>number of minutes between reports (default 60)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config_type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Wavetrend.SD01L.html#.SensorConfig">Wavetrend.SD01L.SensorConfig</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>configuration for each sensor</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".DownlinkPayloads">DownlinkPayloads</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line108">line 108</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.Configuration">Wavetrend.SD01L.Configuration</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".FreezeReport">FreezeReport</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line98">line 98</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sensor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sensor number, zero based</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>temperature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by the device if freeze reporting is enabled</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".GeneralErrorReport">GeneralErrorReport</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line118">line 118</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error_code</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Error code (manufacturer internal)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>file</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>source file (manufacturer internal)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>line</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>source line (manufacturer internal)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by the device if a general device error is detected</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".InstallationErrorCode">InstallationErrorCode</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line26">line 26</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>NONE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SENSOR_DISABLED</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>1 - Installed sensor cannot be disabled</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SENSOR_MISSING</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>2 - Non-installed sensor cannot be configured</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>DOWNLINK</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>3 - Downlink interval out of range</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>MESSAGE_FLAGS</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>4 - Illegal message flags specified</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SCALD_THRESHOLD</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>5 - Scald threshold out of range</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>FREEZE_THRESHOLD</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>6 - Freeze threshold out of range</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>REPORT_PERIOD</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>7 - Report period out of range</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>CONFIG_TYPE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>8 - Sensor configuration type invalid</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>MISC</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>9 - Miscellaneous error</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>DOWNLINK_LATE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>10 - Downlink arrived too late</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>DOWNLINK_NONCE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>11 - Downlink nonce mismatch</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>DOWNLINK_DUPLICATE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>12 - Downlink duplicate received</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>HISTORY_COUNT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>13 - History Count out of range</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".InstallRequest">InstallRequest</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line16">line 16</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nonce</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>random nonce value to exchange with server</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>battery_mV</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>current battery level in millivolts</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>temperature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>current temperature for each sensor (degrees C)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>firmware_version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.Version">Wavetrend.SD01L.Version</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>current firmware version</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reset_reason</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Reason for last device reset (manufacturer internal)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by device when installed to acquire operating configuration</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".InstallResponse">InstallResponse</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallationErrorCode">Wavetrend.SD01L.InstallationErrorCode</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by device after successfully receiving operating configuration</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".MessageFlags">MessageFlags</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>scald</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>scald reporting enabled (default disabled)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>freeze</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>freeze reporting enabled (default disabled)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ambient</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>ambient reporting enabled (default disabled)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>debug</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>debug reporting enabled (default disabled)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>history_count</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>number of history messages in standard report (default = 0, otherwise 1 or 2)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".PartialPayloadDecode">PartialPayloadDecode</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line183">line 183</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>bytes</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".PayloadHeader">PayloadHeader</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line46">line 46</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>payload type</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>message payload version 0-255</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>sequence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>message payload sequence 0-255</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>timestamp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>seconds since Unix epoch</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".PayloadType">PayloadType</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>INSTALL_REQUEST</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>CONFIGURATION</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>1</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>INSTALL_RESPONSE</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>2</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>STANDARD_REPORT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>3</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>AMBIENT_REPORT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>4</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SCALD_REPORT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>5</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>FREEZE_REPORT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>6</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>LOW_BATTERY_REPORT_DEPRECATED</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>7</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SENSOR_ERROR_REPORT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>8</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>GENERAL_ERROR_REPORT</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>9</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>SENSOR_DATA_DEBUG</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadType">Wavetrend.SD01L.PayloadType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>10</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Wavetrend SD01L Payload Type</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".ScaldReport">ScaldReport</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line105">line 105</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sensor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>sensor number, zero based</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>temperature</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by the device if scald reporting is enabled</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".SensorConfig">SensorConfig</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line91">line 91</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>flow_settling_count</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>number of readings to allow flow to settle (default 0)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">SD01L_SENSOR_TYPE</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>identity of the sensor configuration (default disabled)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".SensorErrorReport">SensorErrorReport</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line112">line 112</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>sensor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;number></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>value for each sensor, 1=error, 0=no error</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by the device if a sensor error is detected</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".SensorHistory">SensorHistory</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Sensor reading histories (if enabled)</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".SensorReadings">SensorReadings</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line69">line 69</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>minC</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>maxC</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>degrees C</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>events</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>count of flow events</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reports</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>count of non-compliant reports</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Standard sensor temperature readings</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".SensorType">SensorType</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="downlink.js.html">downlink.js</a>, <a href="downlink.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>Disabled</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>0</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>HotOutletStandard</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>1</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>HotOutletHealthcare</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>2</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ColdOutlet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>3</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ColdUnitRising</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>4</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>BlendedRisingScaldCheck</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>5</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>HotUnitOutletFalling</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>6</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>HotUnitReturnFalling</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>7</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>HotUnitReturnHealthcareFalling</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorType">Wavetrend.SD01L.SensorType</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>8</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>SD01L Sensor Configuration Type</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">number</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".StandardReport">StandardReport</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line83">line 83</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>current</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>history</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="Wavetrend.SD01L.html#.SensorHistory">Wavetrend.SD01L.SensorHistory</a>></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<div class="description usertext">
+    <p>Issued by the device at the standard report interval</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.PayloadHeader">Wavetrend.SD01L.PayloadHeader</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".UplinkPayloads">UplinkPayloads</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line137">line 137</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>Composite of all SD01L uplink messages</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallRequest">Wavetrend.SD01L.InstallRequest</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.InstallResponse">Wavetrend.SD01L.InstallResponse</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.StandardReport">Wavetrend.SD01L.StandardReport</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.AmbientReport">Wavetrend.SD01L.AmbientReport</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.FreezeReport">Wavetrend.SD01L.FreezeReport</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.ScaldReport">Wavetrend.SD01L.ScaldReport</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.SensorErrorReport">Wavetrend.SD01L.SensorErrorReport</a></span>
+|
+
+<span class="param-type"><a href="Wavetrend.SD01L.html#.GeneralErrorReport">Wavetrend.SD01L.GeneralErrorReport</a></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+                
+<h4 class="name" id=".Version">Version</h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line10">line 10</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>major</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>build</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+
+            
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a> on Wed Mar 02 2022 10:33:45 GMT+0000 (Greenwich Mean Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>
