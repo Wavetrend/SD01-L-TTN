@@ -264,7 +264,7 @@ function Decode_SD01L_Payload(bytes) {
                 payload.temperature = [];
                 for (let sensor = 0; sensor < 3; sensor++) {
                     let temp_index = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-                    payload.temperature[sensor] = (temp_index - 270) / 10;
+                    payload.temperature[sensor] = temp_index === 0xFFFF ? null : (temp_index - 270) / 10;
                 }
                 payload.firmware_version = {
                     major: unsignedByte(bytes[i++]),

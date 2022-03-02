@@ -128,7 +128,15 @@ describe('Install Request', () => {
                             expected.data.temperature[sensor-1] = temp;
                             expect(decodeUplink(payload)).toEqual(expected);
                         }
-                    )
+                    );
+
+                    test("uninstalled sensor = null", () => {
+                        const index = (sensor - 1) * 2;
+                        payload.bytes[OFFSET_SENSOR_1_TEMP + index] = 0xFF;
+                        payload.bytes[OFFSET_SENSOR_1_TEMP + index + 1] = 0xFF;
+                        expected.data.temperature[sensor-1] = null;
+                        expect(decodeUplink(payload)).toEqual(expected);
+                    })
 
                 }
             )
