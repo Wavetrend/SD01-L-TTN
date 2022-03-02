@@ -4,8 +4,8 @@
 
 1. Login to TTN Console
 2. Navigate to 'Payload Formatters'
-3. Cut & Paste the contents of the 'downlink.js' as the Downlink formatter
-4. Cut & Paste the contents of the 'uplink.js' as the Uplink formatter
+3. Cut & Paste the contents of the 'src/downlink.js' as the Downlink formatter
+4. Cut & Paste the contents of the 'src/uplink.js' as the Uplink formatter
 
 The 'Live Data' view will show both the raw and decoded elements on any messages.
 
