@@ -4,13 +4,13 @@ Feature: Uplink Install Request Decoding
     Given An installation request payload, version 4
 
   Scenario: Decodes base line
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
   Scenario Outline: Decodes with <Description> sequence (<Sequence>)
     Given a sequence of <Sequence>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Sequence  | Description |
@@ -19,8 +19,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with <Description> timestamp (<Timestamp>)
     Given a timestamp of <Timestamp>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Timestamp  | Description                 |
@@ -32,8 +32,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with <Description> nonce (<Nonce>)
     Given a nonce of <Nonce>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Nonce      | Description                 |
@@ -45,8 +45,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with Battery Level at <mV> millivolts
     Given a battery_mV of <mV>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
       | mV         |
@@ -62,8 +62,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with sensor <Sensor> <Description> temperature (<tempC>)
     Given a sensor <Sensor> temperature of <tempC>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
       | Sensor | tempC      | Description         |
@@ -91,8 +91,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with <Description> firmware.major (<Version>)
     Given a firmware_version.major of <Version>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Version | Description |
@@ -101,8 +101,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with <Description> firmware.minor (<Version>)
     Given a firmware_version.minor of <Version>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Version | Description |
@@ -111,8 +111,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with <Description> firmware.build (<Version>)
     Given a firmware_version.build of <Version>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Version   | Description    |
@@ -122,8 +122,8 @@ Feature: Uplink Install Request Decoding
 
   Scenario Outline: Decodes with <Description> reset_reason (<Reason>)
     Given a reset_reason of <Reason>
-    When the uplink decoder is called
-    Then it should be decoded
+    When the uplink is decoded
+    Then the decode is successful
 
     Examples:
     | Reason    | Description          |

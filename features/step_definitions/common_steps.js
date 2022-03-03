@@ -26,20 +26,19 @@ Given("a sensor {int} {word} of {valueType}", function (sensor, property, value)
     this.encoded = propertyMap[this.decoded.type][property][sensor-1].encode(this.encoded, value)
     this.decoded = propertyMap[this.decoded.type][property][sensor-1].decode(this.decoded, value)
 })
-
-When("the uplink decoder is called", function () {
+When("the uplink is decoded", function () {
     this.actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
 })
 
-When("the downlink encoder is called", function () {
+When("the downlink is encoded", function () {
     this.actual = encodeDownlink({ data: this.decoded });
 })
 
-When("the downlink decoder is called", function () {
+When("the downlink is decoded", function () {
     this.actual = decodeDownlink({ bytes: this.encoded, fPort: 1 });
 })
 
-Then("it should be decoded", function () {
+Then("the decode is successful", function () {
     this.actual.must.eql({
         data: this.decoded,
         warnings: [],
@@ -47,7 +46,7 @@ Then("it should be decoded", function () {
     })
 })
 
-Then("it should be encoded", function () {
+Then("the encode is successful", function () {
     this.actual.must.eql({
         bytes: this.encoded,
         fPort: this.fPort || 1,

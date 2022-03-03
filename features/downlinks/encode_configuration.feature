@@ -4,13 +4,13 @@ Feature: Downlink Configuration Encoding
     Given a configuration payload, version 3
 
   Scenario: Encodes base line Configuration
-    When the downlink encoder is called
-    Then it should be encoded
+    When the downlink is encoded
+    Then the encode is successful
 
   Scenario Outline: Encodes with <Description> timestamp (<Timestamp>)
     Given a timestamp of <Timestamp>
-    When the downlink encoder is called
-    Then it should be encoded
+    When the downlink is encoded
+    Then the encode is successful
 
     Examples:
       | Timestamp  | Description                 |
@@ -22,8 +22,8 @@ Feature: Downlink Configuration Encoding
 
   Scenario Outline: Encodes with <Description> sequence (<Sequence>)
     Given a sequence of <Sequence>
-    When the downlink encoder is called
-    Then it should be encoded
+    When the downlink is encoded
+    Then the encode is successful
 
     Examples:
       | Sequence  | Description |
