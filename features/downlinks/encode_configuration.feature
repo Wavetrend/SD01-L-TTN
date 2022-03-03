@@ -1,7 +1,7 @@
 Feature: Encode Configuration
 
   Background:
-    Given a configuration, version 3
+    Given a configuration payload, version 3
 
   Scenario: Encode base line Configuration
     When the downlink encoder is called

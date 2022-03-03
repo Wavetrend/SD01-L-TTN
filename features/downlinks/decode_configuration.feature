@@ -1,7 +1,7 @@
 Feature: Decode Configuration
 
   Background:
-    Given a configuration, version 3
+    Given a configuration payload, version 3
 
   Scenario: Decodes base line configuration
     When the downlink decoder is called
