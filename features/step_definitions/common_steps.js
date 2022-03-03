@@ -26,6 +26,28 @@ Given("a sensor {int} {word} of {valueType}", function (sensor, property, value)
     this.encoded = propertyMap[this.decoded.type][property][sensor-1].encode(this.encoded, value)
     this.decoded = propertyMap[this.decoded.type][property][sensor-1].decode(this.decoded, value)
 })
+
+Given("an empty payload header", function () {
+    this.encoded = [
+        0x00,                       // 00 - type
+        0x00,                       // 01 - version
+        0x00,                       // 02 - sequence
+        0x00, 0x00, 0x00, 0x00,     // 03 - timestamp
+    ]
+
+    this.decoded = {
+        type: 0,
+        version: 0,
+        sequence: 0,
+        timestamp: 0,
+    }
+})
+
+Given("the payload type is {int}", function (type) {
+    this.encoded[0] = type
+    this.decoded.type = type
+})
+
 When("the uplink is decoded", function () {
     this.actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
 })
@@ -53,4 +75,12 @@ Then("the encode is successful", function () {
         warnings: [],
         errors: [],
     })
+})
+
+Then("the decode errors with {string}", function (message) {
+    this.actual.must.not.have.property('data')
+    this.actual.must.have.property('errors')
+    this.actual.errors.must.be.array()
+    this.actual.errors.must.have.length(1)
+    this.actual.errors.must.contain(message)
 })
