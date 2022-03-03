@@ -1,8 +1,6 @@
-const { Given, When, Then, Before } = require('@cucumber/cucumber');
+const { Given, When, Then, Before, defineParameterType } = require('@cucumber/cucumber');
 const { decodeUplink, SD01L_PAYLOAD_TYPE} = require("../../src/uplink");
 const { encodeDownlink, decodeDownlink } = require("../../src/downlink");
-
-const { defineParameterType } = require('@cucumber/cucumber');
 
 defineParameterType({
     name: 'valueType',
