@@ -1,16 +1,34 @@
-const { Given, When, Then } = require('@cucumber/cucumber');
+const { Given, When, Then, Before } = require('@cucumber/cucumber');
 const { decodeUplink, SD01L_PAYLOAD_TYPE} = require("../../src/uplink");
 const { encodeDownlink, decodeDownlink } = require("../../src/downlink");
 
 const { defineParameterType } = require('@cucumber/cucumber');
 
 defineParameterType({
-    name: 'hexint',
-    regexp: /(0x[0-9A-Fa-f]+|-?[0-9]+|null)/,
+    name: 'valueType',
+    regexp: /0x[0-9A-Fa-f]+|-?\d+(?:\.\d+)?|null|true|false/,
     transformer(value) {
-        return value === 'null' ? null : parseInt(value);
+        switch (value) {
+            case 'true':
+                return true
+            case 'false':
+                return false
+            case 'null':
+                return null
+            default:
+                if (value.includes('.')) {
+                    return parseFloat(value)
+                }
+                return parseInt(value)
+        }
     }
 });
+
+Before(function () {
+    this.encoded = []
+    this.decoded = {}
+    delete this.actual
+})
 
 Given("An installation request payload, version {int}", function (version) {
     this.encoded = [
@@ -138,6 +156,26 @@ function temperatureHandler(sensor) {
     }
 }
 
+function flowSettlingCountHandler(sensor) {
+    return {
+        encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 17 + sensor, 1),
+        decode: (object, value) => {
+            object.config_type[sensor].flow_settling_count = value
+            return object
+        }
+    }
+}
+
+function configTypeHandler(sensor) {
+    return {
+        encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 17 + sensor, 1),
+        decode: (object, value) => {
+            object.config_type[sensor].config = value
+            return object
+        }
+    }
+}
+
 const propertyMap = [
     // install request
     {
@@ -156,16 +194,117 @@ const propertyMap = [
             temperatureHandler(1),
             temperatureHandler(2),
         ],
+        'firmware_version.major': {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 19, 1),
+            decode: (object, value) => {
+                object.firmware_version.major = value
+                return object
+            }
+        },
+        'firmware_version.minor': {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 20, 1),
+            decode: (object, value) => {
+                object.firmware_version.minor = value
+                return object
+            }
+        },
+        'firmware_version.build': {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 21, 2),
+            decode: (object, value) => {
+                object.firmware_version.build = value
+                return object
+            }
+        },
+        reset_reason: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 23, 2),
+            decode: (object, value) => {
+                object.reset_reason = value
+                return object
+            }
+        },
     },
     // configuration
     {
         sequence: sequenceHandler,
         timestamp: timestampHandler,
         nonce: nonceHandler,
+        downlink_hours: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 11, 1),
+            decode: (object, value) => {
+                object.downlink_hours = value
+                return object
+            }
+        },
+        scald: {
+            encode: (bytes, value) => unsignedEncode(bytes, !!value, 12, 1),
+            decode: (object, value) => {
+                object.message_flags.scald = value
+                return object
+            }
+        },
+        freeze: {
+            encode: (bytes, value) => unsignedEncode(bytes, !!value << 1 >>> 0, 12, 1),
+            decode: (object, value) => {
+                object.message_flags.freeze = value
+                return object
+            }
+        },
+        ambient: {
+            encode: (bytes, value) => unsignedEncode(bytes, !!value << 2 >>> 0, 12, 1),
+            decode: (object, value) => {
+                object.message_flags.ambient = value
+                return object
+            }
+        },
+        debug: {
+            encode: (bytes, value) => unsignedEncode(bytes, !!value << 3 >>> 0, 12, 1),
+            decode: (object, value) => {
+                object.message_flags.debug = value
+                return object
+            }
+        },
+        history_count: {
+            encode: (bytes, value) => unsignedEncode(bytes, value << 6 >>> 0, 12, 1),
+            decode: (object, value) => {
+                object.message_flags.history_count = value
+                return object
+            }
+        },
+        scald_threshold: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 13, 1),
+            decode: (object, value) => {
+                object.scald_threshold = value
+                return object
+            }
+        },
+        freeze_threshold: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 14, 1),
+            decode: (object, value) => {
+                object.freeze_threshold = value
+                return object
+            }
+        },
+        reporting_period: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 15, 2),
+            decode: (object, value) => {
+                object.reporting_period = value
+                return object
+            }
+        },
+        flow_settling_count: [
+            flowSettlingCountHandler(0),
+            flowSettlingCountHandler(1),
+            flowSettlingCountHandler(2),
+        ],
+        config_type: [
+            configTypeHandler(0),
+            configTypeHandler(1),
+            configTypeHandler(2),
+        ],
     },
 ]
 
-Given("a {word} of {hexint}", function (property, value) {
+Given("a {word} of {valueType}", function (property, value) {
     propertyMap.must.have.property(this.decoded.type)
     propertyMap[this.decoded.type].must.have.property(property)
     propertyMap[this.decoded.type][property].must.have.property('encode')
@@ -174,7 +313,7 @@ Given("a {word} of {hexint}", function (property, value) {
     this.decoded = propertyMap[this.decoded.type][property].decode(this.decoded, value)
 })
 
-Given("a sensor {int} {word} of {hexint}", function (sensor, property, value) {
+Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
     propertyMap.must.have.property(this.decoded.type)
     propertyMap[this.decoded.type].must.have.property(property)
     propertyMap[this.decoded.type][property][sensor-1].must.have.property('encode')
@@ -196,9 +335,18 @@ When("the downlink decoder is called", function () {
 })
 
 Then("it should be decoded", function () {
-    this.actual.must.eql({ data: this.decoded, errors: [], warnings: [] })
+    this.actual.must.eql({
+        data: this.decoded,
+        warnings: [],
+        errors: [],
+    })
 })
 
 Then("it should be encoded", function () {
-    this.actual.must.eql({ bytes: this.encoded, warnings: [], errors: [], fPort: this.fPort || 1 });
+    this.actual.must.eql({
+        bytes: this.encoded,
+        fPort: this.fPort || 1,
+        warnings: [],
+        errors: [],
+    })
 })

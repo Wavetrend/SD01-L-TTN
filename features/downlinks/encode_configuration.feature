@@ -1,30 +1,31 @@
-Feature: Encode Configuration
+Feature: Downlink Configuration Encoding
 
   Background:
     Given a configuration payload, version 3
 
-  Scenario: Encode base line Configuration
+  Scenario: Encodes base line Configuration
     When the downlink encoder is called
     Then it should be encoded
 
-  Scenario Outline: Encodes Configuration with timestamp = <Timestamp>
+  Scenario Outline: Encodes with <Description> timestamp (<Timestamp>)
     Given a timestamp of <Timestamp>
     When the downlink encoder is called
     Then it should be encoded
 
     Examples:
-      | Timestamp  |
-      | 0          |
-      | 255        |
-      | 305419896  |
-      | 0xFFFFFFFF |
+      | Timestamp  | Description                 |
+      | 0          | Minimum                     |
+      | 0xFF       | Maximum 8 bit value         |
+      | 0xFFFF     | Maximum 16 bit value        |
+      | 0xFFFFFF   | Maximum 24 bit value        |
+      | 0xFFFFFFFF | Maximum 32 bit value        |
 
-  Scenario Outline: Encode Configuration with sequence = <Sequence>
+  Scenario Outline: Encodes with <Description> sequence (<Sequence>)
     Given a sequence of <Sequence>
     When the downlink encoder is called
     Then it should be encoded
 
     Examples:
-      | Sequence  |
-      | 0         |
-      | 255       |
+      | Sequence  | Description |
+      | 0         | Minimum     |
+      | 255       | Maximum     |
