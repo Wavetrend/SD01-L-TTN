@@ -5,12 +5,14 @@ Feature: Downlink Configuration Decoding
 
   Scenario: Decodes base line configuration
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
   Scenario Outline: Decodes with <Description> sequence (<Sequence>)
     Given a sequence of <Sequence>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Sequence  | Description |
@@ -20,7 +22,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with <Description> timestamp (<Timestamp>)
     Given a timestamp of <Timestamp>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Timestamp  | Description                 |
@@ -33,7 +36,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with <Description> nonce (<Nonce>)
     Given a nonce of <Nonce>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Nonce      | Description                 |
@@ -46,7 +50,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with <Description> downlink hours (<Hours>)
     Given a downlink_hours of <Hours>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Hours | Description    |
@@ -57,7 +62,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with <Flag> of <Description> (<Value>)
     Given a <Flag> of <Value>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Flag          | Value     | Description           |
@@ -71,7 +77,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with <Description> <Threshold> (<Value>)
     Given a <Threshold> of <Value>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Threshold         | Value     | Description      |
@@ -85,7 +92,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with <Description> reporting period (<Period>)
     Given a reporting_period of <Period>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Period | Description          |
@@ -96,7 +104,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with sensor <Sensor>'s <Description> flow settling count (<Count>)
     Given a sensor <Sensor> flow_settling_count of <Count>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
     | Sensor | Count | Description  |
@@ -110,7 +119,8 @@ Feature: Downlink Configuration Decoding
   Scenario Outline: Decodes with sensor <Sensor>'s <Description> config type (<Config>)
     Given a sensor <Sensor> config_type of <Config>
     When the downlink is decoded
-    Then the decode is successful
+    Then the v3 decode is successful
+    And the v2 decode is undefined
 
     Examples:
       | Sensor | Config | Description                         |

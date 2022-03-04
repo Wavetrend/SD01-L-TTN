@@ -1,12 +1,14 @@
 const { Given, When, Then, Before } = require('@cucumber/cucumber');
-const { decodeUplink } = require("../../src/uplink");
-const { encodeDownlink, decodeDownlink } = require("../../src/downlink");
+const { decodeUplink, Decoder } = require("../../src/uplink");
+const { encodeDownlink, decodeDownlink, Encoder } = require("../../src/downlink");
 const { propertyMap } = require('./property_map')
+const expect = require('must')
 
 Before(function () {
     this.encoded = []
     this.decoded = {}
-    delete this.actual
+    delete this.v2actual
+    delete this.v3actual
 })
 
 Given("a {word} of {valueType}", function (property, value) {
@@ -49,36 +51,61 @@ Given("the payload type is {int}", function (type) {
 })
 
 When("the uplink is decoded", function () {
-    this.actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
+    this.v3actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
+    this.v2actual = Decoder(this.encoded, this.fPort || 1 )
 })
 
 When("the downlink is encoded", function () {
-    this.actual = encodeDownlink({ data: this.decoded });
+    this.v3actual = encodeDownlink({ data: this.decoded });
+    this.v2actual = Encoder(this.decoded);
 })
 
 When("the downlink is decoded", function () {
-    this.actual = decodeDownlink({ bytes: this.encoded, fPort: 1 });
+    this.v3actual = decodeDownlink({ bytes: this.encoded, fPort: 1 });
+    this.v2actual = undefined
 })
 
 Then("the decode is successful", function () {
-    this.actual.must.eql({
+    this.v3actual.must.eql({
+        data: this.decoded,
+        warnings: [],
+        errors: [],
+    })
+    this.v2actual.must.eql(this.decoded)
+})
+
+Then("the v3 decode is successful", function () {
+    this.v3actual.must.eql({
         data: this.decoded,
         warnings: [],
         errors: [],
     })
 })
 
+Then("the v2 decode is undefined", function () {
+    expect(this.v2actual).to.be.undefined()
+})
+
 Then("the encode is successful", function () {
-    this.actual.must.eql({
+    this.v3actual.must.eql({
         bytes: this.encoded,
         fPort: this.fPort || 1,
         warnings: [],
         errors: [],
     })
+    this.v2actual.must.eql(this.encoded)
 })
 
-Then(/the (decode|encode) errors with "([^"]*)"$/, function (coding, message) {
-    this.actual.must.eql({
+Then(/the (?:decode|encode) errors with "([^"]*)"$/, function (message) {
+    this.v3actual.must.eql({
+        errors: [message],
+        warnings: []
+    })
+    expect(this.v2actual).to.eql([])
+})
+
+Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
+    this.v3actual.must.eql({
         errors: [message],
         warnings: []
     })

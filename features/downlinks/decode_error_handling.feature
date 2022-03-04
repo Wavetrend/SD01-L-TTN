@@ -4,7 +4,8 @@ Feature: Decode Error Handling
     Given an empty payload header
     And the payload type is <Payload Type>
     When the downlink is decoded
-    Then the decode errors with "Unsupported type for downlink decoding"
+    Then the v3 decode errors with "Unsupported type for downlink decoding"
+    And the v2 decode is undefined
 
     Examples:
     | Payload Type  | Description                     |
@@ -23,7 +24,8 @@ Feature: Decode Error Handling
    Given an empty payload header
    And the payload type is <Payload Type>
    When the downlink is decoded
-   Then the decode errors with "Unrecognised type for downlink decoding"
+   Then the v3 decode errors with "Unrecognised type for downlink decoding"
+   And the v2 decode is undefined
 
    Examples:
    | Payload Type |
