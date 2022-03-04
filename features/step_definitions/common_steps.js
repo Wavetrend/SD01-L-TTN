@@ -78,14 +78,8 @@ Then("the encode is successful", function () {
 })
 
 Then(/the (decode|encode) errors with "([^"]*)"$/, function (coding, message) {
-    if (coding === 'decoding') {
-        this.actual.must.not.have.property('data')
-    } else {
-        this.actual.must.not.have.property('bytes')
-        this.actual.must.not.have.property('fPort')
-    }
-    this.actual.must.have.property('errors')
-    this.actual.errors.must.be.an.array()
-    this.actual.errors.must.have.length(1)
-    this.actual.errors.must.contain(message)
+    this.actual.must.eql({
+        errors: [message],
+        warnings: []
+    })
 })
