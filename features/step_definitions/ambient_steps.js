@@ -7,7 +7,6 @@ Given("an ambient report, version {int}", function (version) {
         version,
         0x00,
         0x00, 0x00, 0x00, 0x00,
-        0x00, 0x00, 0x00, 0x00,     // 07 - nonce
         0x00,                       // 07 - minC
         0x00,                       // 08 - maxC
         0x00,                       // 09 - avgC

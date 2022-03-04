@@ -195,7 +195,17 @@ const propertyMap = [
         ],
     },
     // install response
-    {},
+    {
+        sequence: sequenceHandler,
+        timestamp: timestampHandler,
+        error_code: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
+            decode: (object, value) => {
+                object.error_code = value
+                return object
+            },
+        },
+    },
     // standard report
     {},
     // ambient report
