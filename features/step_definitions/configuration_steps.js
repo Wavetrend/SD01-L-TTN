@@ -19,8 +19,8 @@ Given("a configuration payload, version {int}", function (version) {
     ];
 
     this.decoded = {
-        type: 1,
-        version: 3,
+        type: SD01L_PAYLOAD_TYPE.CONFIGURATION,
+        version: version,
         sequence: 0,
         timestamp: 0,
         nonce: 0,

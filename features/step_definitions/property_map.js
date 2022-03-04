@@ -39,6 +39,15 @@ function temperatureHandler(sensor) {
     }
 }
 
+function tempCHandler(offset, property) {
+    return {
+        encode: (bytes, value) => unsignedEncode(bytes, value, offset, 1),
+        decode: (object, value) => {
+            object[property] = value
+            return object
+        }
+    }
+}
 function flowSettlingCountHandler(sensor) {
     return {
         encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 17 + sensor, 1),
@@ -185,6 +194,18 @@ const propertyMap = [
             configTypeHandler(2),
         ],
     },
+    // install response
+    {},
+    // standard report
+    {},
+    // ambient report
+    {
+        sequence: sequenceHandler,
+        timestamp: timestampHandler,
+        minC: tempCHandler(7, 'minC'),
+        maxC: tempCHandler(8, 'maxC'),
+        avgC: tempCHandler(9, 'avgC'),
+    }
 ]
 
 module.exports = {
