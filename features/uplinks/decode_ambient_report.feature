@@ -1,14 +1,53 @@
 Feature: Uplink Ambient Report Decoding
 
-  Background:
-    Given an ambient report, version 0
+  Scenario: A v0 ambient report decodes from binary to JSON
+    Given the uplink data is:
+      | Data                 | Description              |
+      | 0x04                 | Ambient Report Type      |
+      | 0x00                 | Ambient Report Version   |
+      | 0x00                 | Sequence                 |
+      | 0x00 0x00 0x00 0x00  | Timestamp                |
+      | 0x00                 | Minimum Temp C           |
+      | 0x00                 | Maximum Temp C           |
+      | 0x00                 | Average Temp C           |
+    When the uplink is decoded
+    Then the v3 decoded output MUST match:
+    """
+    {
+      "data": {
+        "type": 4,
+        "version": 0,
+        "sequence": 0,
+        "timestamp": 0,
+        "minC": 0,
+        "maxC": 0,
+        "avgC": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+    """
+    And the v2 decoded output MUST match:
+    """
+    {
+      "type": 4,
+      "version": 0,
+      "sequence": 0,
+      "timestamp": 0,
+      "minC": 0,
+      "maxC": 0,
+      "avgC": 0
+    }
+    """
 
   Scenario: Ambient base line decode
+    Given an ambient report, version 0
     When the uplink is decoded
     Then the decode is successful
 
   Scenario Outline: Decodes with <Description> sequence (<Sequence>)
-    Given a sequence of <Sequence>
+    Given an ambient report, version 0
+    And a sequence of <Sequence>
     When the uplink is decoded
     Then the decode is successful
 
@@ -18,7 +57,8 @@ Feature: Uplink Ambient Report Decoding
       | 255       | Maximum     |
 
   Scenario Outline: Decodes with <Description> timestamp (<Timestamp>)
-    Given a timestamp of <Timestamp>
+    Given an ambient report, version 0
+    And a timestamp of <Timestamp>
     When the uplink is decoded
     Then the decode is successful
 
@@ -31,7 +71,8 @@ Feature: Uplink Ambient Report Decoding
       | 0xFFFFFFFF | Maximum 32 bit value        |
 
   Scenario Outline: Decodes with <Property> at <Description> (<Value>)
-    Given a <Property> of <Value>
+    Given an ambient report, version 0
+    And a <Property> of <Value>
     When the uplink is decoded
     Then the decode is successful
 
