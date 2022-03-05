@@ -110,3 +110,28 @@ Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
         warnings: []
     })
 })
+
+/** ------------------------------ */
+
+Given("the uplink data is:", function (table){
+    this.encoded = table.hashes().reduce((data, row) => {
+        [...row.Data.matchAll(/0x(?<hex>[0-9A-Fa-f]+)|(?<dec>[0-9]+)/g)].forEach(match => {
+            if (match.groups.hex) {
+                data.push(parseInt(match.groups.hex, 16))
+            } else if (match.groups.dec) {
+                data.push(parseInt(match.groups.dec, 10))
+            }
+        })
+        return data
+    }, [])
+})
+
+Then("the v3 decoded output MUST match:", function (json) {
+    const data = JSON.parse(json)
+    this.v3actual.must.eql(data)
+})
+
+Then("the v2 decoded output MUST match:", function (json) {
+    const data = JSON.parse(json)
+    this.v2actual.must.eql(data)
+})

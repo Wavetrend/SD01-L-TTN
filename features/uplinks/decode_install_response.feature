@@ -1,14 +1,42 @@
 Feature: Uplink Install Response Decoding
 
-  Background:
-    Given an installation response, version 1
-
-  Scenario: Base line decode
+  Scenario: A v1 installation response decodes from binary to JSON
+    Given the uplink data is:
+      | Data                 | Description              |
+      | 0x02                 | Install Response Type    |
+      | 0x01                 | Install Response Version |
+      | 0x00                 | Sequence                 |
+      | 0x00 0x00 0x00 0x00  | Timestamp                |
+      | 0x00                 | Error Code               |
     When the uplink is decoded
-    Then the decode is successful
+    Then the v3 decoded output MUST match:
+    """
+    {
+      "data": {
+        "type": 2,
+        "version": 1,
+        "sequence": 0,
+        "timestamp": 0,
+        "error_code": 0
+      },
+      "warnings": [],
+      "errors": []
+    }
+    """
+    And the v2 decoded output MUST match:
+    """
+    {
+      "type": 2,
+      "version": 1,
+      "sequence": 0,
+      "timestamp": 0,
+      "error_code": 0
+    }
+    """
 
   Scenario Outline: Decodes with <Description> sequence (<Sequence>)
-    Given a sequence of <Sequence>
+    Given an installation response, version 1
+    And a sequence of <Sequence>
     When the uplink is decoded
     Then the decode is successful
 
@@ -18,7 +46,8 @@ Feature: Uplink Install Response Decoding
       | 255       | Maximum     |
 
   Scenario Outline: Decodes with <Description> timestamp (<Timestamp>)
-    Given a timestamp of <Timestamp>
+    Given an installation response, version 1
+    And a timestamp of <Timestamp>
     When the uplink is decoded
     Then the decode is successful
 
@@ -31,7 +60,8 @@ Feature: Uplink Install Response Decoding
       | 0xFFFFFFFF | Maximum 32 bit value        |
 
   Scenario Outline: Decodes with <Description> error code (<Value>)
-    Given a error_code of <Value>
+    Given an installation response, version 1
+    And a error_code of <Value>
     When the uplink is decoded
     Then the decode is successful
 
