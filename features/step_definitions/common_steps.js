@@ -29,22 +29,6 @@ Given("a sensor {int} {word} of {valueType}", function (sensor, property, value)
     this.decoded = propertyMap[this.decoded.type][property][sensor-1].decode(this.decoded, value)
 })
 
-Given("an empty payload header", function () {
-    this.encoded = [
-        0x00,                       // 00 - type
-        0x00,                       // 01 - version
-        0x00,                       // 02 - sequence
-        0x00, 0x00, 0x00, 0x00,     // 03 - timestamp
-    ]
-
-    this.decoded = {
-        type: 0,
-        version: 0,
-        sequence: 0,
-        timestamp: 0,
-    }
-})
-
 Given("the payload type is {int}", function (type) {
     this.encoded[0] = type
     this.decoded.type = type
@@ -110,8 +94,6 @@ Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
         warnings: []
     })
 })
-
-/** ------------------------------ */
 
 Given("the encoded data has the structure:", function (table){
     this.encoded = table.hashes().reduce((data, row) => {

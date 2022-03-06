@@ -1,8 +1,15 @@
 Feature: Decode Error Handling
 
+  Background:
+    Given the encoded data has the structure:
+      | Data                 | Description              |
+      | 0x00                 | Type                     |
+      | 0x00                 | Version                  |
+      | 0x00                 | Sequence                 |
+      | 0x00 0x00 0x00 0x00  | Timestamp                |
+
   Scenario Outline: Unsupported Payload type <Description> (<Payload Type>) produces an error when decoding
-    Given an empty payload header
-    And the payload type is <Payload Type>
+    Given the payload type is <Payload Type>
     When the downlink is decoded
     Then the v3 decode errors with "Unsupported type for downlink decoding"
     And the v2 decode is undefined
@@ -21,8 +28,7 @@ Feature: Decode Error Handling
     | 10            | Sensor Data Debug Report        |
 
  Scenario Outline: Invalid Payload Type <Payload Type> produces an error when decoded
-   Given an empty payload header
-   And the payload type is <Payload Type>
+   Given the payload type is <Payload Type>
    When the downlink is decoded
    Then the v3 decode errors with "Unrecognised type for downlink decoding"
    And the v2 decode is undefined
