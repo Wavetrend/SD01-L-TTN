@@ -48,6 +48,27 @@ function tempCHandler(offset, property) {
         }
     }
 }
+
+function currentPropertyHandler(sensor, offset, property) {
+    return {
+        encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
+        decode: (object, value) => {
+            object.current.sensor[sensor][property] = value
+            return object
+        }
+    }
+}
+
+function historyPropertyHandler(history, sensor, offset, property) {
+    return {
+        encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
+        decode: (object, value) => {
+            object.history[history].sensor[sensor][property] = value
+            return object
+        }
+    }
+}
+
 function flowSettlingCountHandler(sensor) {
     return {
         encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 17 + sensor, 1),
@@ -207,7 +228,84 @@ const propertyMap = [
         },
     },
     // standard report
-    {},
+    {
+        sequence: sequenceHandler,
+        timestamp: timestampHandler,
+        CurrentMinC: [
+            currentPropertyHandler(0, 7, 'minC'),
+            currentPropertyHandler(1, 7, 'minC'),
+            currentPropertyHandler(2, 7, 'minC'),
+        ],
+        CurrentMaxC: [
+            currentPropertyHandler(0, 8, 'maxC'),
+            currentPropertyHandler(1, 8, 'maxC'),
+            currentPropertyHandler(2, 8, 'maxC'),
+        ],
+        CurrentEvents: [
+            currentPropertyHandler(0, 9, 'events'),
+            currentPropertyHandler(1, 9, 'events'),
+            currentPropertyHandler(2, 9, 'events'),
+        ],
+        CurrentReports: [
+            currentPropertyHandler(0, 10, 'reports'),
+            currentPropertyHandler(1, 10, 'reports'),
+            currentPropertyHandler(2, 10, 'reports'),
+        ],
+        History1MinC: [
+            historyPropertyHandler(0, 0, 23, 'minC'),
+            historyPropertyHandler(0, 1, 23, 'minC'),
+            historyPropertyHandler(0, 2, 23, 'minC'),
+        ],
+        History1MaxC: [
+            historyPropertyHandler(0, 0, 24, 'maxC'),
+            historyPropertyHandler(0, 1, 24, 'maxC'),
+            historyPropertyHandler(0, 2, 24, 'maxC'),
+        ],
+        History1Events: [
+            historyPropertyHandler(0, 0, 25, 'events'),
+            historyPropertyHandler(0, 1, 25, 'events'),
+            historyPropertyHandler(0, 2, 25, 'events'),
+        ],
+        History1Reports: [
+            historyPropertyHandler(0, 0, 26, 'reports'),
+            historyPropertyHandler(0, 1, 26, 'reports'),
+            historyPropertyHandler(0, 2, 26, 'reports'),
+        ],
+        History2MinC: [
+            historyPropertyHandler(1, 0, 39, 'minC'),
+            historyPropertyHandler(1, 1, 39, 'minC'),
+            historyPropertyHandler(1, 2, 39, 'minC'),
+        ],
+        History2MaxC: [
+            historyPropertyHandler(1, 0, 40, 'maxC'),
+            historyPropertyHandler(1, 1, 40, 'maxC'),
+            historyPropertyHandler(1, 2, 40, 'maxC'),
+        ],
+        History2Events: [
+            historyPropertyHandler(1, 0, 41, 'events'),
+            historyPropertyHandler(1, 1, 41, 'events'),
+            historyPropertyHandler(1, 2, 41, 'events'),
+        ],
+        History2Reports: [
+            historyPropertyHandler(1, 0, 42, 'reports'),
+            historyPropertyHandler(1, 1, 42, 'reports'),
+            historyPropertyHandler(1, 2, 42, 'reports'),
+        ],
+        History1Timestamp: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 19, 4),
+            decode: (object, value) => {
+                object.history[0].timestamp = value
+                return object
+            }
+        },
+        History2Timestamp: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 35, 4),
+            decode: (object, value) => {
+                object.history[1].timestamp = value
+                return object
+            }
+        },
+    },
     // ambient report
     {
         sequence: sequenceHandler,
