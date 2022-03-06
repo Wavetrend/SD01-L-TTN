@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/decoder.js",
   "scripts": {
-    "test": "jest tests",
+    "test": "cucumber-js --publish-quiet",
+    "coverage": "nyc npm test && nyc report --reporter=lcov",
     "docs": "jsdoc -a all -c jsdoc.json -r -R README.md src -d docs && jsdoc2md --files src/* > docs/API.md",
     "watch:docs": "nodemon --exec 'npm run docs' --watch src"
   },
@@ -17,6 +18,7 @@
     "jsdoc": "^3.6.10",
     "jsdoc-to-markdown": "^7.1.1",
     "must": "^0.13.4",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "nyc": "^15.1.0"
   }
 }
