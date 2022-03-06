@@ -37,6 +37,15 @@ Given("a {word} of {valueType}", function (property, value) {
     this.decoded = propertyMap[this.decoded.type][property].decode(this.decoded, value)
 })
 
+Given("a {word} of {string}", function (property, string) {
+    propertyMap.must.have.property(this.decoded.type)
+    propertyMap[this.decoded.type].must.have.property(property)
+    propertyMap[this.decoded.type][property].must.have.property('encode')
+    propertyMap[this.decoded.type][property].must.have.property('decode')
+    this.encoded = propertyMap[this.decoded.type][property].encode(this.encoded, string)
+    this.decoded = propertyMap[this.decoded.type][property].decode(this.decoded, string)
+})
+
 Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
     propertyMap.must.have.property(this.decoded.type)
     propertyMap[this.decoded.type].must.have.property(property)

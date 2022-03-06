@@ -373,10 +373,38 @@ const propertyMap = [
             sensorErrorHandler(1),
             sensorErrorHandler(2),
         ]
-
     },
     // General error
-    {},
+    {
+        sequence: sequenceHandler,
+        timestamp: timestampHandler,
+        error_code: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 2),
+            decode: (object, value) => {
+                object.error_code = value
+                return object
+            },
+        },
+        file: {
+            encode: (bytes, value) => {
+                for (let i = 0 ; i < 32 && i < value.length ; i++) {
+                    bytes[9 + i] = value.charCodeAt(i)
+                }
+                return bytes
+            },
+            decode: (object, value) => {
+                object.file = value
+                return object
+            }
+        },
+        line: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 41, 2),
+            decode: (object, value) => {
+                object.line = value
+                return object
+            },
+        },
+    },
 ]
 
 module.exports = {
