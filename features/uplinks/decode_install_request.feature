@@ -1,7 +1,39 @@
 Feature: Uplink Install Request Decoding
 
   Background:
-    Given An installation request payload, version 4
+    Given the encoded data has the structure:
+      | Data                 | Description              |
+      | 0x00                 | Install Request Type     |
+      | 0x04                 | Install Request Version  |
+      | 0x00                 | Sequence                 |
+      | 0x00 0x00 0x00 0x00  | Timestamp                |
+      | 0x00 0x00 0x00 0x00  | Nonce                    |
+      | 0x00 0x00            | Battery mV               |
+      | 0x01 0x0E            | Sensor 1 temp (0degC)    |
+      | 0x01 0x0E            | Sensor 2 temp (0degC)    |
+      | 0x01 0x0E            | Sensor 3 temp (0degC)    |
+      | 0x00 0x00 0x00 0x00  | Firmware Version         |
+      | 0x00 0x00            | Reset Reason             |
+    And the decoded data has the structure:
+    """
+    {
+      "type": 0,
+      "version": 4,
+      "sequence": 0,
+      "timestamp": 0,
+      "nonce": 0,
+      "battery_mV": 0,
+      "temperature": [
+        0, 0, 0
+      ],
+      "firmware_version": {
+        "major": 0,
+        "minor": 0,
+        "build": 0
+      },
+      "reset_reason": 0
+    }
+    """
 
   Scenario: Decodes base line
     When the uplink is decoded

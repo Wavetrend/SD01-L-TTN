@@ -1,29 +1,14 @@
 Feature: Uplink Install Response Decoding
 
-  Scenario: A v1 installation response decodes from binary to JSON
-    Given the uplink data is:
+  Background:
+    Given the encoded data has the structure:
       | Data                 | Description              |
       | 0x02                 | Install Response Type    |
       | 0x01                 | Install Response Version |
       | 0x00                 | Sequence                 |
       | 0x00 0x00 0x00 0x00  | Timestamp                |
       | 0x00                 | Error Code               |
-    When the uplink is decoded
-    Then the v3 decoded output MUST match:
-    """
-    {
-      "data": {
-        "type": 2,
-        "version": 1,
-        "sequence": 0,
-        "timestamp": 0,
-        "error_code": 0
-      },
-      "warnings": [],
-      "errors": []
-    }
-    """
-    And the v2 decoded output MUST match:
+    And the decoded data has the structure:
     """
     {
       "type": 2,
@@ -35,8 +20,7 @@ Feature: Uplink Install Response Decoding
     """
 
   Scenario Outline: Decodes with <Description> sequence (<Sequence>)
-    Given an installation response, version 1
-    And a sequence of <Sequence>
+    Given a sequence of <Sequence>
     When the uplink is decoded
     Then the decode is successful
 
@@ -46,8 +30,7 @@ Feature: Uplink Install Response Decoding
       | 255       | Maximum     |
 
   Scenario Outline: Decodes with <Description> timestamp (<Timestamp>)
-    Given an installation response, version 1
-    And a timestamp of <Timestamp>
+    Given a timestamp of <Timestamp>
     When the uplink is decoded
     Then the decode is successful
 
@@ -60,8 +43,7 @@ Feature: Uplink Install Response Decoding
       | 0xFFFFFFFF | Maximum 32 bit value        |
 
   Scenario Outline: Decodes with <Description> error code (<Value>)
-    Given an installation response, version 1
-    And a error_code of <Value>
+    Given a error_code of <Value>
     When the uplink is decoded
     Then the decode is successful
 

@@ -113,7 +113,7 @@ Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
 
 /** ------------------------------ */
 
-Given("the uplink data is:", function (table){
+Given("the encoded data has the structure:", function (table){
     this.encoded = table.hashes().reduce((data, row) => {
         [...row.Data.matchAll(/0x(?<hex>[0-9A-Fa-f]+)|(?<dec>[0-9]+)/g)].forEach(match => {
             if (match.groups.hex) {
@@ -126,12 +126,6 @@ Given("the uplink data is:", function (table){
     }, [])
 })
 
-Then("the v3 decoded output MUST match:", function (json) {
-    const data = JSON.parse(json)
-    this.v3actual.must.eql(data)
-})
-
-Then("the v2 decoded output MUST match:", function (json) {
-    const data = JSON.parse(json)
-    this.v2actual.must.eql(data)
+Given("the decoded data has the structure:", function (json) {
+    this.decoded = JSON.parse(json)
 })
