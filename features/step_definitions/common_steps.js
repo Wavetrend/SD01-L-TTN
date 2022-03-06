@@ -11,6 +11,23 @@ Before(function () {
     delete this.v3actual
 })
 
+Given("the encoded data has the structure:", function (table){
+    this.encoded = table.hashes().reduce((data, row) => {
+        [...row.Data.matchAll(/0x(?<hex>[0-9A-Fa-f]+)|(?<dec>[0-9]+)/g)].forEach(match => {
+            if (match.groups.hex) {
+                data.push(parseInt(match.groups.hex, 16))
+            } else if (match.groups.dec) {
+                data.push(parseInt(match.groups.dec, 10))
+            }
+        })
+        return data
+    }, [])
+})
+
+Given("the decoded data has the structure:", function (json) {
+    this.decoded = JSON.parse(json)
+})
+
 Given("a {word} of {valueType}", function (property, value) {
     propertyMap.must.have.property(this.decoded.type)
     propertyMap[this.decoded.type].must.have.property(property)
@@ -95,19 +112,3 @@ Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
     })
 })
 
-Given("the encoded data has the structure:", function (table){
-    this.encoded = table.hashes().reduce((data, row) => {
-        [...row.Data.matchAll(/0x(?<hex>[0-9A-Fa-f]+)|(?<dec>[0-9]+)/g)].forEach(match => {
-            if (match.groups.hex) {
-                data.push(parseInt(match.groups.hex, 16))
-            } else if (match.groups.dec) {
-                data.push(parseInt(match.groups.dec, 10))
-            }
-        })
-        return data
-    }, [])
-})
-
-Given("the decoded data has the structure:", function (json) {
-    this.decoded = JSON.parse(json)
-})
