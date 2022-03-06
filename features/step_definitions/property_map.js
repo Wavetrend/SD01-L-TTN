@@ -89,6 +89,16 @@ function configTypeHandler(sensor) {
     }
 }
 
+function sensorErrorHandler(sensor) {
+    return {
+        encode: (bytes, value) => unsignedEncode(bytes, value, 7 + sensor, 1),
+        decode: (object, value) => {
+            object.sensor[sensor] = value
+            return object
+        }
+    }
+}
+
 const propertyMap = [
     // install request
     {
@@ -352,6 +362,21 @@ const propertyMap = [
             },
         },
     },
+    // Low battery report - deprecated
+    {},
+    // Sensor error
+    {
+        sequence: sequenceHandler,
+        timestamp: timestampHandler,
+        sensor: [
+            sensorErrorHandler(0),
+            sensorErrorHandler(1),
+            sensorErrorHandler(2),
+        ]
+
+    },
+    // General error
+    {},
 ]
 
 module.exports = {
