@@ -1,29 +1,27 @@
-Feature: Uplink Ambient Report Decoding
+Feature: Uplink Freeze Report Decoding
 
   Background:
     Given the encoded data has the structure:
       | Data                 | Description              |
-      | 0x04                 | Freeze Report Type       |
+      | 0x06                 | Freeze Report Type       |
       | 0x00                 | Freeze Report Version    |
       | 0x00                 | Sequence                 |
       | 0x00 0x00 0x00 0x00  | Timestamp                |
-      | 0x00                 | Minimum Temp C           |
-      | 0x00                 | Maximum Temp C           |
-      | 0x00                 | Average Temp C           |
+      | 0x00                 | Sensor ID                |
+      | 0x00                 | Temp C                   |
     And the decoded data has the structure:
     """
     {
-      "type": 4,
+      "type": 6,
       "version": 0,
       "sequence": 0,
       "timestamp": 0,
-      "minC": 0,
-      "maxC": 0,
-      "avgC": 0
+      "sensor": 0,
+      "temperature": 0
     }
     """
 
-  Scenario: Ambient base line decode
+  Scenario: base line decode
     When the uplink is decoded
     Then the decode is successful
 
@@ -56,13 +54,9 @@ Feature: Uplink Ambient Report Decoding
     Then the decode is successful
 
     Examples:
-    | Property | Value | Description |
-    | minC     | -27   | Minimum     |
-    | minC     | 0     | Zero        |
-    | minC     | 100   | Maximum     |
-    | maxC     | -27   | Minimum     |
-    | maxC     | 0     | Zero        |
-    | maxC     | 100   | Maximum     |
-    | avgC     | -27   | Minimum     |
-    | avgC     | 0     | Zero        |
-    | avgC     | 100   | Maximum     |
+      | Property    | Value | Description |
+      | sensor      | 0     | Minimum     |
+      | sensor      | 255   | Maximum     |
+      | temperature | -27   | Minimum     |
+      | temperature | 0     | Zero        |
+      | temperature | 100   | Maximum     |
