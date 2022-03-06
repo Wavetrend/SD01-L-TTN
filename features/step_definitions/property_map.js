@@ -313,7 +313,26 @@ const propertyMap = [
         minC: tempCHandler(7, 'minC'),
         maxC: tempCHandler(8, 'maxC'),
         avgC: tempCHandler(9, 'avgC'),
-    }
+    },
+    // scald report
+    {
+        sequence: sequenceHandler,
+        timestamp: timestampHandler,
+        sensor: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
+            decode: (object, value) => {
+                object.sensor = value
+                return object
+            },
+        },
+        temperature: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
+            decode: (object, value) => {
+                object.temperature = value
+                return object
+            },
+        },
+    },
 ]
 
 module.exports = {
