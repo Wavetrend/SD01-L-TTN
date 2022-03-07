@@ -38,3 +38,16 @@ Feature: Decode Error Handling
    | 11           |
    | 12           |
    | 255          |
+
+  Scenario Outline: Unsupported configuration version <Version>
+    Given the payload type is 1
+    And the payload version is <Version>
+    When the downlink is decoded
+    Then the v3 encode errors with "Unsupported configuration version <Version>"
+
+    Examples:
+      | Version |
+      | 0       |
+      | 1       |
+      | 2       |
+      | 4       |

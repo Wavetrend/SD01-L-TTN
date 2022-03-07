@@ -362,16 +362,12 @@ function Decode_SD01L_Payload(bytes) {
             break;
 
         case SD01L_PAYLOAD_TYPE.CONFIGURATION:
-            throw "Configuration type is not a valid uplink message";
-
         case SD01L_PAYLOAD_TYPE.LOW_BATTERY_REPORT_DEPRECATED:
-            throw "Low Battery Report is deprecated";
-
         case SD01L_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
-            throw "Sensor Data Debug is not supported for decode";
+            throw "Unsupported type for uplink decoding";
 
         default:
-            throw "Unrecognised Type Code";
+            throw "Unrecognised type for uplink decoding";
     }
     return payload;
 }

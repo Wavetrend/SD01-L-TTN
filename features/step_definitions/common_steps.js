@@ -60,6 +60,11 @@ Given("the payload type is {int}", function (type) {
     this.decoded.type = type
 })
 
+Given("the payload version is {int}", function (version) {
+    this.encoded[1] = version
+    this.decoded.version = version
+})
+
 When("the uplink is decoded", function () {
     this.v3actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
     this.v2actual = Decoder(this.encoded, this.fPort || 1 )
@@ -100,6 +105,11 @@ Then("the v2 decode is undefined", function () {
     expect(this.v2actual, "V2 Actual").must.undefined()
 })
 
+Then("the v2 decode is null", function () {
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v2actual, "V2 Actual").must.be.null()
+})
+
 Then("the encode is successful", function () {
     // noinspection JSCheckFunctionSignatures
     expect(this.v3actual, "V3 Actual").must.eql({
@@ -121,7 +131,7 @@ Then(/the (?:decode|encode) errors with "([^"]*)"$/, function (message) {
     expect(this.v2actual, "V2 Actual").must.eql([])
 })
 
-Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
+Then(/the v3 (?:encode|decode) errors with "([^"]*)"$/, function (message) {
     // noinspection JSCheckFunctionSignatures
     expect(this.v3actual, "V3 Actual").must.eql({
         errors: [message],
