@@ -29,6 +29,12 @@ Given("the decoded data has the structure:", function (json) {
     this.decoded = JSON.parse(json)
 })
 
+Given(/there (?:is|are) (\d+) histor(?:y|ies)/, function (count) {
+    count = count < 2 ? count : 2
+    this.encoded = this.encoded.slice(0, 18 + (count * 16))
+    this.decoded.history = this.decoded.history.slice(0, count)
+});
+
 Given("a {word} of {valueType}", function (property, value) {
     propertyMap.must.have.property(this.decoded.type)
     propertyMap[this.decoded.type].must.have.property(property)

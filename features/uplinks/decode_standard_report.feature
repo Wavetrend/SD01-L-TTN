@@ -261,3 +261,15 @@ Feature: Uplink Standard Report Decoding
       | History1Timestamp | 4294967295   | Maximum     |
       | History2Timestamp | 0            | Minimum     |
       | History2Timestamp | 4294967295   | Maximum     |
+
+  Scenario Outline: Decodes with <Count> histories
+    Given there are <Count> histories
+    When the uplink is decoded
+    Then the decode is successful
+
+    Examples:
+    | Count |
+    | 0     |
+    | 1     |
+    | 2     |
+
