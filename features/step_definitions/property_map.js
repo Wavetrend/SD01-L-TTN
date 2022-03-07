@@ -7,26 +7,17 @@ function unsignedEncode(bytes, value, offset, width) {
 
 const sequenceHandler = {
     encode: (bytes, value) => unsignedEncode(bytes, value, 2, 1),
-    decode: (object, value) => {
-        object.sequence = value
-        return object
-    },
+    decode: (object, value) => decodeHandler(object, value, 'sequence'),
 }
 
 const timestampHandler = {
     encode: (bytes, value) => unsignedEncode(bytes, value, 3, 4),
-    decode: (object, value) => {
-        object.timestamp = value
-        return object
-    },
+    decode: (object, value) => decodeHandler(object, value, 'timestamp'),
 }
 
 const nonceHandler = {
     encode: (bytes, value) => unsignedEncode(bytes, value, 7, 4),
-    decode: (object, value) => {
-        object.nonce = value
-        return object
-    },
+    decode: (object, value) => decodeHandler(object, value, 'nonce'),
 }
 
 function temperatureHandler(sensor) {
@@ -42,10 +33,7 @@ function temperatureHandler(sensor) {
 function tempCHandler(offset, property) {
     return {
         encode: (bytes, value) => unsignedEncode(bytes, value, offset, 1),
-        decode: (object, value) => {
-            object[property] = value
-            return object
-        }
+        decode: (object, value) => decodeHandler(object, value, property),
     }
 }
 
@@ -99,6 +87,12 @@ function sensorErrorHandler(sensor) {
     }
 }
 
+function decodeHandler(object, value, property) {
+    object[property] = value
+    return object
+}
+
+
 const propertyMap = [
     // install request
     {
@@ -107,10 +101,7 @@ const propertyMap = [
         nonce: nonceHandler,
         battery_mV: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 11, 2),
-            decode: (object, value) => {
-                object.battery_mV = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'battery_mV'),
         },
         temperature: [
             temperatureHandler(0),
@@ -140,10 +131,7 @@ const propertyMap = [
         },
         reset_reason: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 23, 2),
-            decode: (object, value) => {
-                object.reset_reason = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'reset_reason'),
         },
     },
     // configuration
@@ -153,10 +141,7 @@ const propertyMap = [
         nonce: nonceHandler,
         downlink_hours: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 11, 1),
-            decode: (object, value) => {
-                object.downlink_hours = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'downlink_hours'),
         },
         scald: {
             encode: (bytes, value) => unsignedEncode(bytes, !!value, 12, 1),
@@ -195,24 +180,15 @@ const propertyMap = [
         },
         scald_threshold: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 13, 1),
-            decode: (object, value) => {
-                object.scald_threshold = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'scald_threshold'),
         },
         freeze_threshold: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 14, 1),
-            decode: (object, value) => {
-                object.freeze_threshold = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'freeze_threshold'),
         },
         reporting_period: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 15, 2),
-            decode: (object, value) => {
-                object.reporting_period = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'reporting_period'),
         },
         flow_settling_count: [
             flowSettlingCountHandler(0),
@@ -231,10 +207,7 @@ const propertyMap = [
         timestamp: timestampHandler,
         error_code: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
-            decode: (object, value) => {
-                object.error_code = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'error_code'),
         },
     },
     // standard report
@@ -330,17 +303,11 @@ const propertyMap = [
         timestamp: timestampHandler,
         sensor: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
-            decode: (object, value) => {
-                object.sensor = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'sensor'),
         },
         temperature: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
-            decode: (object, value) => {
-                object.temperature = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'temperature'),
         },
     },
     // freeze report
@@ -349,17 +316,11 @@ const propertyMap = [
         timestamp: timestampHandler,
         sensor: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
-            decode: (object, value) => {
-                object.sensor = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'sensor'),
         },
         temperature: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
-            decode: (object, value) => {
-                object.temperature = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'temperature'),
         },
     },
     // Low battery report - deprecated
@@ -380,10 +341,7 @@ const propertyMap = [
         timestamp: timestampHandler,
         error_code: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 7, 2),
-            decode: (object, value) => {
-                object.error_code = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'error_code'),
         },
         file: {
             encode: (bytes, value) => {
@@ -392,17 +350,11 @@ const propertyMap = [
                 }
                 return bytes
             },
-            decode: (object, value) => {
-                object.file = value
-                return object
-            }
+            decode: (object, value) => decodeHandler(object, value, 'file'),
         },
         line: {
             encode: (bytes, value) => unsignedEncode(bytes, value, 41, 2),
-            decode: (object, value) => {
-                object.line = value
-                return object
-            },
+            decode: (object, value) => decodeHandler(object, value, 'line'),
         },
     },
 ]
