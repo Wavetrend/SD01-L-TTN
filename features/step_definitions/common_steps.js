@@ -76,16 +76,19 @@ When("the downlink is decoded", function () {
 })
 
 Then("the decode is successful", function () {
-    this.v3actual.must.eql({
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v3actual, "V3 Actual").must.eql({
         data: this.decoded,
         warnings: [],
         errors: [],
     })
-    this.v2actual.must.eql(this.decoded)
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v2actual, "V2 Actual").must.eql(this.decoded)
 })
 
 Then("the v3 decode is successful", function () {
-    this.v3actual.must.eql({
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v3actual, "V3 Actual").must.eql({
         data: this.decoded,
         warnings: [],
         errors: [],
@@ -93,11 +96,13 @@ Then("the v3 decode is successful", function () {
 })
 
 Then("the v2 decode is undefined", function () {
-    expect(this.v2actual).to.be.undefined()
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v2actual, "V2 Actual").must.undefined()
 })
 
 Then("the encode is successful", function () {
-    this.v3actual.must.eql({
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v3actual, "V3 Actual").must.eql({
         bytes: this.encoded,
         fPort: this.fPort || 1,
         warnings: [],
@@ -107,15 +112,18 @@ Then("the encode is successful", function () {
 })
 
 Then(/the (?:decode|encode) errors with "([^"]*)"$/, function (message) {
-    this.v3actual.must.eql({
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v3actual, "V3 Actual").must.eql({
         errors: [message],
         warnings: []
     })
-    expect(this.v2actual).to.eql([])
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v2actual, "V2 Actual").must.eql([])
 })
 
 Then(/the v3 decode errors with "([^"]*)"$/, function (message) {
-    this.v3actual.must.eql({
+    // noinspection JSCheckFunctionSignatures
+    expect(this.v3actual, "V3 Actual").must.eql({
         errors: [message],
         warnings: []
     })
