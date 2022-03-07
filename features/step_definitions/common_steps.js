@@ -14,6 +14,7 @@ Before(function () {
 Given("the encoded data has the structure:", function (table){
     this.encoded = table.hashes().reduce((data, row) => {
         [...row.Data.matchAll(/0x(?<hex>[0-9A-Fa-f]+)|(?<dec>[0-9]+)/g)].forEach(match => {
+            /* istanbul ignore else */
             if (match.groups.hex) {
                 data.push(parseInt(match.groups.hex, 16))
             } else if (match.groups.dec) {

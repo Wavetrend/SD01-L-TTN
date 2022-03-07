@@ -7,6 +7,7 @@ defineParameterType({
         switch (value) {
             case 'true':
                 return true
+            /* istanbul ignore next */
             case 'false':
                 return false
             case 'null':
