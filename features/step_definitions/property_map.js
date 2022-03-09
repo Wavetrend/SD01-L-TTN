@@ -172,7 +172,7 @@ const propertyMap = [
             }
         },
         history_count: {
-            encode: (bytes, value) => unsignedEncode(bytes, value << 6 >>> 0, 12, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value << 5 >>> 0, 12, 1),
             decode: (object, value) => {
                 object.message_flags.history_count = value
                 return object
