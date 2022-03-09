@@ -101,10 +101,10 @@ describe("Configuration", () => {
 
             test.each`
                 flag                    | bit
-                ${'scald'}              | ${1}
-                ${'freeze'}             | ${2}
-                ${'ambient'}            | ${3}
-                ${'debug'}              | ${4}
+                ${'scald'}              | ${0}
+                ${'freeze'}             | ${1}
+                ${'ambient'}            | ${2}
+                ${'debug'}              | ${3}
             `(
                 "message flag: $flag",
                 ({ flag, bit }) => {
@@ -120,7 +120,7 @@ describe("Configuration", () => {
                 (count) => {
                     payload.data.message_flags = payload.data.message_flags || {};
                     payload.data.message_flags.history_count = count;
-                    expected.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) << 6 >>> 0;
+                    expected.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) << 5 >>> 0;
                     expect(encodeDownlink(payload)).toEqual(expected);
                 }
             );

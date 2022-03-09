@@ -186,11 +186,11 @@ function Encode_SD01L_Payload(object) {
             bytes.push(object.nonce & 0x000000FF);
             bytes.push(object.downlink_hours & 0xFF);
             bytes.push(
-                object.message_flags.scald << 1 >>> 0
-                | object.message_flags.freeze << 2 >>> 0
-                | object.message_flags.ambient << 3 >>> 0
-                | object.message_flags.debug << 4 >>> 0
-                | (object.message_flags.history_count & 0x03) << 6 >>> 0
+                object.message_flags.scald << 0 >>> 0
+                | object.message_flags.freeze << 1 >>> 0
+                | object.message_flags.ambient << 2 >>> 0
+                | object.message_flags.debug << 3 >>> 0
+                | (object.message_flags.history_count & 0x03) << 5 >>> 0
             );
             bytes.push((object.scald_threshold & 0xFF) >>> 0);
             bytes.push((object.freeze_threshold & 0xFF) >>> 0);
@@ -311,7 +311,7 @@ function Decode_SD01L_Payload(bytes) {
                 freeze: (flags & 0x02) === 0x02,
                 ambient: (flags & 0x04) === 0x04,
                 debug: (flags & 0x08) === 0x08,
-                history_count: (flags >>> 6) & 0x03,
+                history_count: (flags >>> 5) & 0x03,
             };
 
             object.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;

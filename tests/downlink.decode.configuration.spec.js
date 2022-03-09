@@ -108,9 +108,9 @@ describe("Decode Configuration", () => {
     );
 
     test.each([ 0, 1, 2 ])(
-        "message_flags: history_count",
+        "message_flags: history_count = %p",
         (count) => {
-            payload.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) << 6 >>> 0;
+            payload.bytes[OFFSET_MESSAGE_FLAGS] = (count & 0x03) << 5 >>> 0;
             expected.data.message_flags.history_count = count;
             expect(decodeDownlink(payload)).toEqual(expected)
         }
