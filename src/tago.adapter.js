@@ -38,24 +38,26 @@ function stringifyValues(data) {
 }
 
 function tagoAdaptStandardReport(object) {
-    return [
+    let payload = [
         {   variable: "type",       value: object.type                      },
         {   variable: "version",    value: object.version                   },
         {   variable: "sequence",   value: object.sequence                  },
         {   variable: "timestamp",  value: object.timestamp                 },
-        {   variable: "s1_minC",    value: object.current.sensor[0].minC    },
-        {   variable: "s1_maxC",    value: object.current.sensor[0].maxC    },
-        {   variable: "s1_events",  value: object.current.sensor[0].events  },
-        {   variable: "s1_reports", value: object.current.sensor[0].reports },
-        {   variable: "s2_minC",    value: object.current.sensor[1].minC    },
-        {   variable: "s2_maxC",    value: object.current.sensor[1].maxC    },
-        {   variable: "s2_events",  value: object.current.sensor[1].events  },
-        {   variable: "s2_reports", value: object.current.sensor[1].reports },
-        {   variable: "s3_minC",    value: object.current.sensor[2].minC    },
-        {   variable: "s3_maxC",    value: object.current.sensor[2].maxC    },
-        {   variable: "s3_events",  value: object.current.sensor[2].events  },
-        {   variable: "s3_reports", value: object.current.sensor[2].reports },
     ]
+
+    payload = object.current.sensor.reduce((acc, sensor, index) => {
+        if (sensor.minC !== 127 && sensor.maxC !== -128) {
+            return acc.concat([
+                {   variable: `s${index+1}_minC`, value: sensor.minC          },
+                {   variable: `s${index+1}_maxC`, value: sensor.maxC          },
+                {   variable: `s${index+1}_events`, value: sensor.events      },
+                {   variable: `s${index+1}_reports`, value: sensor.reports    },
+            ])
+        }
+        return acc
+    }, payload);
+
+    return payload
 }
 
 if (module !== undefined) {
