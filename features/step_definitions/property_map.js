@@ -140,7 +140,7 @@ const uplinkPropertyMap = [
             }
         },
         reset_reason: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 23, 2),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 3, 2),
             decode: (object, value) => decodeHandler(object, value, 'reset_reason'),
         },
     },
