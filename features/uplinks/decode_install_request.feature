@@ -78,17 +78,6 @@ Feature: Uplink Install Request Decoding
     | 0       | Minimum     |
     | 255     | Maximum     |
 
-  Scenario Outline: Decodes with <Description> firmware.build (<Version>)
-    Given a firmware_version.build of <Version>
-    When the uplink is decoded
-    Then the decode is successful
-
-    Examples:
-    | Version   | Description    |
-    | 0         | Minimum        |
-    | 255       | Maximum 8 bit  |
-    | 65535     | Maximum 16 bit |
-
   Scenario Outline: Decodes with <Description> reset_reason (<Reason>)
     Given a reset_reason of <Reason>
     When the uplink is decoded

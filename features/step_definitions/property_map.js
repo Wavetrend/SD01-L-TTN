@@ -126,23 +126,16 @@ const uplinkPropertyMap = [
             sensorStatusHandler(2),
         ],
         'firmware_version.major': {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 19, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 1, 1),
             decode: (object, value) => {
                 object.firmware_version.major = value
                 return object
             }
         },
         'firmware_version.minor': {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 20, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 2, 1),
             decode: (object, value) => {
                 object.firmware_version.minor = value
-                return object
-            }
-        },
-        'firmware_version.build': {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 21, 2),
-            decode: (object, value) => {
-                object.firmware_version.build = value
                 return object
             }
         },
