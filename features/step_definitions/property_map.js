@@ -144,6 +144,17 @@ const uplinkPropertyMap = [
             decode: (object, value) => decodeHandler(object, value, 'reset_reason'),
         },
     },
+    // standard report
+    {
+
+    },
+    // install response
+    {
+        error_code: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 0, 1),
+            decode: (object, value) => decodeHandler(object, value, 'error_code'),
+        },
+    }
 ]
 const propertyMap = [
     // configuration

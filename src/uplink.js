@@ -408,6 +408,12 @@ function Decode_SD01L_Payload(bytes, port) {
                     minor: unsignedByte(bytes[i++])
                 }
                 payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
+                break;
+
+            case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE:
+                payload.error_code = bytes[i++]
+                break;
+
         }
     }
     return payload;
