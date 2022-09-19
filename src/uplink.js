@@ -397,7 +397,7 @@ function Decode_SD01L_Payload(bytes, port) {
         switch (payload.type) {
             case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_REQUEST:
                 const flags = unsignedByte(bytes[i++])
-                payload.pvd_level = flags >> 3 & 0x03
+                payload.pvd_level = flags >>> 3 & 0x07
                 payload.sensor = [
                     !!(flags & 0x01),
                     !!(flags & 0x02),

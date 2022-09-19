@@ -28,22 +28,21 @@ Feature: Uplink Install Request Decoding
     When the uplink is decoded
     Then the decode is successful
 
-  Scenario Outline: Decodes with Battery Level at <mV> millivolts
-    Given a battery_mV of <mV>
+  Scenario Outline: Decodes with PVD level <pvd>
+    Given a pvd_level of <pvd>
     When the uplink is decoded
     Then the decode is successful
 
     Examples:
-      | mV         |
-      | 1850       |
-      | 2040       |
-      | 2240       |
-      | 2440       |
-      | 2640       |
-      | 2830       |
-      | 3050       |
-      | 3300       |
-      | 3600       |
+      | pvd        |
+      | 0          |
+      | 1          |
+      | 2          |
+      | 3          |
+      | 4          |
+      | 5          |
+      | 6          |
+      | 7          |
 
   Scenario Outline: Decodes with sensor <Sensor> <Description> temperature (<tempC>)
     Given a sensor <Sensor> temperature of <tempC>

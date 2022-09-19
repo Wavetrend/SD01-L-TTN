@@ -92,16 +92,21 @@ function decodeHandler(object, value, property) {
     return object
 }
 
+const uplinkPropertyMap = [
+    {},     // LoRaWAN reserved port
+    {},     // v1 payloads
 
-const propertyMap = [
     // install request
     {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        nonce: nonceHandler,
-        battery_mV: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 11, 2),
-            decode: (object, value) => decodeHandler(object, value, 'battery_mV'),
+        // sequence: sequenceHandler,
+        // timestamp: timestampHandler,
+        // nonce: nonceHandler,
+        pvd_level: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~(0x07 << 3)) | (value & 0x07) << 3
+                return bytes
+            },
+            decode: (object, value) => decodeHandler(object, value, 'pvd_level'),
         },
         temperature: [
             temperatureHandler(0),
@@ -134,6 +139,8 @@ const propertyMap = [
             decode: (object, value) => decodeHandler(object, value, 'reset_reason'),
         },
     },
+]
+const propertyMap = [
     // configuration
     {
         sequence: sequenceHandler,
@@ -361,4 +368,5 @@ const propertyMap = [
 
 module.exports = {
     propertyMap,
+    uplinkPropertyMap,
 }

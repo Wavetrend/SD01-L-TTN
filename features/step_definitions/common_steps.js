@@ -1,7 +1,7 @@
 const { Given, When, Then, Before } = require('@cucumber/cucumber');
 const { decodeUplink, Decoder } = require("../../src/uplink");
 const { encodeDownlink, decodeDownlink, Encoder } = require("../../src/downlink");
-const { propertyMap } = require('./property_map')
+const { propertyMap, uplinkPropertyMap} = require('./property_map')
 const expect = require('must')
 
 Before(function () {
@@ -41,21 +41,33 @@ Given(/there (?:is|are) (\d+) histor(?:y|ies)/, function (count) {
 });
 
 Given("a {word} of {valueType}", function (property, value) {
-    propertyMap.must.have.property(this.decoded.type)
-    propertyMap[this.decoded.type].must.have.property(property)
-    propertyMap[this.decoded.type][property].must.have.property('encode')
-    propertyMap[this.decoded.type][property].must.have.property('decode')
-    this.encoded = propertyMap[this.decoded.type][property].encode(this.encoded, value)
-    this.decoded = propertyMap[this.decoded.type][property].decode(this.decoded, value)
+    let map = []
+    if (this.fPort === 1) {
+        map = propertyMap
+    } else {
+        map = uplinkPropertyMap
+    }
+    map.must.have.property(this.decoded.type)
+    map[this.decoded.type].must.have.property(property)
+    map[this.decoded.type][property].must.have.property('encode')
+    map[this.decoded.type][property].must.have.property('decode')
+    this.encoded = map[this.decoded.type][property].encode(this.encoded, value)
+    this.decoded = map[this.decoded.type][property].decode(this.decoded, value)
 })
 
 Given("a {word} of {string}", function (property, string) {
-    propertyMap.must.have.property(this.decoded.type)
-    propertyMap[this.decoded.type].must.have.property(property)
-    propertyMap[this.decoded.type][property].must.have.property('encode')
-    propertyMap[this.decoded.type][property].must.have.property('decode')
-    this.encoded = propertyMap[this.decoded.type][property].encode(this.encoded, string)
-    this.decoded = propertyMap[this.decoded.type][property].decode(this.decoded, string)
+    let map = []
+    if (this.fPort === 1) {
+        map = propertyMap
+    } else {
+        map = uplinkPropertyMap
+    }
+    map.must.have.property(this.decoded.type)
+    map[this.decoded.type].must.have.property(property)
+    map[this.decoded.type][property].must.have.property('encode')
+    map[this.decoded.type][property].must.have.property('decode')
+    this.encoded = map[this.decoded.type][property].encode(this.encoded, string)
+    this.decoded = map[this.decoded.type][property].decode(this.decoded, string)
 })
 
 Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
