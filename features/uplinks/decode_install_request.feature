@@ -44,34 +44,19 @@ Feature: Uplink Install Request Decoding
       | 6          |
       | 7          |
 
-  Scenario Outline: Decodes with sensor <Sensor> <Description> temperature (<tempC>)
-    Given a sensor <Sensor> temperature of <tempC>
+  Scenario Outline: Decodes with sensor <Sensor> status <Description> (<Status>)
+    Given a sensor <Sensor> status of <Status>
     When the uplink is decoded
     Then the decode is successful
 
     Examples:
-      | Sensor | tempC      | Description         |
-      | 1      | -27        | Minimum             |
-      | 1      | -21.5      | Negative Decimal    |
-      | 1      | 0          | Zero                |
-      | 1      | 20         | Positive Integer    |
-      | 1      | 21.5       | Positive Decimal    |
-      | 1      | 100        | Maximum             |
-      | 1      | null       | No Value            |
-      | 2      | -27        | Minimum             |
-      | 2      | -21.5      | Negative Decimal    |
-      | 2      | 0          | Zero                |
-      | 2      | 20         | Positive Integer    |
-      | 2      | 21.5       | Positive Decimal    |
-      | 2      | 100        | Maximum             |
-      | 2      | null       | No Value            |
-      | 3      | -27        | Minimum             |
-      | 3      | -21.5      | Negative Decimal    |
-      | 3      | 0          | Zero                |
-      | 3      | 20         | Positive Integer    |
-      | 3      | 21.5       | Positive Decimal    |
-      | 3      | 100        | Maximum             |
-      | 3      | null       | No Value            |
+      | Sensor | Status     | Description         |
+      | 1      | 0          | Uninstalled         |
+      | 1      | 1          | Installed           |
+      | 2      | 0          | Uninstalled         |
+      | 2      | 1          | Installed           |
+      | 3      | 0          | Uninstalled         |
+      | 3      | 1          | Installed           |
 
   Scenario Outline: Decodes with <Description> firmware.major (<Version>)
     Given a firmware_version.major of <Version>

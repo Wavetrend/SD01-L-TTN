@@ -67,6 +67,18 @@ function flowSettlingCountHandler(sensor) {
     }
 }
 
+function sensorStatusHandler(sensor) {
+    return {
+        encode: (bytes, value) => {
+            bytes[0] = (bytes[0] & ~(0x01 << sensor)) | (!!value << sensor)
+            return bytes
+        },
+        decode: (object, value) => {
+            object.sensor[sensor] = !!value
+            return object
+        },
+    }
+}
 function configTypeHandler(sensor) {
     return {
         encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 17 + sensor, 1),
@@ -108,10 +120,10 @@ const uplinkPropertyMap = [
             },
             decode: (object, value) => decodeHandler(object, value, 'pvd_level'),
         },
-        temperature: [
-            temperatureHandler(0),
-            temperatureHandler(1),
-            temperatureHandler(2),
+        'status': [
+            sensorStatusHandler(0),
+            sensorStatusHandler(1),
+            sensorStatusHandler(2),
         ],
         'firmware_version.major': {
             encode: (bytes, value) => unsignedEncode(bytes, value, 19, 1),

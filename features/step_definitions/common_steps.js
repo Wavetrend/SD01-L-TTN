@@ -41,12 +41,7 @@ Given(/there (?:is|are) (\d+) histor(?:y|ies)/, function (count) {
 });
 
 Given("a {word} of {valueType}", function (property, value) {
-    let map = []
-    if (this.fPort === 1) {
-        map = propertyMap
-    } else {
-        map = uplinkPropertyMap
-    }
+    let map = this.fPort === 1 ? propertyMap : uplinkPropertyMap
     map.must.have.property(this.decoded.type)
     map[this.decoded.type].must.have.property(property)
     map[this.decoded.type][property].must.have.property('encode')
@@ -56,12 +51,7 @@ Given("a {word} of {valueType}", function (property, value) {
 })
 
 Given("a {word} of {string}", function (property, string) {
-    let map = []
-    if (this.fPort === 1) {
-        map = propertyMap
-    } else {
-        map = uplinkPropertyMap
-    }
+    let map = this.fPort === 1 ? propertyMap : uplinkPropertyMap
     map.must.have.property(this.decoded.type)
     map[this.decoded.type].must.have.property(property)
     map[this.decoded.type][property].must.have.property('encode')
@@ -71,12 +61,13 @@ Given("a {word} of {string}", function (property, string) {
 })
 
 Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
-    propertyMap.must.have.property(this.decoded.type)
-    propertyMap[this.decoded.type].must.have.property(property)
-    propertyMap[this.decoded.type][property][sensor-1].must.have.property('encode')
-    propertyMap[this.decoded.type][property][sensor-1].must.have.property('decode')
-    this.encoded = propertyMap[this.decoded.type][property][sensor-1].encode(this.encoded, value)
-    this.decoded = propertyMap[this.decoded.type][property][sensor-1].decode(this.decoded, value)
+    let map = this.fPort === 1 ? propertyMap : uplinkPropertyMap
+    map.must.have.property(this.decoded.type)
+    map[this.decoded.type].must.have.property(property)
+    map[this.decoded.type][property][sensor-1].must.have.property('encode')
+    map[this.decoded.type][property][sensor-1].must.have.property('decode')
+    this.encoded = map[this.decoded.type][property][sensor-1].encode(this.encoded, value)
+    this.decoded = map[this.decoded.type][property][sensor-1].decode(this.decoded, value)
 })
 
 Given("the payload type is {int}", function (type) {
