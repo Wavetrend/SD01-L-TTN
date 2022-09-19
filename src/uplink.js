@@ -175,6 +175,21 @@ const SD01L_PAYLOAD_TYPE = {
     SENSOR_DATA_DEBUG: 10,
 };
 
+/**
+ * Wavetrend SD01L Uplink Payload Type (documented in encoder.js)
+ * @ignore
+ */
+const SD01L_UPLINK_PAYLOAD_TYPE = {
+    INSTALL_REQUEST: 2,
+    INSTALL_RESPONSE: 4,
+    STANDARD_REPORT: 3,
+    FREEZE_REPORT: 7,
+    SCALD_REPORT: 8,
+    SENSOR_ERROR_REPORT: 5,
+    GENERAL_ERROR_REPORT: 6,
+    SENSOR_DATA_DEBUG: 9,
+};
+
 const OFFSET_TYPE = 0;
 const OFFSET_VERSION = 1;
 const OFFSET_SEQUENCE = 2;
@@ -242,132 +257,158 @@ function unsignedByte(input) {
 /**
  * Decode SD01L specific message payloads
  * @param {number[]} bytes
+ * @param {number} port
  * @returns {Wavetrend.SD01L.UplinkPayloads}
  * @memberOf Wavetrend.SD01L
  */
-function Decode_SD01L_Payload(bytes) {
-    let payload = Decode_SD01L_PayloadHeader(bytes);
-    bytes = payload.bytes;
-    delete payload.bytes;
+function Decode_SD01L_Payload(bytes, port) {
+    let payload
+    if (port === 1) {   // v1 payloads
+        payload = Decode_SD01L_PayloadHeader(bytes);
+        bytes = payload.bytes;
+        delete payload.bytes;
+    } else {            // v2 payloads
+        payload = { type: port }
+    }
     let i = 0;
 
-    switch (payload.type) {
-        case SD01L_PAYLOAD_TYPE.INSTALL_REQUEST:
-            /* istanbul ignore else */
-            if (payload.version === 4) {
-                payload.nonce =
-                    (unsignedByte(bytes[i++]) << 24 >>> 0)
-                    + (unsignedByte(bytes[i++]) << 16 >>> 0)
-                    + (unsignedByte(bytes[i++]) << 8 >>> 0)
-                    + unsignedByte(bytes[i++]);
-                payload.battery_mV = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-                payload.temperature = [];
-                for (let sensor = 0; sensor < 3; sensor++) {
-                    let temp_index = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-                    payload.temperature[sensor] = temp_index === 0xFFFF ? null : (temp_index - 270) / 10;
-                }
-                payload.firmware_version = {
-                    major: unsignedByte(bytes[i++]),
-                    minor: unsignedByte(bytes[i++]),
-                    build: (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]),
-                };
-                payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
-            }
-            break;
+    if (port === 1) {
 
-        case SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE:
-            /* istanbul ignore else */
-            if (payload.version === 1) {
-                payload.error_code = unsignedByte(bytes[i++]);
-            }
-            break;
-
-        case SD01L_PAYLOAD_TYPE.STANDARD_REPORT:
-            /* istanbul ignore else */
-            if (payload.version === 1) {
-                payload.current = {sensor: []};
-                for (let sensor = 0; sensor < 3; sensor++) {
-                    payload.current.sensor[sensor] = {
-                        minC: signedByte(bytes[i++]),
-                        maxC: signedByte(bytes[i++]),
-                        events: unsignedByte(bytes[i++]),
-                        reports: unsignedByte(bytes[i++]),
-                    };
-                }
-                payload.history = [];
-                for (let history = 0; history < 2 && i < bytes.length; history++) {
-                    payload.history[history] = {
-                        timestamp:
-                            (unsignedByte(bytes[i++]) << 24 >>> 0)
-                            + (unsignedByte(bytes[i++]) << 16 >>> 0)
-                            + (unsignedByte(bytes[i++]) << 8 >>> 0)
-                            + unsignedByte(bytes[i++]),
-                        sensor: [],
-                    };
+        switch (payload.type) {
+            case SD01L_PAYLOAD_TYPE.INSTALL_REQUEST:
+                /* istanbul ignore else */
+                if (payload.version === 4) {
+                    payload.nonce =
+                        (unsignedByte(bytes[i++]) << 24 >>> 0)
+                        + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                        + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                        + unsignedByte(bytes[i++]);
+                    payload.battery_mV = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                    payload.temperature = [];
                     for (let sensor = 0; sensor < 3; sensor++) {
-                        payload.history[history].sensor[sensor] = {
+                        let temp_index = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                        payload.temperature[sensor] = temp_index === 0xFFFF ? null : (temp_index - 270) / 10;
+                    }
+                    payload.firmware_version = {
+                        major: unsignedByte(bytes[i++]),
+                        minor: unsignedByte(bytes[i++]),
+                        build: (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]),
+                    };
+                    payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
+                }
+                break;
+
+            case SD01L_PAYLOAD_TYPE.INSTALL_RESPONSE:
+                /* istanbul ignore else */
+                if (payload.version === 1) {
+                    payload.error_code = unsignedByte(bytes[i++]);
+                }
+                break;
+
+            case SD01L_PAYLOAD_TYPE.STANDARD_REPORT:
+                /* istanbul ignore else */
+                if (payload.version === 1) {
+                    payload.current = {sensor: []};
+                    for (let sensor = 0; sensor < 3; sensor++) {
+                        payload.current.sensor[sensor] = {
                             minC: signedByte(bytes[i++]),
                             maxC: signedByte(bytes[i++]),
                             events: unsignedByte(bytes[i++]),
                             reports: unsignedByte(bytes[i++]),
                         };
                     }
-                }
-            }
-            break;
-
-        case SD01L_PAYLOAD_TYPE.AMBIENT_REPORT:
-            /* istanbul ignore else */
-            if (payload.version === 0) {
-                payload.minC = signedByte(bytes[i++]);
-                payload.maxC = signedByte(bytes[i++]);
-                payload.avgC = signedByte(bytes[i++]);
-            }
-            break;
-
-        case SD01L_PAYLOAD_TYPE.FREEZE_REPORT:
-        case SD01L_PAYLOAD_TYPE.SCALD_REPORT:
-            /* istanbul ignore else */
-            if (payload.version === 0) {
-                payload.sensor = unsignedByte(bytes[i++]);
-                payload.temperature = signedByte(bytes[i++]);
-            }
-            break;
-
-        case SD01L_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
-            /* istanbul ignore else */
-            if (payload.version === 0) {
-                payload.sensor = [];
-                for (let sensor = 0; sensor < 3; sensor++) {
-                    payload.sensor[sensor] = unsignedByte(bytes[i++]);
-                }
-            }
-            break;
-
-        case SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
-            /* istanbul ignore else */
-            if (payload.version === 0) {
-                payload.error_code = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-                payload.file = "";
-                for (let pos = 0, append = true; pos < 32; pos++) {
-                    if (append && bytes[i] !== 0) {
-                        payload.file += String.fromCharCode(unsignedByte(bytes[i++]));
-                    } else {
-                        append = false;
-                        i++;
+                    payload.history = [];
+                    for (let history = 0; history < 2 && i < bytes.length; history++) {
+                        payload.history[history] = {
+                            timestamp:
+                                (unsignedByte(bytes[i++]) << 24 >>> 0)
+                                + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                                + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                                + unsignedByte(bytes[i++]),
+                            sensor: [],
+                        };
+                        for (let sensor = 0; sensor < 3; sensor++) {
+                            payload.history[history].sensor[sensor] = {
+                                minC: signedByte(bytes[i++]),
+                                maxC: signedByte(bytes[i++]),
+                                events: unsignedByte(bytes[i++]),
+                                reports: unsignedByte(bytes[i++]),
+                            };
+                        }
                     }
                 }
-                payload.line = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-            }
-            break;
+                break;
 
-        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
-        case SD01L_PAYLOAD_TYPE.LOW_BATTERY_REPORT_DEPRECATED:
-        case SD01L_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
-            throw "Unsupported type for uplink decoding";
+            case SD01L_PAYLOAD_TYPE.AMBIENT_REPORT:
+                /* istanbul ignore else */
+                if (payload.version === 0) {
+                    payload.minC = signedByte(bytes[i++]);
+                    payload.maxC = signedByte(bytes[i++]);
+                    payload.avgC = signedByte(bytes[i++]);
+                }
+                break;
 
-        default:
-            throw "Unrecognised type for uplink decoding";
+            case SD01L_PAYLOAD_TYPE.FREEZE_REPORT:
+            case SD01L_PAYLOAD_TYPE.SCALD_REPORT:
+                /* istanbul ignore else */
+                if (payload.version === 0) {
+                    payload.sensor = unsignedByte(bytes[i++]);
+                    payload.temperature = signedByte(bytes[i++]);
+                }
+                break;
+
+            case SD01L_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
+                /* istanbul ignore else */
+                if (payload.version === 0) {
+                    payload.sensor = [];
+                    for (let sensor = 0; sensor < 3; sensor++) {
+                        payload.sensor[sensor] = unsignedByte(bytes[i++]);
+                    }
+                }
+                break;
+
+            case SD01L_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
+                /* istanbul ignore else */
+                if (payload.version === 0) {
+                    payload.error_code = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                    payload.file = "";
+                    for (let pos = 0, append = true; pos < 32; pos++) {
+                        if (append && bytes[i] !== 0) {
+                            payload.file += String.fromCharCode(unsignedByte(bytes[i++]));
+                        } else {
+                            append = false;
+                            i++;
+                        }
+                    }
+                    payload.line = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                }
+                break;
+
+            case SD01L_PAYLOAD_TYPE.CONFIGURATION:
+            case SD01L_PAYLOAD_TYPE.LOW_BATTERY_REPORT_DEPRECATED:
+            case SD01L_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
+                throw "Unsupported type for uplink decoding";
+
+            default:
+                throw "Unrecognised type for uplink decoding";
+        }
+
+    } else {
+        switch (payload.type) {
+            case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_REQUEST:
+                const flags = unsignedByte(bytes[i++])
+                payload.pvd_level = flags >> 3 & 0x03
+                payload.sensor = [
+                    !!(flags & 0x01),
+                    !!(flags & 0x02),
+                    !!(flags & 0x04),
+                ]
+                payload.firmware_version = {
+                    major: unsignedByte(bytes[i++]),
+                    minor: unsignedByte(bytes[i++])
+                }
+                payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
+        }
     }
     return payload;
 }
@@ -384,7 +425,7 @@ function decodeUplink(input) {
     };
 
     try {
-        payload.data = Decode_SD01L_Payload(input.bytes);
+        payload.data = Decode_SD01L_Payload(input.bytes, input.fPort);
     } catch (error) {
         payload.errors.push(error);
     }
@@ -400,7 +441,7 @@ function decodeUplink(input) {
  */
 function Decoder(bytes, port) {
     try {
-        return Decode_SD01L_Payload(bytes);
+        return Decode_SD01L_Payload(bytes, port);
     } catch (e) {
         return null;
     }

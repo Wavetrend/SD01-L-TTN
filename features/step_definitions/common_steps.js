@@ -6,6 +6,7 @@ const expect = require('must')
 
 Before(function () {
     this.encoded = []
+    this.fPort = undefined
     this.decoded = {}
     delete this.v2actual
     delete this.v3actual
@@ -23,6 +24,10 @@ Given("the encoded data has the structure:", function (table){
         })
         return data
     }, [])
+})
+
+Given("the uplink port is {int}", function(port) {
+    this.fPort = port
 })
 
 Given("the decoded data has the structure:", function (json) {
