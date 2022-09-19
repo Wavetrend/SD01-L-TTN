@@ -11,7 +11,7 @@ const sequenceHandler = {
 }
 
 const timestampHandler = {
-    encode: (bytes, value) => unsignedEncode(bytes, value, 3, 4),
+    encode: (bytes, value) => unsignedEncode(bytes, value, 0, 4),
     decode: (object, value) => decodeHandler(object, value, 'timestamp'),
 }
 
@@ -41,7 +41,7 @@ function currentPropertyHandler(sensor, offset, property) {
     return {
         encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
         decode: (object, value) => {
-            object.current.sensor[sensor][property] = value
+            object[property] = value
             return object
         }
     }
@@ -146,7 +146,33 @@ const uplinkPropertyMap = [
     },
     // standard report
     {
-
+        timestamp: timestampHandler,
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[4] = (bytes[4] & ~0x02) | (value & 0x02)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = value
+                return object
+            },
+        },
+        MinC: {
+            encode: (bytes, value) => { bytes[4] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'minC'),
+        },
+        MaxC: {
+            encode: (bytes, value) => { bytes[5] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'maxC'),
+        },
+        Events: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 6, 1),
+            decode: (object, value) => decodeHandler(object, value, 'events'),
+        },
+        Reports: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
+            decode: (object, value) => decodeHandler(object, value, 'reports'),
+        },
     },
     // install response
     {
