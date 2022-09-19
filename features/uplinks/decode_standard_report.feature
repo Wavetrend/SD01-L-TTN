@@ -3,125 +3,22 @@ Feature: Uplink Standard Report Decoding
   Background:
     Given the encoded data has the structure:
       | Data                 | Description                        |
-      | 0x03                 | Standard Report Type               |
-      | 0x01                 | Standard Report Version            |
-      | 0x00                 | Sequence                           |
       | 0x00 0x00 0x00 0x00  | Timestamp                          |
-      | 0x00                 | Sensor 1 MinC                      |
-      | 0x00                 | Sensor 1 MaxC                      |
-      | 0x00                 | Sensor 1 Event Count               |
-      | 0x00                 | Sensor 1 Report Count              |
-      | 0x00                 | Sensor 2 MinC                      |
-      | 0x00                 | Sensor 2 MaxC                      |
-      | 0x00                 | Sensor 2 Event Count               |
-      | 0x00                 | Sensor 2 Report Count              |
-      | 0x00                 | Sensor 3 MinC                      |
-      | 0x00                 | Sensor 3 MaxC                      |
-      | 0x00                 | Sensor 3 Event Count               |
-      | 0x00                 | Sensor 3 Report Count              |
-      | 0x00 0x00 0x00 0x00  | History 1 Timestamp                |
-      | 0x00                 | History 1 Sensor 1 MinC            |
-      | 0x00                 | History 1 Sensor 1 MaxC            |
-      | 0x00                 | History 1 Sensor 1 Event Count     |
-      | 0x00                 | History 1 Sensor 1 Report Count    |
-      | 0x00                 | History 1 Sensor 2 MinC            |
-      | 0x00                 | History 1 Sensor 2 MaxC            |
-      | 0x00                 | History 1 Sensor 2 Event Count     |
-      | 0x00                 | History 1 Sensor 2 Report Count    |
-      | 0x00                 | History 1 Sensor 3 MinC            |
-      | 0x00                 | History 1 Sensor 3 MaxC            |
-      | 0x00                 | History 1 Sensor 3 Event Count     |
-      | 0x00                 | History 1 Sensor 3 Report Count    |
-      | 0x00 0x00 0x00 0x00  | History 2 Timestamp                |
-      | 0x00                 | History 2 Sensor 1 MinC            |
-      | 0x00                 | History 2 Sensor 1 MaxC            |
-      | 0x00                 | History 2 Sensor 1 Event Count     |
-      | 0x00                 | History 2 Sensor 1 Report Count    |
-      | 0x00                 | History 2 Sensor 2 MinC            |
-      | 0x00                 | History 2 Sensor 2 MaxC            |
-      | 0x00                 | History 2 Sensor 2 Event Count     |
-      | 0x00                 | History 2 Sensor 2 Report Count    |
-      | 0x00                 | History 2 Sensor 3 MinC            |
-      | 0x00                 | History 2 Sensor 3 MaxC            |
-      | 0x00                 | History 2 Sensor 3 Event Count     |
-      | 0x00                 | History 2 Sensor 3 Report Count    |
+      | 0x00                 | Sensor ID                          |
+      | 0x00                 | Sensor MinC                        |
+      | 0x00                 | Sensor MaxC                        |
+      | 0x00                 | Sensor Event Count                 |
+      | 0x00                 | Sensor Report Count                |
+    And the uplink port is 3
     And the decoded data has the structure:
     """
     {
       "type": 3,
-      "version": 1,
-      "sequence": 0,
       "timestamp": 0,
-      "current": {
-        "sensor": [
-          {
-            "minC": 0,
-            "maxC": 0,
-            "events": 0,
-            "reports": 0
-          },
-          {
-            "minC": 0,
-            "maxC": 0,
-            "events": 0,
-            "reports": 0
-          },
-          {
-            "minC": 0,
-            "maxC": 0,
-            "events": 0,
-            "reports": 0
-          }
-        ]
-      },
-      "history": [
-        {
-          "timestamp": 0,
-          "sensor": [
-            {
-              "minC": 0,
-              "maxC": 0,
-              "events": 0,
-              "reports": 0
-            },
-            {
-              "minC": 0,
-              "maxC": 0,
-              "events": 0,
-              "reports": 0
-            },
-            {
-              "minC": 0,
-              "maxC": 0,
-              "events": 0,
-              "reports": 0
-            }
-          ]
-        },
-        {
-          "timestamp": 0,
-          "sensor": [
-            {
-              "minC": 0,
-              "maxC": 0,
-              "events": 0,
-              "reports": 0
-            },
-            {
-              "minC": 0,
-              "maxC": 0,
-              "events": 0,
-              "reports": 0
-            },
-            {
-              "minC": 0,
-              "maxC": 0,
-              "events": 0,
-              "reports": 0
-            }
-          ]
-        }
-      ]
+      "minC": 0,
+      "maxC": 0,
+      "events": 0,
+      "reports": 0
     }
     """
 

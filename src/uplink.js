@@ -410,6 +410,20 @@ function Decode_SD01L_Payload(bytes, port) {
                 payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
                 break;
 
+            case SD01L_UPLINK_PAYLOAD_TYPE.STANDARD_REPORT:
+
+                payload.timestamp =
+                    (unsignedByte(bytes[i++]) << 24 >>> 0)
+                    + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                    + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                    + unsignedByte(bytes[i++])
+
+                payload.minC = bytes[i++]
+                payload.maxC = bytes[i++]
+                payload.events = bytes[i++]
+                payload.reports = bytes[i++]
+                break;
+
             case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE:
                 payload.error_code = bytes[i++]
                 break;
