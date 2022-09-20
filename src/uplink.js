@@ -440,6 +440,13 @@ function Decode_SD01L_Payload(bytes, port) {
                 payload.file_hash = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
                 payload.line = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
                 break
+
+            case SD01L_UPLINK_PAYLOAD_TYPE.FREEZE_REPORT:
+
+                payload.sensor_id = bytes[i++] & 0x03
+                payload.temperature = signedByte(bytes[i++])
+                break
+
         }
     }
     return payload;
