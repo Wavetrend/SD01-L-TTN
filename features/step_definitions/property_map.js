@@ -185,11 +185,11 @@ const uplinkPropertyMap = [
     {
         sensor_id: {
             encode: (bytes, value) => {
-                bytes[0] = (bytes[0] & ~0x03) | ((value-1) & 0x03)
+                bytes[0] = (bytes[0] & ~0x03) | (value & 0x03)
                 return bytes
             },
             decode: (object, value) => {
-                object.sensor_id = (value-1) & 0x03
+                object.sensor_id = value & 0x03
                 return object
             }
         }

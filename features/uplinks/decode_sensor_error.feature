@@ -24,6 +24,6 @@ Feature: Uplink Sensor Error Report Decoding
 
     Examples:
       | Sensor_ID | Description |
-      | 1         | Sensor 1    |
-      | 2         | Sensor 2    |
-      | 3         | Sensor 3    |
+      | 0         | Sensor 1    |
+      | 1         | Sensor 2    |
+      | 2         | Sensor 3    |
