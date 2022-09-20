@@ -449,6 +449,14 @@ function Decode_SD01L_Payload(bytes, port) {
                 payload.temperature = signedByte(bytes[i++])
                 break
 
+            case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
+
+                throw "Unsupported type for uplink decoding";
+
+            default:
+
+                throw "Unrecognised type for uplink decoding";
+
         }
     }
     return payload;
