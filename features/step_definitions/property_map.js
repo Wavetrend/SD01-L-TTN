@@ -59,7 +59,7 @@ function historyPropertyHandler(history, sensor, offset, property) {
 
 function flowSettlingCountHandler(sensor) {
     return {
-        encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 17 + sensor, 1),
+        encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 6 + sensor, 1),
         decode: (object, value) => {
             object.config_type[sensor].flow_settling_count = value
             return object
@@ -81,7 +81,7 @@ function sensorStatusHandler(sensor) {
 }
 function configTypeHandler(sensor) {
     return {
-        encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 17 + sensor, 1),
+        encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 6 + sensor, 1),
         decode: (object, value) => {
             object.config_type[sensor].config = value
             return object
@@ -243,8 +243,83 @@ const uplinkPropertyMap = [
             decode: (object, value) => decodeHandler(object, value, 'temperature'),
         },
     },
-
 ]
+
+const downlinkPropertyMap = [
+    {},     // LoRaWAN reserved port
+    {},     // v1 payloads
+
+    // configuration
+    {
+        downlink_hours: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 0, 1),
+            decode: (object, value) => decodeHandler(object, value, 'downlink_hours'),
+        },
+        reporting_period: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 1, 2),
+            decode: (object, value) => decodeHandler(object, value, 'reporting_period'),
+        },
+        scald: {
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x01) | (!!value)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.message_flags.scald = !!(value & 0x01)
+                return object
+            }
+        },
+        freeze: {
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x02) | (!!value << 1)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.message_flags.freeze = !!value
+                return object
+            }
+        },
+        debug: {
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x04) | (!!value << 2)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.message_flags.debug = !!value
+                return object
+            }
+        },
+        history_count: {
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x18) | ((value & 0x03) << 3)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.message_flags.history_count = value & 0x03
+                return object
+            }
+        },
+        scald_threshold: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 4, 1),
+            decode: (object, value) => decodeHandler(object, value, 'scald_threshold')
+        },
+        freeze_threshold: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 5, 1),
+            decode: (object, value) => decodeHandler(object, value, 'freeze_threshold')
+        },
+        flow_settling_count: [
+            flowSettlingCountHandler(0),
+            flowSettlingCountHandler(1),
+            flowSettlingCountHandler(2),
+        ],
+        config_type: [
+            configTypeHandler(0),
+            configTypeHandler(1),
+            configTypeHandler(2),
+        ],
+    },
+]
+
 const propertyMap = [
     // configuration
     {
@@ -474,4 +549,5 @@ const propertyMap = [
 module.exports = {
     propertyMap,
     uplinkPropertyMap,
+    downlinkPropertyMap,
 }
