@@ -149,7 +149,7 @@ const uplinkPropertyMap = [
         timestamp: timestampHandler,
         sensor_id: {
             encode: (bytes, value) => {
-                bytes[4] = (bytes[4] & ~0x02) | (value & 0x02)
+                bytes[4] = (bytes[4] & ~0x03) | (value & 0x03)
                 return bytes
             },
             decode: (object, value) => {
@@ -158,19 +158,19 @@ const uplinkPropertyMap = [
             },
         },
         MinC: {
-            encode: (bytes, value) => { bytes[4] = value; return bytes },
+            encode: (bytes, value) => { bytes[5] = value; return bytes },
             decode: (object, value) => decodeHandler(object, value, 'minC'),
         },
         MaxC: {
-            encode: (bytes, value) => { bytes[5] = value; return bytes },
+            encode: (bytes, value) => { bytes[6] = value; return bytes },
             decode: (object, value) => decodeHandler(object, value, 'maxC'),
         },
         Events: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 6, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
             decode: (object, value) => decodeHandler(object, value, 'events'),
         },
         Reports: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
             decode: (object, value) => decodeHandler(object, value, 'reports'),
         },
     },

@@ -15,6 +15,7 @@ Feature: Uplink Standard Report Decoding
     {
       "type": 3,
       "timestamp": 0,
+      "sensor_id": 0,
       "minC": 0,
       "maxC": 0,
       "events": 0,
@@ -45,16 +46,19 @@ Feature: Uplink Standard Report Decoding
     Then the decode is successful
 
     Examples:
-      | Property | Value | Description |
-      | MinC     | -27   | Minimum     |
-      | MinC     | 0     | Zero        |
-      | MinC     | 100   | Maximum     |
-      | MaxC     | -27   | Minimum     |
-      | MaxC     | 0     | Zero        |
-      | MaxC     | 100   | Maximum     |
-      | Events   | 0     | Minimum     |
-      | Events   | 255   | Maximum     |
-      | Reports  | 0     | Minimum     |
-      | Reports  | 255   | Maximum     |
+      | Property  | Value | Description |
+      | sensor_id | 0     | Sensor 1    |
+      | sensor_id | 1     | Sensor 2    |
+      | sensor_id | 2     | Sensor 3    |
+      | MinC      | -27   | Minimum     |
+      | MinC      | 0     | Zero        |
+      | MinC      | 100   | Maximum     |
+      | MaxC      | -27   | Minimum     |
+      | MaxC      | 0     | Zero        |
+      | MaxC      | 100   | Maximum     |
+      | Events    | 0     | Minimum     |
+      | Events    | 255   | Maximum     |
+      | Reports   | 0     | Minimum     |
+      | Reports   | 255   | Maximum     |
 
 

@@ -418,6 +418,7 @@ function Decode_SD01L_Payload(bytes, port) {
                     + (unsignedByte(bytes[i++]) << 8 >>> 0)
                     + unsignedByte(bytes[i++])
 
+                payload.sensor_id = bytes[i++] & 0x03
                 payload.minC = bytes[i++]
                 payload.maxC = bytes[i++]
                 payload.events = bytes[i++]
