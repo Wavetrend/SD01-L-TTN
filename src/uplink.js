@@ -425,9 +425,14 @@ function Decode_SD01L_Payload(bytes, port) {
                 break;
 
             case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE:
+
                 payload.error_code = bytes[i++]
                 break;
 
+            case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
+
+                payload.sensor_id = bytes[i++] & 0x03
+                break;
         }
     }
     return payload;

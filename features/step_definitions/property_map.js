@@ -180,6 +180,19 @@ const uplinkPropertyMap = [
             encode: (bytes, value) => unsignedEncode(bytes, value, 0, 1),
             decode: (object, value) => decodeHandler(object, value, 'error_code'),
         },
+    },
+    // sensor error
+    {
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~0x03) | ((value-1) & 0x03)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = (value-1) & 0x03
+                return object
+            }
+        }
     }
 ]
 const propertyMap = [
