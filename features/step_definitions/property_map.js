@@ -193,6 +193,21 @@ const uplinkPropertyMap = [
                 return object
             }
         }
+    },
+    // general error
+    {
+        error_code: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 0, 2),
+            decode: (object, value) => decodeHandler(object, value, 'error_code'),
+        },
+        file_hash: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 2, 2),
+            decode: (object, value) => decodeHandler(object, value, 'file_hash'),
+        },
+        line: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 4, 2),
+            decode: (object, value) => decodeHandler(object, value, 'line'),
+        },
     }
 ]
 const propertyMap = [

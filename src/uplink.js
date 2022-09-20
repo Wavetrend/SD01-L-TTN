@@ -408,7 +408,7 @@ function Decode_SD01L_Payload(bytes, port) {
                     minor: unsignedByte(bytes[i++])
                 }
                 payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
-                break;
+                break
 
             case SD01L_UPLINK_PAYLOAD_TYPE.STANDARD_REPORT:
 
@@ -422,17 +422,24 @@ function Decode_SD01L_Payload(bytes, port) {
                 payload.maxC = bytes[i++]
                 payload.events = bytes[i++]
                 payload.reports = bytes[i++]
-                break;
+                break
 
             case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE:
 
                 payload.error_code = bytes[i++]
-                break;
+                break
 
             case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
 
                 payload.sensor_id = bytes[i++] & 0x03
-                break;
+                break
+
+            case SD01L_UPLINK_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
+
+                payload.error_code = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                payload.file_hash = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                payload.line = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+                break
         }
     }
     return payload;
