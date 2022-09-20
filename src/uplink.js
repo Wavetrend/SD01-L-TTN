@@ -443,6 +443,7 @@ function Decode_SD01L_Payload(bytes, port) {
                 break
 
             case SD01L_UPLINK_PAYLOAD_TYPE.FREEZE_REPORT:
+            case SD01L_UPLINK_PAYLOAD_TYPE.SCALD_REPORT:
 
                 payload.sensor_id = bytes[i++] & 0x03
                 payload.temperature = signedByte(bytes[i++])

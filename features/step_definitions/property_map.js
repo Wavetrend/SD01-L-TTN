@@ -226,6 +226,23 @@ const uplinkPropertyMap = [
             decode: (object, value) => decodeHandler(object, value, 'temperature'),
         },
     },
+    // scald report
+    {
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~0x03) | ((value - 1) & 0x03)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = (value - 1) & 0x03
+                return object
+            }
+        },
+        temperature: {
+            encode: (bytes, value) => { bytes[1] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'temperature'),
+        },
+    },
 
 ]
 const propertyMap = [
