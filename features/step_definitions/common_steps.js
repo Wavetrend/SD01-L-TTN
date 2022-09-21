@@ -1,7 +1,7 @@
 const { Given, When, Then, Before } = require('@cucumber/cucumber');
 const { decodeUplink, Decoder } = require("../../src/uplink");
 const { encodeDownlink, decodeDownlink, Encoder } = require("../../src/downlink");
-const { propertyMap, uplinkPropertyMap, downlinkPropertyMap } = require('./property_map')
+const { uplinkPropertyMap, downlinkPropertyMap } = require('./property_map')
 const expect = require('must')
 
 Before(function () {
@@ -48,7 +48,7 @@ Given(/there (?:is|are) (\d+) histor(?:y|ies)/, function (count) {
 });
 
 Given("a {word} of {valueType}", function (property, value) {
-    let map = this.fPort === 1 ? propertyMap : this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
+    let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
     map.must.have.property(this.decoded.type)
     map[this.decoded.type].must.have.property(property)
     map[this.decoded.type][property].must.have.property('encode')
@@ -58,7 +58,7 @@ Given("a {word} of {valueType}", function (property, value) {
 })
 
 Given("a {word} of {string}", function (property, string) {
-    let map = this.fPort === 1 ? propertyMap : this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
+    let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
     map.must.have.property(this.decoded.type)
     map[this.decoded.type].must.have.property(property)
     map[this.decoded.type][property].must.have.property('encode')
@@ -68,7 +68,7 @@ Given("a {word} of {string}", function (property, string) {
 })
 
 Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
-    let map = this.fPort === 1 ? propertyMap : this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
+    let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
     map.must.have.property(this.decoded.type)
     map[this.decoded.type].must.have.property(property)
     map[this.decoded.type][property][sensor-1].must.have.property('encode')
