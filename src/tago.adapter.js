@@ -13,13 +13,7 @@ function tagoAdapter(object, serie) {
     let result = []
     switch (object.type) {
         case 3:     // standard report
-            switch (object.version) {
-                case 1:
-                    result = tagoAdaptStandardReport(object)
-                    break
-                default:
-                    throw "Unsupported standard report version"
-            }
+            result = tagoAdaptStandardReport(object)
             break
         default:
             throw "Unsupported payload type"
@@ -38,26 +32,17 @@ function stringifyValues(data) {
 }
 
 function tagoAdaptStandardReport(object) {
-    let payload = [
-        {   variable: "type",       value: object.type                      },
-        {   variable: "version",    value: object.version                   },
-        {   variable: "sequence",   value: object.sequence                  },
-        {   variable: "timestamp",  value: object.timestamp                 },
-    ]
-
-    payload = object.current.sensor.reduce((acc, sensor, index) => {
-        if (sensor.minC !== 127 && sensor.maxC !== -128) {
-            return acc.concat([
-                {   variable: `s${index+1}_minC`, value: sensor.minC          },
-                {   variable: `s${index+1}_maxC`, value: sensor.maxC          },
-                {   variable: `s${index+1}_events`, value: sensor.events      },
-                {   variable: `s${index+1}_reports`, value: sensor.reports    },
-            ])
-        }
-        return acc
-    }, payload);
-
-    return payload
+    if (object.minC !== 127 && object.maxC !== -128) {
+        return [
+            {variable: "type", value: object.type},
+            {variable: "timestamp", value: object.timestamp},
+            {variable: `s${object.sensor_id + 1}_minC`, value: object.minC},
+            {variable: `s${object.sensor_id + 1}_maxC`, value: object.maxC},
+            {variable: `s${object.sensor_id + 1}_events`, value: object.events},
+            {variable: `s${object.sensor_id + 1}_reports`, value: object.reports},
+        ]
+    }
+    return []
 }
 
 if (module !== undefined) {
