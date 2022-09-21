@@ -29,37 +29,14 @@
  * @property {Wavetrend.SD01L.PayloadType} GENERAL_ERROR_REPORT - 9
  * @property {Wavetrend.SD01L.PayloadType} SENSOR_DATA_DEBUG - 10
  */
-const SD01L_PAYLOAD_TYPE = {
-    INSTALL_REQUEST: 0,
-    CONFIGURATION: 1,
-    INSTALL_RESPONSE: 2,
-    STANDARD_REPORT: 3,
-    AMBIENT_REPORT: 4,
-    SCALD_REPORT: 5,
-    FREEZE_REPORT: 6,
-    LOW_BATTERY_REPORT_DEPRECATED: 7,
-    SENSOR_ERROR_REPORT: 8,
-    GENERAL_ERROR_REPORT: 9,
-    SENSOR_DATA_DEBUG: 10,
-};
-
 const SD01L_DOWNLINK_PAYLOAD_TYPE = {
     CONFIGURATION: 2
 }
 
 /**
- * @typedef {Object} Wavetrend.SD01L.PayloadHeader
- * @property {Wavetrend.SD01L.PayloadType} type - payload type
- * @property {number} version - message payload version 0-255
- * @property {number} sequence - message payload sequence 0-255
- * @property {number} timestamp - seconds since Unix epoch
- */
-
-/**
  * @typedef {Object} Wavetrend.SD01L.MessageFlags
  * @property {boolean} scald - scald reporting enabled (default disabled)
  * @property {boolean} freeze - freeze reporting enabled (default disabled)
- * @property {boolean} ambient - ambient reporting enabled (default disabled)
  * @property {boolean} debug - debug reporting enabled (default disabled)
  * @property {number} history_count - number of history messages in standard report (default = 0, otherwise 1 or 2)
  */
@@ -373,7 +350,6 @@ if (typeof module !== 'undefined') {
         Encoder,
         encodeDownlink,
         decodeDownlink,
-        SD01L_PAYLOAD_TYPE,
         mergeConfigs,
     };
 }
