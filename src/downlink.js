@@ -327,67 +327,45 @@ function Encoder(object/*, port */) {
  */
 function Decode_SD01L_Payload(bytes, port) {
 
-    if (port === 1) {
+    let i = 0;
+    let object = {
+        type: port,
+    };
 
-        let i = 0;
-        let object = {
-            type: (bytes[i++] & 0xFF) >>> 0,
-            version: (bytes[i++] & 0xFF) >>> 0,
-            sequence: (bytes[i++] & 0xFF) >>> 0,
-            timestamp:
-                ((bytes[i++] & 0xFF) << 24 >>> 0)
-                + ((bytes[i++] & 0xFF) << 16 >>> 0)
-                + ((bytes[i++] & 0xFF) << 8 >>> 0)
-                + ((bytes[i++] & 0xFF) >>> 0)
-        };
+    switch (object.type) {
+        case SD01L_DOWNLINK_PAYLOAD_TYPE.CONFIGURATION:
 
-        switch (object.type) {
-            case SD01L_PAYLOAD_TYPE.CONFIGURATION:
-                if (object.version !== 3) {
-                    throw "Unsupported configuration version " + object.version;
-                }
+            object.downlink_hours = (bytes[i++] & 0xFF) >>> 0;
+            object.reporting_period =
+                ((bytes[i++] & 0xFF) << 8 >>> 0)
+                + ((bytes[i++] & 0xFF) >>> 0);
 
-                object.nonce =
-                    ((bytes[i++] & 0xFF) << 24 >>> 0)
-                    + ((bytes[i++] & 0xFF) << 16 >>> 0)
-                    + ((bytes[i++] & 0xFF) << 8 >>> 0)
-                    + ((bytes[i++] & 0xFF) >>> 0);
+            let flags = (bytes[i++] & 0xFF) >>> 0;
+            object.message_flags = {
+                scald: !!(flags & 0x01),
+                freeze: !!(flags & 0x02),
+                debug: !!(flags & 0x04),
+                history_count: (flags >>> 3) & 0x03,
+            };
 
-                object.downlink_hours = (bytes[i++] & 0xFF) >>> 0;
-                let flags = (bytes[i++] & 0xFF) >>> 0;
-                object.message_flags = {
-                    scald: (flags & 0x01) === 0x01,
-                    freeze: (flags & 0x02) === 0x02,
-                    ambient: (flags & 0x04) === 0x04,
-                    debug: (flags & 0x08) === 0x08,
-                    history_count: (flags >>> 5) & 0x03,
+            object.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
+            object.freeze_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
+
+            object.config_type = [];
+            for (let sensor = 0; sensor < 3; sensor++) {
+                let config = (bytes[i++] & 0xFF) >>> 0;
+                object.config_type[sensor] = {
+                    flow_settling_count: (config >>> 4) & 0x0F >>> 0,
+                    config: (config & 0x0F) >>> 0,
                 };
+            }
+            break;
 
-                object.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
-                object.freeze_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
-                object.reporting_period =
-                    ((bytes[i++] & 0xFF) << 8 >>> 0)
-                    + ((bytes[i++] & 0xFF) >>> 0);
-
-                object.config_type = [];
-                for (let sensor = 0; sensor < 3; sensor++) {
-                    let config = (bytes[i++] & 0xFF) >>> 0;
-                    object.config_type[sensor] = {
-                        flow_settling_count: (config >>> 4) & 0x0F >>> 0,
-                        config: (config & 0x0F) >>> 0,
-                    };
-                }
-                break;
-
-            default:
-                if (object.type > 10) {
-                    throw "Unrecognised type for downlink decoding";
-                }
-                throw "Unsupported type for downlink decoding";
-        }
-    } else {
-        // v2 payloads
-
+        default:
+            if (object.type > 10) {
+                throw "Unrecognised type for downlink decoding";
+            }
+            throw "Unsupported type for downlink decoding";
     }
 
     return object;

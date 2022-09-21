@@ -98,7 +98,7 @@ When("the downlink is encoded", function () {
 })
 
 When("the downlink is decoded", function () {
-    this.v3actual = decodeDownlink({ bytes: this.encoded, fPort: 1 });
+    this.v3actual = decodeDownlink({ bytes: this.encoded, fPort: this.fPort });
     this.v2actual = undefined
 })
 

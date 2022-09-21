@@ -3,38 +3,29 @@ Feature: Downlink Configuration Decoding
   Background:
     Given the encoded data has the structure:
       | Data                 | Description              |
-      | 0x01                 | Configuration Type       |
-      | 0x03                 | Configuration Version    |
-      | 0x00                 | Sequence                 |
-      | 0x00 0x00 0x00 0x00  | Timestamp                |
-      | 0x00 0x00 0x00 0x00  | Nonce                    |
       | 0x00                 | Downlink Hours           |
+      | 0x00 0x00            | Reporting Period         |
       | 0x00                 | Message Flags            |
       | 0x00                 | Scald Threshold          |
       | 0x00                 | Freeze Threshold         |
-      | 0x00 0x00            | Reporting Period         |
       | 0x00                 | Sensor 1 Config          |
       | 0x00                 | Sensor 2 Config          |
       | 0x00                 | Sensor 3 Config          |
+    And the downlink port is 2
     And the decoded data has the structure:
     """
     {
-      "type": 1,
-      "version": 3,
-      "sequence": 0,
-      "timestamp": 0,
-      "nonce": 0,
+      "type": 2,
       "downlink_hours": 0,
+      "reporting_period": 0,
       "message_flags": {
           "scald": false,
           "freeze": false,
-          "ambient": false,
           "debug": false,
           "history_count": 0
       },
       "scald_threshold": 0,
       "freeze_threshold": 0,
-      "reporting_period": 0,
       "config_type": [
           {
               "flow_settling_count": 0,
@@ -56,45 +47,6 @@ Feature: Downlink Configuration Decoding
     When the downlink is decoded
     Then the v3 decode is successful
     And the v2 decode is undefined
-
-  Scenario Outline: Decodes with <Description> sequence (<Sequence>)
-    Given a sequence of <Sequence>
-    When the downlink is decoded
-    Then the v3 decode is successful
-    And the v2 decode is undefined
-
-    Examples:
-    | Sequence  | Description |
-    | 0         | Minimum     |
-    | 255       | Maximum     |
-
-  Scenario Outline: Decodes with <Description> timestamp (<Timestamp>)
-    Given a timestamp of <Timestamp>
-    When the downlink is decoded
-    Then the v3 decode is successful
-    And the v2 decode is undefined
-
-    Examples:
-    | Timestamp  | Description                 |
-    | 0          | Minimum                     |
-    | 0xFF       | Maximum 8 bit value         |
-    | 0xFFFF     | Maximum 16 bit value        |
-    | 0xFFFFFF   | Maximum 24 bit value        |
-    | 0xFFFFFFFF | Maximum 32 bit value        |
-
-  Scenario Outline: Decodes with <Description> nonce (<Nonce>)
-    Given a nonce of <Nonce>
-    When the downlink is decoded
-    Then the v3 decode is successful
-    And the v2 decode is undefined
-
-    Examples:
-    | Nonce      | Description                 |
-    | 0          | Minimum                     |
-    | 0xFF       | Maximum 8 bit value         |
-    | 0xFFFF     | Maximum 16 bit value        |
-    | 0xFFFFFF   | Maximum 24 bit value        |
-    | 0xFFFFFFFF | Maximum 32 bit value        |
 
   Scenario Outline: Decodes with <Description> downlink hours (<Hours>)
     Given a downlink_hours of <Hours>
@@ -118,8 +70,8 @@ Feature: Downlink Configuration Decoding
     | Flag          | Value     | Description           |
     | scald         | true      | Enabled               |
     | freeze        | true      | Enabled               |
-    | ambient       | true      | Enabled               |
     | debug         | true      | Enabled               |
+    | history_count | 0         | 0 Histories           |
     | history_count | 1         | 1 History             |
     | history_count | 2         | 2 Histories           |
 
