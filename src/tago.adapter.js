@@ -1,8 +1,20 @@
 /**
+ * @namespace TagO.Adapter
+ */
+
+/**
+ * TagO Data Item
+ * @typedef {Object} TagO.Adapter.Item
+ * @property {string} variable - The name of the variable
+ * @property {string} value - The value of the variable
+ * @property {string} serie - The series for the variable
+ */
+
+/**
  * Transform TTN Uplink Decoder output into Tago.io compatible
  * @param {object} object - Output from Decode_SD01L_Payload
  * @param {number} serie - Unique identifier for data
- * @return {{ variable: string, value: string, serie: string}[]}
+ * @returns {TagO.Adapter.Item[] } - Array of variables
  * @example
  * const uplink_payload = [] // fill with raw bytes
  * const decoded = Decode_SD01L_Payload(uplink_payload)

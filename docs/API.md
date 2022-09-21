@@ -9,6 +9,14 @@
 </dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#tagoAdapter">tagoAdapter(object, serie)</a> ⇒ <code><a href="#TagO.Adapter.Item">Array.&lt;Item&gt;</a></code></dt>
+<dd><p>Transform TTN Uplink Decoder output into Tago.io compatible</p>
+</dd>
+</dl>
+
 <a name="src/downlink.module_js"></a>
 
 ## src/downlink.js
@@ -103,3 +111,23 @@ Entry point for TTN V2 uplink decoder
 | bytes | <code>Array.&lt;number&gt;</code> | array of received bytes |
 | port | <code>number</code> | LoRaWAN fPort number |
 
+<a name="tagoAdapter"></a>
+
+## tagoAdapter(object, serie) ⇒ [<code>Array.&lt;Item&gt;</code>](#TagO.Adapter.Item)
+Transform TTN Uplink Decoder output into Tago.io compatible
+
+**Kind**: global function  
+**Returns**: [<code>Array.&lt;Item&gt;</code>](#TagO.Adapter.Item) - - Array of variables  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| object | <code>object</code> | Output from Decode_SD01L_Payload |
+| serie | <code>number</code> | Unique identifier for data |
+
+**Example**  
+```js
+const uplink_payload = [] // fill with raw bytes
+const decoded = Decode_SD01L_Payload(uplink_payload)
+const serie = 0 // unique identifier
+const tago_data = tagoAdapter(decoded, serie)
+```
