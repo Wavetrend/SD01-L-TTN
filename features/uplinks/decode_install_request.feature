@@ -11,7 +11,6 @@ Feature: Uplink Install Request Decoding
     And the decoded data has the structure:
     """
     {
-      "type": 2,
       "pvd_level": 0,
       "sensor": [
         false, false, false

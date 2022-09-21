@@ -10,7 +10,6 @@ Feature: Uplink General Error Report Decoding
     And the decoded data has the structure:
     """
     {
-      "type": 6,
       "error_code": 0,
       "file_hash": 0,
       "line": 0

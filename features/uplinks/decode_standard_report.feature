@@ -13,7 +13,6 @@ Feature: Uplink Standard Report Decoding
     And the decoded data has the structure:
     """
     {
-      "type": 3,
       "timestamp": 0,
       "sensor_id": 0,
       "minC": 0,

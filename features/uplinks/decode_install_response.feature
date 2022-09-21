@@ -8,7 +8,6 @@ Feature: Uplink Install Response Decoding
     And the decoded data has the structure:
     """
     {
-      "type": 4,
       "error_code": 0
     }
     """

@@ -191,10 +191,10 @@ function unsignedByte(input) {
  * @memberOf Wavetrend.SD01L
  */
 function Decode_SD01L_Payload(bytes, port) {
-    let payload = { type: port }
+    let payload = { }
     let i = 0;
 
-    switch (payload.type) {
+    switch (port) {
         case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_REQUEST:
             const flags = unsignedByte(bytes[i++])
             payload.pvd_level = flags >>> 3 & 0x07

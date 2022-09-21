@@ -9,7 +9,6 @@ Feature: Uplink Freeze Report Decoding
     And the decoded data has the structure:
     """
     {
-      "type": 7,
       "sensor_id": 0,
       "temperature": 0
     }

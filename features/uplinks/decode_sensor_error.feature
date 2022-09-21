@@ -7,7 +7,6 @@ Feature: Uplink Sensor Error Report Decoding
     And the decoded data has the structure:
     """
     {
-      "type": 5,
       "sensor_id": 0
     }
     """

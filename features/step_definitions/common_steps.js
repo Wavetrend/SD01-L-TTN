@@ -43,22 +43,22 @@ Given("the decoded data has the structure:", function (json) {
 
 Given("a {word} of {valueType}", function (property, value) {
     let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
-    map.must.have.property(this.decoded.type)
-    map[this.decoded.type].must.have.property(property)
-    map[this.decoded.type][property].must.have.property('encode')
-    map[this.decoded.type][property].must.have.property('decode')
-    this.encoded = map[this.decoded.type][property].encode(this.encoded, value)
-    this.decoded = map[this.decoded.type][property].decode(this.decoded, value)
+    map.must.have.property(this.fPort)
+    map[this.fPort].must.have.property(property)
+    map[this.fPort][property].must.have.property('encode')
+    map[this.fPort][property].must.have.property('decode')
+    this.encoded = map[this.fPort][property].encode(this.encoded, value)
+    this.decoded = map[this.fPort][property].decode(this.decoded, value)
 })
 
 Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
     let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
-    map.must.have.property(this.decoded.type)
-    map[this.decoded.type].must.have.property(property)
-    map[this.decoded.type][property][sensor-1].must.have.property('encode')
-    map[this.decoded.type][property][sensor-1].must.have.property('decode')
-    this.encoded = map[this.decoded.type][property][sensor-1].encode(this.encoded, value)
-    this.decoded = map[this.decoded.type][property][sensor-1].decode(this.decoded, value)
+    map.must.have.property(this.fPort)
+    map[this.fPort].must.have.property(property)
+    map[this.fPort][property][sensor-1].must.have.property('encode')
+    map[this.fPort][property][sensor-1].must.have.property('decode')
+    this.encoded = map[this.fPort][property][sensor-1].encode(this.encoded, value)
+    this.decoded = map[this.fPort][property][sensor-1].decode(this.decoded, value)
 })
 
 When("the uplink is decoded", function () {
