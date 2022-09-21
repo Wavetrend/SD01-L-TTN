@@ -72,3 +72,9 @@ Scenario Outline: Converts Standard Reports with <Description>
     | reports      | 0            | Minimum Reports           |
     | reports      | 255          | Maximum Reports           |
 
+Scenario: Skips standard reports with invalid readings
+  Given the TagO minC has the value 127
+  And the TagO maxC has the value -128
+  When the TagO adapter transforms
+  Then the TagO transform is unsuccessful
+

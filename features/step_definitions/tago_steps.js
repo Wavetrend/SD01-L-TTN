@@ -34,5 +34,9 @@ Given("the TagO {word} has the value {valueType}", function(property, value) {
 })
 
 Then("the TagO transform is successful", function() {
-    expect(this.tagoExpected).must.eql(this.tagoOutput)
+    expect(this.tagoOutput).must.eql(this.tagoExpected)
+})
+
+Then("the TagO transform is unsuccessful", function() {
+    expect(this.tagoOutput).must.eql([])
 })
