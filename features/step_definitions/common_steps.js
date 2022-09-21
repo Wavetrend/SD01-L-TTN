@@ -77,16 +77,6 @@ Given("a sensor {int} {word} of {valueType}", function (sensor, property, value)
     this.decoded = map[this.decoded.type][property][sensor-1].decode(this.decoded, value)
 })
 
-Given("the payload type is {int}", function (type) {
-    this.encoded[0] = type
-    this.decoded.type = type
-})
-
-Given("the payload version is {int}", function (version) {
-    this.encoded[1] = version
-    this.decoded.version = version
-})
-
 When("the uplink is decoded", function () {
     this.v3actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
     this.v2actual = Decoder(this.encoded, this.fPort || 1 )

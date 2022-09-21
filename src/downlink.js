@@ -361,11 +361,14 @@ function Decode_SD01L_Payload(bytes, port) {
             }
             break;
 
+        case 0:
+            throw "LoRaWAN reserved payload type"
+
+        case 1:
+            throw "V1 Deprecated Payload, unsupported"
+
         default:
-            if (object.type > 10) {
-                throw "Unrecognised type for downlink decoding";
-            }
-            throw "Unsupported type for downlink decoding";
+            throw "Unrecognised type for downlink decoding";
     }
 
     return object;
