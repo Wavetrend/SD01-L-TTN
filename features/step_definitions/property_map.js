@@ -5,56 +5,9 @@ function unsignedEncode(bytes, value, offset, width) {
     return bytes
 }
 
-const sequenceHandler = {
-    encode: (bytes, value) => unsignedEncode(bytes, value, 2, 1),
-    decode: (object, value) => decodeHandler(object, value, 'sequence'),
-}
-
 const timestampHandler = {
     encode: (bytes, value) => unsignedEncode(bytes, value, 0, 4),
     decode: (object, value) => decodeHandler(object, value, 'timestamp'),
-}
-
-const nonceHandler = {
-    encode: (bytes, value) => unsignedEncode(bytes, value, 7, 4),
-    decode: (object, value) => decodeHandler(object, value, 'nonce'),
-}
-
-function temperatureHandler(sensor) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value === null ? 65535 : (value + 27) * 10, 13 + (sensor * 2), 2),
-        decode: (object, value) => {
-            object.temperature[sensor] = value
-            return object
-        }
-    }
-}
-
-function tempCHandler(offset, property) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, offset, 1),
-        decode: (object, value) => decodeHandler(object, value, property),
-    }
-}
-
-function currentPropertyHandler(sensor, offset, property) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
-        decode: (object, value) => {
-            object[property] = value
-            return object
-        }
-    }
-}
-
-function historyPropertyHandler(history, sensor, offset, property) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
-        decode: (object, value) => {
-            object.history[history].sensor[sensor][property] = value
-            return object
-        }
-    }
 }
 
 function flowSettlingCountHandler(sensor) {
@@ -84,16 +37,6 @@ function configTypeHandler(sensor) {
         encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 6 + sensor, 1),
         decode: (object, value) => {
             object.config_type[sensor].config = value
-            return object
-        }
-    }
-}
-
-function sensorErrorHandler(sensor) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, 7 + sensor, 1),
-        decode: (object, value) => {
-            object.sensor[sensor] = value
             return object
         }
     }

@@ -41,12 +41,6 @@ Given("the decoded data has the structure:", function (json) {
     this.decoded = JSON.parse(json)
 })
 
-Given(/there (?:is|are) (\d+) histor(?:y|ies)/, function (count) {
-    count = count < 2 ? count : 2
-    this.encoded = this.encoded.slice(0, 18 + (count * 16))
-    this.decoded.history = this.decoded.history.slice(0, count)
-});
-
 Given("a {word} of {valueType}", function (property, value) {
     let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
     map.must.have.property(this.decoded.type)
@@ -55,16 +49,6 @@ Given("a {word} of {valueType}", function (property, value) {
     map[this.decoded.type][property].must.have.property('decode')
     this.encoded = map[this.decoded.type][property].encode(this.encoded, value)
     this.decoded = map[this.decoded.type][property].decode(this.decoded, value)
-})
-
-Given("a {word} of {string}", function (property, string) {
-    let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
-    map.must.have.property(this.decoded.type)
-    map[this.decoded.type].must.have.property(property)
-    map[this.decoded.type][property].must.have.property('encode')
-    map[this.decoded.type][property].must.have.property('decode')
-    this.encoded = map[this.decoded.type][property].encode(this.encoded, string)
-    this.decoded = map[this.decoded.type][property].decode(this.decoded, string)
 })
 
 Given("a sensor {int} {word} of {valueType}", function (sensor, property, value) {
