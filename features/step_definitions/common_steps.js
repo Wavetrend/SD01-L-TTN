@@ -79,7 +79,9 @@ Given("a sensor {int} {word} of {valueType}", function (sensor, property, value)
 
 When("the uplink is decoded", function () {
     this.v3actual = decodeUplink({ bytes: this.encoded, fPort: this.fPort || 1 })
+    this.v3port = this.fPort || 1
     this.v2actual = Decoder(this.encoded, this.fPort || 1 )
+    this.v2port = this.fPort || 1
 })
 
 When("the downlink is encoded", function () {
