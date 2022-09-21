@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>tago.adapter.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,81 +34,68 @@
 
 <div id="main">
     
+    <h1 class="page-title">tago.adapter.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Transform TTN Uplink Decoder output into Tago.io compatible
+ * @param {object} object - Output from Decode_SD01L_Payload
+ * @param {number} serie - Unique identifier for data
+ * @return {{ variable: string, value: string, serie: string}[]}
+ * @example
+ * const uplink_payload = [] // fill with raw bytes
+ * const decoded = Decode_SD01L_Payload(uplink_payload)
+ * const serie = 0 // unique identifier
+ * const tago_data = tagoAdapter(decoded, serie)
+ */
+function tagoAdapter(object, serie) {
+    let result = []
+    switch (object.type) {
+        case 3:     // standard report
+            result = tagoAdaptStandardReport(object)
+            break
+        default:
+            throw "Unsupported payload type"
+    }
 
+    // add serie to each element, and convert value to strings
+    return result.map(addSerie.bind(null, serie)).map(stringifyValues)
+}
 
-    <section class="package">
-        <h3> </h3>		
+function addSerie(serie, data) {
+    return Object.assign({}, data, { serie: String(serie) })
+}
+
+function stringifyValues(data) {
+    return Object.assign({}, data, { value: String(data.value) })
+}
+
+function tagoAdaptStandardReport(object) {
+    if (object.minC !== 127 &amp;&amp; object.maxC !== -128) {
+        return [
+            {variable: "type", value: object.type},
+            {variable: "timestamp", value: object.timestamp},
+            {variable: `s${object.sensor_id + 1}_minC`, value: object.minC},
+            {variable: `s${object.sensor_id + 1}_maxC`, value: object.maxC},
+            {variable: `s${object.sensor_id + 1}_events`, value: object.events},
+            {variable: `s${object.sensor_id + 1}_reports`, value: object.reports},
+        ]
+    }
+    return []
+}
+
+if (module !== undefined) {
+    module.exports.tagoAdapter = tagoAdapter
+}</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme usertext">
-        <article><h1>Wavetrend TTN Payload Formatters</h1>
-<hr>
-<h1>For End Users</h1>
-<h2>Installation of Payload Formatters in TTN</h2>
-<ol>
-<li>Login to TTN Console</li>
-<li>Navigate to 'Payload Formatters'</li>
-<li>Cut &amp; Paste the contents of the 'src/downlink.js' as the Downlink formatter</li>
-<li>Cut &amp; Paste the contents of the 'src/uplink.js' as the Uplink formatter</li>
-</ol>
-<p>The 'Live Data' view will show both the raw and decoded elements on any messages.</p>
-<h2>TagO</h2>
-<p>There is an adapter to reformat the TTN output for TagO. Cut &amp; Paste the contents
-of 'src/tagoAdapter.js' to your TagO configuration.</p>
-<h2>Read the documentation</h2>
-<p>To understand the decoded payload formats:</p>
-<ol>
-<li>Open <a href="https://wavetrend.github.io/SD01-L-TTN/">https://wavetrend.github.io/SD01-L-TTN/</a></li>
-</ol>
-<hr>
-<h1>For Developers</h1>
-<h2>Prerequisites</h2>
-<p>If you want to develop, test or generate documentation for the project,
-you will need to install:</p>
-<ul>
-<li><a href="https://nodejs.org/en/download/">Node.js and NPM (the Node package manager)</a></li>
-<li>Clone the repo (<code>git clone http://github.com/wavetrend/SD01-L-TTN</code> or via
-your preferred Git client)</li>
-</ul>
-<h2>Testing</h2>
-<ol>
-<li>Using your command line/terminal, change to the directory holding
-the repo on your local system</li>
-<li>Run <code>npm install</code> to install/update all of the dependencies</li>
-<li>Run <code>npm test</code> to run the tests and view the output</li>
-</ol>
-<h2>Documentation</h2>
-<ol>
-<li>Using your command line/terminal, change to the directory holding
-the repo on your local system</li>
-<li>Run <code>npm install</code> to install/update all of the dependencies</li>
-<li>Run <code>npm docs</code> to generate the documentation in the 'docs' directory</li>
-<li>Optional - Run <code>npm watch:docs</code> to continually monitor for <code>src</code> changes
-and regenerate docs (useful for active development)</li>
-<li>Open <code>index.html</code> to view the documentation (most comprehensive), or</li>
-<li>Open <code>API.md</code> to view the simplified API in Markdown format.</li>
-</ol></article>
-    </section>
-
-
 
 
 

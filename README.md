@@ -13,6 +13,11 @@
 
 The 'Live Data' view will show both the raw and decoded elements on any messages.
 
+## TagO
+
+There is an adapter to reformat the TTN output for TagO. Cut & Paste the contents 
+of 'src/tagoAdapter.js' to your TagO configuration.
+
 ## Read the documentation
 
 To understand the decoded payload formats:

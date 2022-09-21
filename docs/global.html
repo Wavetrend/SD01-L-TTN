@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>src/uplink.js - Documentation</title>
+    <title>Global - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">src/uplink.js</h1>
+    <h1 class="page-title">Global</h1>
     
 
     
@@ -45,6 +45,11 @@
 <section>
 
 <header>
+    
+        <h2>
+        
+        </h2>
+        
     
 </header>
 
@@ -57,11 +62,6 @@
 <dl class="details">
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
 
     
 
@@ -80,18 +80,6 @@
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Dave Meehan</li>
-        </ul>
-    </dd>
-    
-
-    
-    <dt class="tag-copyright">Copyright:</dt>
-    <dd class="tag-copyright"><ul class="dummy"><li>Wavetrend Europe Ltd</li></ul></dd>
-    
 
     
 
@@ -100,14 +88,7 @@
     
 
     
-    <dt class="tag-see">See:</dt>
-    <dd class="tag-see">
-        <ul>
-            <li><a href="https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/">https://www.thethingsindustries.com/docs/integrations/payload-formatters/javascript/</a></li>
-        
-            <li><a href="https://www.youtube.com/watch?v=nT2FnwCoP7w">https://www.youtube.com/watch?v=nT2FnwCoP7w</a></li>
-        </ul>
-    </dd>
+
     
 
     
@@ -116,8 +97,6 @@
 
 
 
-            
-                <div class="description usertext"><p>SD01-L Water Temperature Monitor Downlink Payload Formatter for TTN</p></div>
             
 
             
@@ -147,7 +126,7 @@
 
     
 
-    <h4 class="name" id="~Decoder"><span class="type-signature">(inner) </span>Decoder<span class="signature">(bytes, port)</span><span class="type-signature"> &rarr; {<a href="Wavetrend.SD01L.html#.UplinkPayloads">Wavetrend.SD01L.UplinkPayloads</a>|null}</span></h4>
+    <h4 class="name" id="tagoAdapter"><span class="type-signature"></span>tagoAdapter<span class="signature">(object, serie)</span><span class="type-signature"></span></h4>
 
     
 
@@ -159,7 +138,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line290">line 290</a>
+        <a href="tago.adapter.js.html">tago.adapter.js</a>, <a href="tago.adapter.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -199,7 +178,7 @@
 
 
 <div class="description usertext">
-    <p>Entry point for TTN V2 uplink decoder</p>
+    <p>Transform TTN Uplink Decoder output into Tago.io compatible</p>
 </div>
 
 
@@ -208,6 +187,14 @@
 
 
 
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>const uplink_payload = [] // fill with raw bytes
+const decoded = Decode_SD01L_Payload(uplink_payload)
+const serie = 0 // unique identifier
+const tago_data = tagoAdapter(decoded, serie)</code></pre>
 
 
 
@@ -237,13 +224,13 @@
 
         <tr>
             
-                <td class="name"><code>bytes</code></td>
+                <td class="name"><code>object</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;number></span>
+<span class="param-type">object</span>
 
 
             
@@ -253,14 +240,14 @@
 
             
 
-            <td class="description last"><p>array of received bytes</p></td>
+            <td class="description last"><p>Output from Decode_SD01L_Payload</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>port</code></td>
+                <td class="name"><code>serie</code></td>
             
 
             <td class="type">
@@ -276,7 +263,7 @@
 
             
 
-            <td class="description last"><p>LoRaWAN fPort number</p></td>
+            <td class="description last"><p>Unique identifier for data</p></td>
         </tr>
 
     
@@ -301,188 +288,7 @@
 <h5>Returns:</h5>
 
         
-<div class="param-desc">
-    <ul>
-<li>object containing decoded payload, or null if an error is encountered</li>
-</ul>
-</div>
 
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="Wavetrend.SD01L.html#.UplinkPayloads">Wavetrend.SD01L.UplinkPayloads</a></span>
-|
-
-<span class="param-type">null</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~decodeUplink"><span class="type-signature">(inner) </span>decodeUplink<span class="signature">(input)</span><span class="type-signature"> &rarr; {<a href="TTN.Uplink.html#.DecoderOutput">TTN.Uplink.DecoderOutput</a>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="uplink.js.html">uplink.js</a>, <a href="uplink.js.html#line269">line 269</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description usertext">
-    <p>Entry point for TTN V3 uplink decoder</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>input</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="TTN.Uplink.html#.DecoderInput">TTN.Uplink.DecoderInput</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <ul>
-<li>object containing the result of the decode, which might include warnings or errors</li>
-</ul>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TTN.Uplink.html#.DecoderOutput">TTN.Uplink.DecoderOutput</a></span>
-
-
-    </dd>
-</dl>
 
     
 
