@@ -200,61 +200,10 @@ function Encode_SD01L_Payload(object) {
             }
             break;
 
-        /*
-        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
-            if (object.version !== 3) {
-                throw 'Unsupported configuration version ' + object.version;
-            }
-            const defaults = {
-                nonce: 0,
-                downlink_hours: 24,
-                message_flags: {
-                    scald: false,
-                    freeze: false,
-                    ambient: false,
-                    history_count: 0,
-                },
-                scald_threshold: 60,
-                freeze_threshold: 4,
-                reporting_period: 60,
-                config_type: [
-                    {flow_settling_count: 0, config: 0,},
-                    {flow_settling_count: 0, config: 0,},
-                    {flow_settling_count: 0, config: 0,},
-                ]
-            };
-            object = mergeConfigs(defaults, object);
-
-            bytes.push((object.nonce & 0xFF000000) >>> 24);
-            bytes.push((object.nonce & 0x00FF0000) >>> 16);
-            bytes.push((object.nonce & 0x0000FF00) >>> 8);
-            bytes.push(object.nonce & 0x000000FF);
-            bytes.push(object.downlink_hours & 0xFF);
-            bytes.push(
-                object.message_flags.scald << 0 >>> 0
-                | object.message_flags.freeze << 1 >>> 0
-                | object.message_flags.ambient << 2 >>> 0
-                | object.message_flags.debug << 3 >>> 0
-                | (object.message_flags.history_count & 0x03) << 5 >>> 0
-            );
-            bytes.push((object.scald_threshold & 0xFF) >>> 0);
-            bytes.push((object.freeze_threshold & 0xFF) >>> 0);
-            bytes.push((object.reporting_period & 0xFF00) >>> 8);
-            bytes.push(object.reporting_period & 0x00FF);
-            for (let sensor = 0; sensor < 3; sensor++) {
-                bytes.push(
-                    (object.config_type[sensor].flow_settling_count & 0x0F) << 4 >>> 0
-                    | object.config_type[sensor].config & 0x0F
-                );
-            }
-            break;
-*/
         default:
-            if (object.type > 10) {
-                throw "Unrecognised type for downlink encoding";
-            }
-            throw "Unsupported type for downlink encoding";
+            throw "Unrecognised type for downlink decoding";
     }
+
     return { bytes, fPort };
 }
 
