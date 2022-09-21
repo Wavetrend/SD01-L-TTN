@@ -17,45 +17,16 @@
  * @readonly
  * @memberOf Wavetrend.SD01L
  * @enum {Wavetrend.SD01L.PayloadType}
- * @property {Wavetrend.SD01L.PayloadType} INSTALL_REQUEST - 0
  * @property {Wavetrend.SD01L.PayloadType} CONFIGURATION - 1
- * @property {Wavetrend.SD01L.PayloadType} INSTALL_RESPONSE - 2
- * @property {Wavetrend.SD01L.PayloadType} STANDARD_REPORT - 3
- * @property {Wavetrend.SD01L.PayloadType} AMBIENT_REPORT - 4
- * @property {Wavetrend.SD01L.PayloadType} SCALD_REPORT - 5
- * @property {Wavetrend.SD01L.PayloadType} FREEZE_REPORT - 6
- * @property {Wavetrend.SD01L.PayloadType} LOW_BATTERY_REPORT_DEPRECATED - 7
- * @property {Wavetrend.SD01L.PayloadType} SENSOR_ERROR_REPORT - 8
- * @property {Wavetrend.SD01L.PayloadType} GENERAL_ERROR_REPORT - 9
- * @property {Wavetrend.SD01L.PayloadType} SENSOR_DATA_DEBUG - 10
  */
-const SD01L_PAYLOAD_TYPE = {
-    INSTALL_REQUEST: 0,
-    CONFIGURATION: 1,
-    INSTALL_RESPONSE: 2,
-    STANDARD_REPORT: 3,
-    AMBIENT_REPORT: 4,
-    SCALD_REPORT: 5,
-    FREEZE_REPORT: 6,
-    LOW_BATTERY_REPORT_DEPRECATED: 7,
-    SENSOR_ERROR_REPORT: 8,
-    GENERAL_ERROR_REPORT: 9,
-    SENSOR_DATA_DEBUG: 10,
-};
-
-/**
- * @typedef {Object} Wavetrend.SD01L.PayloadHeader
- * @property {Wavetrend.SD01L.PayloadType} type - payload type
- * @property {number} version - message payload version 0-255
- * @property {number} sequence - message payload sequence 0-255
- * @property {number} timestamp - seconds since Unix epoch
- */
+const SD01L_DOWNLINK_PAYLOAD_TYPE = {
+    CONFIGURATION: 2
+}
 
 /**
  * @typedef {Object} Wavetrend.SD01L.MessageFlags
  * @property {boolean} scald - scald reporting enabled (default disabled)
  * @property {boolean} freeze - freeze reporting enabled (default disabled)
- * @property {boolean} ambient - ambient reporting enabled (default disabled)
  * @property {boolean} debug - debug reporting enabled (default disabled)
  * @property {number} history_count - number of history messages in standard report (default = 0, otherwise 1 or 2)
  */
@@ -95,13 +66,12 @@ const SD01L_SENSOR_TYPE = {
  */
 
 /**
- * @typedef {Wavetrend.SD01L.PayloadHeader} Wavetrend.SD01L.Configuration
- * @property {number} nonce - same value as contained in the installation request
+ * @typedef Wavetrend.SD01L.Configuration
  * @property {number} downlink_hours - number of hours between configuration requests (default 24)
+ * @property {number} reporting_period - number of minutes between reports (default 60)
  * @property {Wavetrend.SD01L.MessageFlags} message_flags - option flags
  * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
  * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
- * @property {number} reporting_period - number of minutes between reports (default 60)
  * @property {Wavetrend.SD01L.SensorConfig[]} config_type - configuration for each sensor
  */
 
@@ -129,49 +99,28 @@ function mergeConfigs(arg1, arg2) {
 }
 
 /**
- * Encode the common header fields
- * @param {Wavetrend.SD01L.DownlinkPayloads} object
- * @returns {number[]} - header fields encoded to byte array
- * @memberOf Wavetrend.SD01L
- */
-function Encode_SD01L_PayloadHeader(object) {
-    return [
-        object.type,
-        object.version,
-        object.sequence,
-        (object.timestamp & 0xFF000000) >>> 24,
-        (object.timestamp & 0x00FF0000) >>> 16,
-        (object.timestamp & 0x0000FF00) >>> 8,
-        (object.timestamp & 0x000000FF),
-    ]
-}
-
-/**
  * Encode SD01L specific message payloads
  * @param {Wavetrend.SD01L.DownlinkPayloads} object
- * @returns {number[]} - array of encoded bytes
+ * @returns { { bytes: number[], fPort: number } } - array of encoded bytes
  * @memberOf Wavetrend.SD01L
  */
 function Encode_SD01L_Payload(object) {
-    let bytes = Encode_SD01L_PayloadHeader(object);
+    let bytes = []
+    let fPort = 1
 
     switch (object.type) {
-        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
-            if (object.version !== 3) {
-                throw 'Unsupported configuration version ' + object.version;
-            }
+        case SD01L_DOWNLINK_PAYLOAD_TYPE.CONFIGURATION:
+            fPort = 2
             const defaults = {
-                nonce: 0,
                 downlink_hours: 24,
+                reporting_period: 60,
                 message_flags: {
                     scald: false,
                     freeze: false,
-                    ambient: false,
                     history_count: 0,
                 },
                 scald_threshold: 60,
                 freeze_threshold: 4,
-                reporting_period: 60,
                 config_type: [
                     {flow_settling_count: 0, config: 0,},
                     {flow_settling_count: 0, config: 0,},
@@ -180,22 +129,17 @@ function Encode_SD01L_Payload(object) {
             };
             object = mergeConfigs(defaults, object);
 
-            bytes.push((object.nonce & 0xFF000000) >>> 24);
-            bytes.push((object.nonce & 0x00FF0000) >>> 16);
-            bytes.push((object.nonce & 0x0000FF00) >>> 8);
-            bytes.push(object.nonce & 0x000000FF);
             bytes.push(object.downlink_hours & 0xFF);
+            bytes.push((object.reporting_period & 0xFF00) >>> 8);
+            bytes.push(object.reporting_period & 0x00FF);
             bytes.push(
                 object.message_flags.scald << 0 >>> 0
                 | object.message_flags.freeze << 1 >>> 0
-                | object.message_flags.ambient << 2 >>> 0
-                | object.message_flags.debug << 3 >>> 0
-                | (object.message_flags.history_count & 0x03) << 5 >>> 0
+                | object.message_flags.debug << 2 >>> 0
+                | (object.message_flags.history_count & 0x03) << 3 >>> 0
             );
             bytes.push((object.scald_threshold & 0xFF) >>> 0);
             bytes.push((object.freeze_threshold & 0xFF) >>> 0);
-            bytes.push((object.reporting_period & 0xFF00) >>> 8);
-            bytes.push(object.reporting_period & 0x00FF);
             for (let sensor = 0; sensor < 3; sensor++) {
                 bytes.push(
                     (object.config_type[sensor].flow_settling_count & 0x0F) << 4 >>> 0
@@ -205,12 +149,10 @@ function Encode_SD01L_Payload(object) {
             break;
 
         default:
-            if (object.type > 10) {
-                throw "Unrecognised type for downlink encoding";
-            }
-            throw "Unsupported type for downlink encoding";
+            throw "Unrecognised type for downlink decoding";
     }
-    return bytes;
+
+    return { bytes, fPort };
 }
 
 /**
@@ -250,8 +192,9 @@ function encodeDownlink(input) {
     };
 
     try {
-        obj.bytes = Encode_SD01L_Payload(input.data);
-        obj.fPort = 1;
+        output = Encode_SD01L_Payload(input.data);
+        obj.bytes = output.bytes
+        obj.fPort = output.fPort;
     } catch (error) {
         obj.errors.push(error);
     }
@@ -264,9 +207,9 @@ function encodeDownlink(input) {
  * @param {Wavetrend.SD01L.DownlinkPayloads} object
  * @returns {number[]} - byte array of encoded payload or empty array
  */
-function Encoder(object /*, port */) {
+function Encoder(object/*, port */) {
     try {
-        return Encode_SD01L_Payload(object);
+        return Encode_SD01L_Payload(object).bytes;
     } catch (e) {
         return [];
     }
@@ -275,50 +218,35 @@ function Encoder(object /*, port */) {
 /**
  * Decode SD01L specific payloads
  * @param {number[]} bytes
+ * @param {number} port
  * @return {Wavetrend.SD01L.DownlinkPayloads}
  * @memberOf Wavetrend.SD01L
  */
-function Decode_SD01L_Payload(bytes) {
+function Decode_SD01L_Payload(bytes, port) {
 
     let i = 0;
     let object = {
-        type: (bytes[i++] & 0xFF) >>> 0,
-        version: (bytes[i++] & 0xFF) >>> 0,
-        sequence: (bytes[i++] & 0xFF) >>> 0,
-        timestamp:
-            ((bytes[i++] & 0xFF) << 24 >>> 0)
-            + ((bytes[i++] & 0xFF) << 16 >>> 0)
-            + ((bytes[i++] & 0xFF) << 8 >>> 0)
-            + ((bytes[i++] & 0xFF) >>> 0)
+        type: port,
     };
 
     switch (object.type) {
-        case SD01L_PAYLOAD_TYPE.CONFIGURATION:
-            if (object.version !== 3) {
-                throw "Unsupported configuration version " + object.version;
-            }
-
-            object.nonce =
-                ((bytes[i++] & 0xFF) << 24 >>> 0)
-                + ((bytes[i++] & 0xFF) << 16 >>> 0)
-                + ((bytes[i++] & 0xFF) << 8 >>> 0)
-                + ((bytes[i++] & 0xFF) >>> 0);
+        case SD01L_DOWNLINK_PAYLOAD_TYPE.CONFIGURATION:
 
             object.downlink_hours = (bytes[i++] & 0xFF) >>> 0;
+            object.reporting_period =
+                ((bytes[i++] & 0xFF) << 8 >>> 0)
+                + ((bytes[i++] & 0xFF) >>> 0);
+
             let flags = (bytes[i++] & 0xFF) >>> 0;
             object.message_flags = {
-                scald: (flags & 0x01) === 0x01,
-                freeze: (flags & 0x02) === 0x02,
-                ambient: (flags & 0x04) === 0x04,
-                debug: (flags & 0x08) === 0x08,
-                history_count: (flags >>> 5) & 0x03,
+                scald: !!(flags & 0x01),
+                freeze: !!(flags & 0x02),
+                debug: !!(flags & 0x04),
+                history_count: (flags >>> 3) & 0x03,
             };
 
             object.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
             object.freeze_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
-            object.reporting_period =
-                ((bytes[i++] & 0xFF) << 8 >>> 0)
-                + ((bytes[i++] & 0xFF) >>> 0);
 
             object.config_type = [];
             for (let sensor = 0; sensor < 3; sensor++) {
@@ -330,11 +258,14 @@ function Decode_SD01L_Payload(bytes) {
             }
             break;
 
+        case 0:
+            throw "LoRaWAN reserved payload type"
+
+        case 1:
+            throw "V1 Deprecated Payload, unsupported"
+
         default:
-            if (object.type > 10) {
-                throw "Unrecognised type for downlink decoding";
-            }
-            throw "Unsupported type for downlink decoding";
+            throw "Unrecognised type for downlink decoding";
     }
 
     return object;
@@ -373,7 +304,7 @@ function decodeDownlink(input) {
     };
 
     try {
-        payload.data = Decode_SD01L_Payload(input.bytes);
+        payload.data = Decode_SD01L_Payload(input.bytes, input.fPort);
     } catch (e) {
         delete payload.data;
         payload.errors.push(e);
@@ -390,7 +321,5 @@ if (typeof module !== 'undefined') {
         Encoder,
         encodeDownlink,
         decodeDownlink,
-        SD01L_PAYLOAD_TYPE,
-        mergeConfigs,
     };
 }

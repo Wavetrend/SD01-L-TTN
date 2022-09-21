@@ -5,61 +5,14 @@ function unsignedEncode(bytes, value, offset, width) {
     return bytes
 }
 
-const sequenceHandler = {
-    encode: (bytes, value) => unsignedEncode(bytes, value, 2, 1),
-    decode: (object, value) => decodeHandler(object, value, 'sequence'),
-}
-
 const timestampHandler = {
-    encode: (bytes, value) => unsignedEncode(bytes, value, 3, 4),
+    encode: (bytes, value) => unsignedEncode(bytes, value, 0, 4),
     decode: (object, value) => decodeHandler(object, value, 'timestamp'),
-}
-
-const nonceHandler = {
-    encode: (bytes, value) => unsignedEncode(bytes, value, 7, 4),
-    decode: (object, value) => decodeHandler(object, value, 'nonce'),
-}
-
-function temperatureHandler(sensor) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value === null ? 65535 : (value + 27) * 10, 13 + (sensor * 2), 2),
-        decode: (object, value) => {
-            object.temperature[sensor] = value
-            return object
-        }
-    }
-}
-
-function tempCHandler(offset, property) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, offset, 1),
-        decode: (object, value) => decodeHandler(object, value, property),
-    }
-}
-
-function currentPropertyHandler(sensor, offset, property) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
-        decode: (object, value) => {
-            object.current.sensor[sensor][property] = value
-            return object
-        }
-    }
-}
-
-function historyPropertyHandler(history, sensor, offset, property) {
-    return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, offset + (sensor * 4), 1),
-        decode: (object, value) => {
-            object.history[history].sensor[sensor][property] = value
-            return object
-        }
-    }
 }
 
 function flowSettlingCountHandler(sensor) {
     return {
-        encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 17 + sensor, 1),
+        encode: (bytes, value) => unsignedEncode(bytes, value << 4 >>> 0, 6 + sensor, 1),
         decode: (object, value) => {
             object.config_type[sensor].flow_settling_count = value
             return object
@@ -67,21 +20,23 @@ function flowSettlingCountHandler(sensor) {
     }
 }
 
-function configTypeHandler(sensor) {
+function sensorStatusHandler(sensor) {
     return {
-        encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 17 + sensor, 1),
+        encode: (bytes, value) => {
+            bytes[0] = (bytes[0] & ~(0x01 << sensor)) | (!!value << sensor)
+            return bytes
+        },
         decode: (object, value) => {
-            object.config_type[sensor].config = value
+            object.sensor[sensor] = !!value
             return object
-        }
+        },
     }
 }
-
-function sensorErrorHandler(sensor) {
+function configTypeHandler(sensor) {
     return {
-        encode: (bytes, value) => unsignedEncode(bytes, value, 7 + sensor, 1),
+        encode: (bytes, value) => unsignedEncode(bytes, value & 0x0F >>> 0, 6 + sensor, 1),
         decode: (object, value) => {
-            object.sensor[sensor] = value
+            object.config_type[sensor].config = value
             return object
         }
     }
@@ -92,103 +47,208 @@ function decodeHandler(object, value, property) {
     return object
 }
 
+const uplinkPropertyMap = [
+    {},     // LoRaWAN reserved port
+    {},     // v1 payloads
 
-const propertyMap = [
     // install request
     {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        nonce: nonceHandler,
-        battery_mV: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 11, 2),
-            decode: (object, value) => decodeHandler(object, value, 'battery_mV'),
+        // sequence: sequenceHandler,
+        // timestamp: timestampHandler,
+        // nonce: nonceHandler,
+        pvd_level: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~(0x07 << 3)) | (value & 0x07) << 3
+                return bytes
+            },
+            decode: (object, value) => decodeHandler(object, value, 'pvd_level'),
         },
-        temperature: [
-            temperatureHandler(0),
-            temperatureHandler(1),
-            temperatureHandler(2),
+        'status': [
+            sensorStatusHandler(0),
+            sensorStatusHandler(1),
+            sensorStatusHandler(2),
         ],
         'firmware_version.major': {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 19, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 1, 1),
             decode: (object, value) => {
                 object.firmware_version.major = value
                 return object
             }
         },
         'firmware_version.minor': {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 20, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 2, 1),
             decode: (object, value) => {
                 object.firmware_version.minor = value
                 return object
             }
         },
-        'firmware_version.build': {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 21, 2),
-            decode: (object, value) => {
-                object.firmware_version.build = value
-                return object
-            }
-        },
         reset_reason: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 23, 2),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 3, 2),
             decode: (object, value) => decodeHandler(object, value, 'reset_reason'),
         },
     },
+    // standard report
+    {
+        timestamp: timestampHandler,
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[4] = (bytes[4] & ~0x03) | (value & 0x03)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = value
+                return object
+            },
+        },
+        MinC: {
+            encode: (bytes, value) => { bytes[5] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'minC'),
+        },
+        MaxC: {
+            encode: (bytes, value) => { bytes[6] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'maxC'),
+        },
+        Events: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
+            decode: (object, value) => decodeHandler(object, value, 'events'),
+        },
+        Reports: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
+            decode: (object, value) => decodeHandler(object, value, 'reports'),
+        },
+    },
+    // install response
+    {
+        error_code: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 0, 1),
+            decode: (object, value) => decodeHandler(object, value, 'error_code'),
+        },
+    },
+    // sensor error
+    {
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~0x03) | (value & 0x03)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = value & 0x03
+                return object
+            }
+        }
+    },
+    // general error
+    {
+        error_code: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 0, 2),
+            decode: (object, value) => decodeHandler(object, value, 'error_code'),
+        },
+        file_hash: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 2, 2),
+            decode: (object, value) => decodeHandler(object, value, 'file_hash'),
+        },
+        line: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 4, 2),
+            decode: (object, value) => decodeHandler(object, value, 'line'),
+        },
+    },
+    // freeze report
+    {
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~0x03) | ((value - 1) & 0x03)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = (value - 1) & 0x03
+                return object
+            }
+        },
+        temperature: {
+            encode: (bytes, value) => { bytes[1] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'temperature'),
+        },
+    },
+    // scald report
+    {
+        sensor_id: {
+            encode: (bytes, value) => {
+                bytes[0] = (bytes[0] & ~0x03) | ((value - 1) & 0x03)
+                return bytes
+            },
+            decode: (object, value) => {
+                object.sensor_id = (value - 1) & 0x03
+                return object
+            }
+        },
+        temperature: {
+            encode: (bytes, value) => { bytes[1] = value; return bytes },
+            decode: (object, value) => decodeHandler(object, value, 'temperature'),
+        },
+    },
+]
+
+const downlinkPropertyMap = [
+    {},     // LoRaWAN reserved port
+    {},     // v1 payloads
+
     // configuration
     {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        nonce: nonceHandler,
         downlink_hours: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 11, 1),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 0, 1),
             decode: (object, value) => decodeHandler(object, value, 'downlink_hours'),
         },
+        reporting_period: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 1, 2),
+            decode: (object, value) => decodeHandler(object, value, 'reporting_period'),
+        },
         scald: {
-            encode: (bytes, value) => unsignedEncode(bytes, !!value, 12, 1),
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x01) | (!!value)
+                return bytes
+            },
             decode: (object, value) => {
-                object.message_flags.scald = value
+                object.message_flags.scald = !!(value & 0x01)
                 return object
             }
         },
         freeze: {
-            encode: (bytes, value) => unsignedEncode(bytes, !!value << 1 >>> 0, 12, 1),
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x02) | (!!value << 1)
+                return bytes
+            },
             decode: (object, value) => {
-                object.message_flags.freeze = value
-                return object
-            }
-        },
-        ambient: {
-            encode: (bytes, value) => unsignedEncode(bytes, !!value << 2 >>> 0, 12, 1),
-            decode: (object, value) => {
-                object.message_flags.ambient = value
+                object.message_flags.freeze = !!value
                 return object
             }
         },
         debug: {
-            encode: (bytes, value) => unsignedEncode(bytes, !!value << 3 >>> 0, 12, 1),
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x04) | (!!value << 2)
+                return bytes
+            },
             decode: (object, value) => {
-                object.message_flags.debug = value
+                object.message_flags.debug = !!value
                 return object
             }
         },
         history_count: {
-            encode: (bytes, value) => unsignedEncode(bytes, value << 5 >>> 0, 12, 1),
+            encode: (bytes, value) => {
+                bytes[3] = (bytes[3] & ~0x18) | ((value & 0x03) << 3)
+                return bytes
+            },
             decode: (object, value) => {
-                object.message_flags.history_count = value
+                object.message_flags.history_count = value & 0x03
                 return object
             }
         },
         scald_threshold: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 13, 1),
-            decode: (object, value) => decodeHandler(object, value, 'scald_threshold'),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 4, 1),
+            decode: (object, value) => decodeHandler(object, value, 'scald_threshold')
         },
         freeze_threshold: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 14, 1),
-            decode: (object, value) => decodeHandler(object, value, 'freeze_threshold'),
-        },
-        reporting_period: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 15, 2),
-            decode: (object, value) => decodeHandler(object, value, 'reporting_period'),
+            encode: (bytes, value) => unsignedEncode(bytes, value, 5, 1),
+            decode: (object, value) => decodeHandler(object, value, 'freeze_threshold')
         },
         flow_settling_count: [
             flowSettlingCountHandler(0),
@@ -201,164 +261,9 @@ const propertyMap = [
             configTypeHandler(2),
         ],
     },
-    // install response
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        error_code: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
-            decode: (object, value) => decodeHandler(object, value, 'error_code'),
-        },
-    },
-    // standard report
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        CurrentMinC: [
-            currentPropertyHandler(0, 7, 'minC'),
-            currentPropertyHandler(1, 7, 'minC'),
-            currentPropertyHandler(2, 7, 'minC'),
-        ],
-        CurrentMaxC: [
-            currentPropertyHandler(0, 8, 'maxC'),
-            currentPropertyHandler(1, 8, 'maxC'),
-            currentPropertyHandler(2, 8, 'maxC'),
-        ],
-        CurrentEvents: [
-            currentPropertyHandler(0, 9, 'events'),
-            currentPropertyHandler(1, 9, 'events'),
-            currentPropertyHandler(2, 9, 'events'),
-        ],
-        CurrentReports: [
-            currentPropertyHandler(0, 10, 'reports'),
-            currentPropertyHandler(1, 10, 'reports'),
-            currentPropertyHandler(2, 10, 'reports'),
-        ],
-        History1MinC: [
-            historyPropertyHandler(0, 0, 23, 'minC'),
-            historyPropertyHandler(0, 1, 23, 'minC'),
-            historyPropertyHandler(0, 2, 23, 'minC'),
-        ],
-        History1MaxC: [
-            historyPropertyHandler(0, 0, 24, 'maxC'),
-            historyPropertyHandler(0, 1, 24, 'maxC'),
-            historyPropertyHandler(0, 2, 24, 'maxC'),
-        ],
-        History1Events: [
-            historyPropertyHandler(0, 0, 25, 'events'),
-            historyPropertyHandler(0, 1, 25, 'events'),
-            historyPropertyHandler(0, 2, 25, 'events'),
-        ],
-        History1Reports: [
-            historyPropertyHandler(0, 0, 26, 'reports'),
-            historyPropertyHandler(0, 1, 26, 'reports'),
-            historyPropertyHandler(0, 2, 26, 'reports'),
-        ],
-        History2MinC: [
-            historyPropertyHandler(1, 0, 39, 'minC'),
-            historyPropertyHandler(1, 1, 39, 'minC'),
-            historyPropertyHandler(1, 2, 39, 'minC'),
-        ],
-        History2MaxC: [
-            historyPropertyHandler(1, 0, 40, 'maxC'),
-            historyPropertyHandler(1, 1, 40, 'maxC'),
-            historyPropertyHandler(1, 2, 40, 'maxC'),
-        ],
-        History2Events: [
-            historyPropertyHandler(1, 0, 41, 'events'),
-            historyPropertyHandler(1, 1, 41, 'events'),
-            historyPropertyHandler(1, 2, 41, 'events'),
-        ],
-        History2Reports: [
-            historyPropertyHandler(1, 0, 42, 'reports'),
-            historyPropertyHandler(1, 1, 42, 'reports'),
-            historyPropertyHandler(1, 2, 42, 'reports'),
-        ],
-        History1Timestamp: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 19, 4),
-            decode: (object, value) => {
-                object.history[0].timestamp = value
-                return object
-            }
-        },
-        History2Timestamp: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 35, 4),
-            decode: (object, value) => {
-                object.history[1].timestamp = value
-                return object
-            }
-        },
-    },
-    // ambient report
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        minC: tempCHandler(7, 'minC'),
-        maxC: tempCHandler(8, 'maxC'),
-        avgC: tempCHandler(9, 'avgC'),
-    },
-    // scald report
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        sensor: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
-            decode: (object, value) => decodeHandler(object, value, 'sensor'),
-        },
-        temperature: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
-            decode: (object, value) => decodeHandler(object, value, 'temperature'),
-        },
-    },
-    // freeze report
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        sensor: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
-            decode: (object, value) => decodeHandler(object, value, 'sensor'),
-        },
-        temperature: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
-            decode: (object, value) => decodeHandler(object, value, 'temperature'),
-        },
-    },
-    // Low battery report - deprecated
-    {},
-    // Sensor error
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        sensor: [
-            sensorErrorHandler(0),
-            sensorErrorHandler(1),
-            sensorErrorHandler(2),
-        ]
-    },
-    // General error
-    {
-        sequence: sequenceHandler,
-        timestamp: timestampHandler,
-        error_code: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 2),
-            decode: (object, value) => decodeHandler(object, value, 'error_code'),
-        },
-        file: {
-            encode: (bytes, value) => {
-                for (let i = 0 ; i < 32 && i < value.length ; i++) {
-                    bytes[9 + i] = value.charCodeAt(i)
-                }
-                return bytes
-            },
-            decode: (object, value) => decodeHandler(object, value, 'file'),
-        },
-        line: {
-            encode: (bytes, value) => unsignedEncode(bytes, value, 41, 2),
-            decode: (object, value) => decodeHandler(object, value, 'line'),
-        },
-    },
 ]
 
 module.exports = {
-    propertyMap,
+    uplinkPropertyMap,
+    downlinkPropertyMap,
 }
