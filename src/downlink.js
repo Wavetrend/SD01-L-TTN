@@ -17,17 +17,7 @@
  * @readonly
  * @memberOf Wavetrend.SD01L
  * @enum {Wavetrend.SD01L.PayloadType}
- * @property {Wavetrend.SD01L.PayloadType} INSTALL_REQUEST - 0
  * @property {Wavetrend.SD01L.PayloadType} CONFIGURATION - 1
- * @property {Wavetrend.SD01L.PayloadType} INSTALL_RESPONSE - 2
- * @property {Wavetrend.SD01L.PayloadType} STANDARD_REPORT - 3
- * @property {Wavetrend.SD01L.PayloadType} AMBIENT_REPORT - 4
- * @property {Wavetrend.SD01L.PayloadType} SCALD_REPORT - 5
- * @property {Wavetrend.SD01L.PayloadType} FREEZE_REPORT - 6
- * @property {Wavetrend.SD01L.PayloadType} LOW_BATTERY_REPORT_DEPRECATED - 7
- * @property {Wavetrend.SD01L.PayloadType} SENSOR_ERROR_REPORT - 8
- * @property {Wavetrend.SD01L.PayloadType} GENERAL_ERROR_REPORT - 9
- * @property {Wavetrend.SD01L.PayloadType} SENSOR_DATA_DEBUG - 10
  */
 const SD01L_DOWNLINK_PAYLOAD_TYPE = {
     CONFIGURATION: 2
@@ -76,13 +66,12 @@ const SD01L_SENSOR_TYPE = {
  */
 
 /**
- * @typedef {Wavetrend.SD01L.PayloadHeader} Wavetrend.SD01L.Configuration
- * @property {number} nonce - same value as contained in the installation request
+ * @typedef Wavetrend.SD01L.Configuration
  * @property {number} downlink_hours - number of hours between configuration requests (default 24)
+ * @property {number} reporting_period - number of minutes between reports (default 60)
  * @property {Wavetrend.SD01L.MessageFlags} message_flags - option flags
  * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
  * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
- * @property {number} reporting_period - number of minutes between reports (default 60)
  * @property {Wavetrend.SD01L.SensorConfig[]} config_type - configuration for each sensor
  */
 
@@ -107,24 +96,6 @@ function mergeConfigs(arg1, arg2) {
         return arg1;
     }
     return arg2;
-}
-
-/**
- * Encode the common header fields
- * @param {Wavetrend.SD01L.DownlinkPayloads} object
- * @returns {number[]} - header fields encoded to byte array
- * @memberOf Wavetrend.SD01L
- */
-function Encode_SD01L_PayloadHeader(object) {
-    return [
-        object.type,
-        object.version,
-        object.sequence,
-        (object.timestamp & 0xFF000000) >>> 24,
-        (object.timestamp & 0x00FF0000) >>> 16,
-        (object.timestamp & 0x0000FF00) >>> 8,
-        (object.timestamp & 0x000000FF),
-    ]
 }
 
 /**
@@ -350,6 +321,5 @@ if (typeof module !== 'undefined') {
         Encoder,
         encodeDownlink,
         decodeDownlink,
-        mergeConfigs,
     };
 }
