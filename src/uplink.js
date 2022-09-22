@@ -191,24 +191,24 @@ function unsignedByte(input) {
  * @memberOf Wavetrend.SD01L
  */
 function Decode_SD01L_Payload(bytes, port) {
-    let payload = { }
+    let payload = { };
     let i = 0;
 
     switch (port) {
         case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_REQUEST:
-            const flags = unsignedByte(bytes[i++])
-            payload.pvd_level = flags >>> 3 & 0x07
+            const flags = unsignedByte(bytes[i++]);
+            payload.pvd_level = flags >>> 3 & 0x07;
             payload.sensor = [
                 !!(flags & 0x01),
                 !!(flags & 0x02),
                 !!(flags & 0x04),
-            ]
+            ];
             payload.firmware_version = {
                 major: unsignedByte(bytes[i++]),
                 minor: unsignedByte(bytes[i++])
-            }
+            };
             payload.reset_reason = (bytes[i++] << 8 >>> 0) + unsignedByte(bytes[i++]);
-            break
+            break;
 
         case SD01L_UPLINK_PAYLOAD_TYPE.STANDARD_REPORT:
 
@@ -216,38 +216,38 @@ function Decode_SD01L_Payload(bytes, port) {
                 (unsignedByte(bytes[i++]) << 24 >>> 0)
                 + (unsignedByte(bytes[i++]) << 16 >>> 0)
                 + (unsignedByte(bytes[i++]) << 8 >>> 0)
-                + unsignedByte(bytes[i++])
+                + unsignedByte(bytes[i++]);
 
-            payload.sensor_id = bytes[i++] & 0x03
-            payload.minC = bytes[i++]
-            payload.maxC = bytes[i++]
-            payload.events = bytes[i++]
-            payload.reports = bytes[i++]
-            break
+            payload.sensor_id = bytes[i++] & 0x03;
+            payload.minC = bytes[i++];
+            payload.maxC = bytes[i++];
+            payload.events = bytes[i++];
+            payload.reports = bytes[i++];
+            break;
 
         case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE:
 
-            payload.error_code = bytes[i++]
-            break
+            payload.error_code = bytes[i++];
+            break;
 
         case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
 
-            payload.sensor_id = bytes[i++] & 0x03
-            break
+            payload.sensor_id = bytes[i++] & 0x03;
+            break;
 
         case SD01L_UPLINK_PAYLOAD_TYPE.GENERAL_ERROR_REPORT:
 
             payload.error_code = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
             payload.file_hash = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
             payload.line = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
-            break
+            break;
 
         case SD01L_UPLINK_PAYLOAD_TYPE.FREEZE_REPORT:
         case SD01L_UPLINK_PAYLOAD_TYPE.SCALD_REPORT:
 
-            payload.sensor_id = bytes[i++] & 0x03
-            payload.temperature = signedByte(bytes[i++])
-            break
+            payload.sensor_id = bytes[i++] & 0x03;
+            payload.temperature = signedByte(bytes[i++]);
+            break;
 
         case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
 

@@ -21,7 +21,7 @@
  */
 const SD01L_DOWNLINK_PAYLOAD_TYPE = {
     CONFIGURATION: 2
-}
+};
 
 /**
  * @typedef {Object} Wavetrend.SD01L.MessageFlags
@@ -105,12 +105,12 @@ function mergeConfigs(arg1, arg2) {
  * @memberOf Wavetrend.SD01L
  */
 function Encode_SD01L_Payload(object) {
-    let bytes = []
-    let fPort = 1
+    let bytes = [];
+    let fPort = 1;
 
     switch (object.type) {
         case SD01L_DOWNLINK_PAYLOAD_TYPE.CONFIGURATION:
-            fPort = 2
+            fPort = 2;
             const defaults = {
                 downlink_hours: 24,
                 reporting_period: 60,
@@ -193,7 +193,7 @@ function encodeDownlink(input) {
 
     try {
         output = Encode_SD01L_Payload(input.data);
-        obj.bytes = output.bytes
+        obj.bytes = output.bytes;
         obj.fPort = output.fPort;
     } catch (error) {
         obj.errors.push(error);
@@ -259,10 +259,10 @@ function Decode_SD01L_Payload(bytes, port) {
             break;
 
         case 0:
-            throw "LoRaWAN reserved payload type"
+            throw "LoRaWAN reserved payload type";
 
         case 1:
-            throw "V1 Deprecated Payload, unsupported"
+            throw "V1 Deprecated Payload, unsupported";
 
         default:
             throw "Unrecognised type for downlink decoding";
