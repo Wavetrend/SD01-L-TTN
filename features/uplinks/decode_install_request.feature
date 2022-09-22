@@ -57,6 +57,16 @@ Feature: Uplink Install Request Decoding
       | 3      | 0          | Uninstalled         |
       | 3      | 1          | Installed           |
 
+  Scenario Outline: Decodes with <Description> firmware.major & minor
+    Given a firmware_version.major of <Major>
+    Given a firmware_version.minor of <Minor>
+    When the uplink is decoded
+    Then the decode is successful
+
+    Examples:
+      | Major | Minor | Description |
+      | 2     | 0     | Minimum     |
+
   Scenario Outline: Decodes with <Description> firmware.major (<Version>)
     Given a firmware_version.major of <Version>
     When the uplink is decoded
