@@ -65,11 +65,6 @@ const SD01L_INSTALLATION_ERROR_CODE = {
  */
 
 /**
- * Sensor reading histories (if enabled)
- * @typedef {{ timestamp: number, sensor: Wavetrend.SD01L.SensorReadings[] }} Wavetrend.SD01L.SensorHistory
- */
-
-/**
  * Issued by the device at the standard report interval
  * @typedef Wavetrend.SD01L.StandardReport
  * @property {number} timestamp - seconds since Unix epoch
