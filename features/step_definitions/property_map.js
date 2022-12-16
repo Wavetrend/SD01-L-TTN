@@ -101,11 +101,11 @@ const uplinkPropertyMap = [
             },
         },
         MinC: {
-            encode: (bytes, value) => { bytes[5] = value; return bytes },
+            encode: (bytes, value) => unsignedEncode(bytes, value, 5, 1),
             decode: (object, value) => decodeHandler(object, value, 'minC'),
         },
         MaxC: {
-            encode: (bytes, value) => { bytes[6] = value; return bytes },
+            encode: (bytes, value) => unsignedEncode(bytes, value, 6, 1),
             decode: (object, value) => decodeHandler(object, value, 'maxC'),
         },
         Events: {
