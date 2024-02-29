@@ -220,10 +220,36 @@ function Decode_SD01L_Payload(bytes, port) {
             payload.reports = bytes[i++];
             break;
 
-        case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE:
+        case SD01L_UPLINK_PAYLOAD_TYPE.INSTALL_RESPONSE: {
 
             payload.error_code = bytes[i++];
+            payload.downlink_hours = bytes[i++];
+            payload.reporting_period =
+                ((bytes[i++] & 0xFF) << 8 >>> 0)
+                + ((bytes[i++] & 0xFF) >>> 0);
+
+            let flags = (bytes[i++] & 0xFF) >>> 0;
+            payload.message_flags = {
+                scald: !!(flags & 0x01),
+                freeze: !!(flags & 0x02),
+                debug: !!(flags & 0x04),
+                history_count: (flags >>> 3) & 0x03,
+            };
+
+            payload.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
+            payload.freeze_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
+
+            payload.config_type = [];
+            for (let sensor = 0; sensor < 3; sensor++) {
+                let config = (bytes[i++] & 0xFF) >>> 0;
+                payload.config_type[sensor] = {
+                    flow_settling_count: (config >>> 4) & 0x0F >>> 0,
+                    config: (config & 0x0F) >>> 0,
+                };
+            }
+
             break;
+        }
 
         case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_ERROR_REPORT:
 
