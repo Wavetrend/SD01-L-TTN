@@ -148,6 +148,7 @@ const SD01L_UPLINK_PAYLOAD_TYPE = {
     SENSOR_ERROR_REPORT: 5,
     GENERAL_ERROR_REPORT: 6,
     SENSOR_DATA_DEBUG: 9,
+    SIMPLE_REPORT: 10,
 };
 
 const OFFSET_TYPE = 0;
@@ -234,6 +235,9 @@ function Decode_SD01L_Payload(bytes, port) {
                 freeze: !!(flags & 0x02),
                 debug: !!(flags & 0x04),
                 history_count: (flags >>> 3) & 0x03,
+                simple: !!(flags & 0x20),
+                act_poll: !!(flags & 0x40),
+                stat_poll: !!(flags & 0x80),
             };
 
             payload.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;
@@ -273,6 +277,24 @@ function Decode_SD01L_Payload(bytes, port) {
         case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
 
             throw "Unsupported type for uplink decoding";
+
+        case SD01L_UPLINK_PAYLOAD_TYPE.SIMPLE_REPORT:
+
+            payload.timestamp =
+                (unsignedByte(bytes[i++]) << 24 >>> 0)
+                + (unsignedByte(bytes[i++]) << 16 >>> 0)
+                + (unsignedByte(bytes[i++]) << 8 >>> 0)
+                + unsignedByte(bytes[i++]);
+
+            payload.s1MinC = signedByte(bytes[i++]);
+            payload.s1MaxC = signedByte(bytes[i++]);
+
+            payload.s2MinC = signedByte(bytes[i++]);
+            payload.s2MaxC = signedByte(bytes[i++]);
+
+            payload.s3MinC = signedByte(bytes[i++]);
+            payload.s3MaxC = signedByte(bytes[i++]);
+            break;
 
         default:
 

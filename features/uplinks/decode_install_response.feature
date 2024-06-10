@@ -23,7 +23,10 @@ Feature: Uplink Install Response Decoding
           "scald": false,
           "freeze": false,
           "debug": false,
-          "history_count": 0
+          "history_count": 0,
+          "simple": false,
+          "act_poll": false,
+          "stat_poll": false
       },
       "scald_threshold": 0,
       "freeze_threshold": 0,
