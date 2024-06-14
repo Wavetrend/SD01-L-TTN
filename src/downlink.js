@@ -117,7 +117,11 @@ function Encode_SD01L_Payload(object) {
                 message_flags: {
                     scald: false,
                     freeze: false,
+                    debug: false,
                     history_count: 0,
+                    simple: false,
+                    act_poll: true,
+                    stat_poll: true,
                 },
                 scald_threshold: 60,
                 freeze_threshold: 4,
@@ -243,6 +247,9 @@ function Decode_SD01L_Payload(bytes, port) {
                 freeze: !!(flags & 0x02),
                 debug: !!(flags & 0x04),
                 history_count: (flags >>> 3) & 0x03,
+                simple: !!(flags & 0x20),
+                act_poll: !!(flags & 0x40),
+                stat_poll: !!(flags & 0x80),
             };
 
             object.scald_threshold = (bytes[i++] & 0xFF) << 24 >> 24;

@@ -19,6 +19,9 @@ Feature: Downlink Configuration Decoding
       "downlink_hours": 0,
       "reporting_period": 0,
       "message_flags": {
+          "act_poll": false,
+          "simple": false,
+          "stat_poll": false,
           "scald": false,
           "freeze": false,
           "debug": false,
