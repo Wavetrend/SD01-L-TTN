@@ -5,7 +5,7 @@ Feature: Downlink Configuration Encoding
       | Data      | Description                        |
       | 0x00      | Downlink Hours                     |
       | 0x00 0x00 | Reporting Period                   |
-      | 0x00      | Message Flags                      |
+      | 0xC0      | Message Flags                      |
       | 0x00      | Scald Threshold                    |
       | 0x00      | Freeze Threshold                   |
       | 0x00      | Sensor 1 Config (flow 0, config 0) |
@@ -21,7 +21,10 @@ Feature: Downlink Configuration Encoding
           "scald": false,
           "freeze": false,
           "debug": false,
-          "history_count": 0
+          "history_count": 0,
+          "simple": false,
+          "act_poll": true,
+          "stat_poll": true
       },
       "scald_threshold": 0,
       "freeze_threshold": 0,

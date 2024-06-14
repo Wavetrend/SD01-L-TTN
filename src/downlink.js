@@ -29,6 +29,9 @@ const SD01L_DOWNLINK_PAYLOAD_TYPE = {
  * @property {boolean} freeze - freeze reporting enabled (default disabled)
  * @property {boolean} debug - debug reporting enabled (default disabled)
  * @property {number} history_count - number of history messages in standard report (default = 0, otherwise 1 or 2)
+ * @property {boolean} simple - simple report mode (default disabled)
+ * @property {boolean} act_poll - active polling enabled (default enabled)
+ * @property {boolean} stat_poll - status polling enabled (default enabled)
  */
 
 /**
@@ -141,6 +144,9 @@ function Encode_SD01L_Payload(object) {
                 | object.message_flags.freeze << 1 >>> 0
                 | object.message_flags.debug << 2 >>> 0
                 | (object.message_flags.history_count & 0x03) << 3 >>> 0
+                | object.message_flags.simple << 5 >>> 0
+                | object.message_flags.act_poll << 6 >>> 0
+                | object.message_flags.stat_poll << 7 >>> 0
             );
             bytes.push((object.scald_threshold & 0xFF) >>> 0);
             bytes.push((object.freeze_threshold & 0xFF) >>> 0);
