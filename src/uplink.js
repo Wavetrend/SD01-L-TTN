@@ -102,6 +102,30 @@ const SD01L_INSTALLATION_ERROR_CODE = {
  */
 
 /**
+ * Each sensors debug data
+ * @typedef  Wavetrend.SD01L.SensorDebug
+ * @property {number} direction - N/A
+ * @property {number} state - detection state
+ * @property {number} report - report flag
+ * @property {number} tempC - temperature
+ */
+
+/**
+ * Each sensors debug data
+ * @typedef  Wavetrend.SD01L.Debug
+ * @property {number} timestamp - seconds since Unix epoch
+ * @property {Wavetrend.SD01L.SensorDebug[]} sensors
+ */
+
+/**
+ * Issued by the device if debug reporting is enabled
+ * @typedef  Wavetrend.SD01L.DebugReport
+ * @property {number} timestamp - seconds since Unix epoch
+ * @property {number} pvd_level - PVD level
+ * @property {Wavetrend.SD01L.Debug[]} readings - Sensor Debug Readings
+ */
+
+/**
  * @namespace TTN.Uplink
  */
 
@@ -114,7 +138,7 @@ const SD01L_INSTALLATION_ERROR_CODE = {
 
 /**
  * Composite of all SD01L uplink messages
- * @typedef {Wavetrend.SD01L.InstallRequest|Wavetrend.SD01L.InstallResponse|Wavetrend.SD01L.StandardReport|Wavetrend.SD01L.FreezeReport|Wavetrend.SD01L.ScaldReport|Wavetrend.SD01L.SensorErrorReport|Wavetrend.SD01L.GeneralErrorReport} Wavetrend.SD01L.UplinkPayloads
+ * @typedef {Wavetrend.SD01L.InstallRequest|Wavetrend.SD01L.InstallResponse|Wavetrend.SD01L.StandardReport|Wavetrend.SD01L.FreezeReport|Wavetrend.SD01L.ScaldReport|Wavetrend.SD01L.SensorErrorReport|Wavetrend.SD01L.GeneralErrorReport|Wavetrend.SD01L.DebugReport} Wavetrend.SD01L.UplinkPayloads
  */
 
 /**
@@ -274,9 +298,57 @@ function Decode_SD01L_Payload(bytes, port) {
             payload.temperature = signedByte(bytes[i++]);
             break;
 
-        case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_DATA_DEBUG:
+        case SD01L_UPLINK_PAYLOAD_TYPE.SENSOR_DATA_DEBUG: {
+            let readings = [];
 
-            throw "Unsupported type for uplink decoding";
+            const timestamp =
+              (unsignedByte(bytes[i++]) << 24 >>> 0)
+              + (unsignedByte(bytes[i++]) << 16 >>> 0)
+              + (unsignedByte(bytes[i++]) << 8 >>> 0)
+              + unsignedByte(bytes[i++]);
+
+            const flags = unsignedByte(bytes[i++]);
+            const interval_divide = !!(flags & 0b10000000);
+            let interval = ((flags & 0b01111000) >> 3);
+            interval = interval_divide ? interval / 10 : interval * 10;
+            const pvdLevel = (flags & 0b00000111);
+
+            while (i < bytes.length) {
+
+                const reading = {
+                    timestamp,
+                    sensors: [
+                        { direction: 0, state: 0, report: false, tempC: NaN },
+                        { direction: 0, state: 0, report: false, tempC: NaN },
+                        { direction: 0, state: 0, report: false, tempC: NaN },
+                    ]
+                }
+
+                for (let sensor = 0 ; sensor < 3 ; sensor++) {
+
+                    const data = (unsignedByte(bytes[i++]) << 8 >>> 0) + unsignedByte(bytes[i++]);
+
+                    reading.sensors[sensor].direction = (data & 0b1100000000000000) >> 14;
+                    reading.sensors[sensor].state = (data & 0b0011000000000000) >> 12;
+                    reading.sensors[sensor].report = (data & 0b0000100000000000) >> 11 === 1;
+                    const temp_index = (data & 0b0000011111111111);
+                    reading.sensors[sensor].tempC = (temp_index === 2047) ? null : (temp_index - 270) / 10;
+                }
+                readings.push(reading);
+            }
+
+            // Now we know how many readings there are, we can adjust the timestamps
+
+            readings.forEach((reading, index) => {
+                reading.timestamp -= (readings.length - 1 - index) * interval;
+            })
+
+            payload.timestamp = timestamp;
+            payload.pvd_level = pvdLevel;
+            payload.readings = readings;
+
+            break;
+        }
 
         case SD01L_UPLINK_PAYLOAD_TYPE.SIMPLE_REPORT:
 
