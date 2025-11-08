@@ -11,6 +11,7 @@ Feature: Downlink Configuration Encoding
       | 0x00      | Sensor 1 Config (flow 0, config 0) |
       | 0x00      | Sensor 2 Config (flow 0, config 0) |
       | 0x00      | Sensor 3 Config (flow 0, config 0) |
+      | 0x4A      | Flow Delta                         |
     And the decoded data has the structure:
     """
     {
@@ -41,7 +42,11 @@ Feature: Downlink Configuration Encoding
               "flow_settling_count": 0,
               "config": 0
           }
-      ]
+      ],
+      "flow_delta": {
+        "cold": 4,
+        "hot": 10
+      }
     }
     """
     And the downlink port is 2

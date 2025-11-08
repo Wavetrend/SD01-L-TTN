@@ -276,6 +276,12 @@ function Decode_SD01L_Payload(bytes, port) {
                 };
             }
 
+            const flow_delta = (bytes[i++] & 0xFF) >>> 0;
+            payload.flow_delta = {
+                cold: (flow_delta & 0xF0) >>> 4,
+                hot: flow_delta & 0x0F,
+            }
+
             break;
         }
 

@@ -69,6 +69,12 @@ const SD01L_SENSOR_TYPE = {
  */
 
 /**
+ * @typedef {Object} Wavetrend.SD01L.FlowDelta
+ * @property {number} cold - cold outlet flow delta in range 2-15
+ * @property {number} hot - hot outlet flow delta in range 2-15
+ */
+
+/**
  * @typedef Wavetrend.SD01L.Configuration
  * @property {number} downlink_hours - number of hours between configuration requests (default 24)
  * @property {number} reporting_period - number of minutes between reports (default 60)
@@ -76,6 +82,7 @@ const SD01L_SENSOR_TYPE = {
  * @property {number} scald_threshold - temperature above which scald reports will be sent (if enabled, default 60)
  * @property {number} freeze_threshold - temperature below which freeze reports will be sent (if enabled, default 4)
  * @property {Wavetrend.SD01L.SensorConfig[]} config_type - configuration for each sensor
+ * @property {Wavetrend.SD01L.FlowDelta} flow_delta - flow delta configuration
  */
 
 /**
@@ -132,7 +139,11 @@ function Encode_SD01L_Payload(object) {
                     {flow_settling_count: 0, config: 0,},
                     {flow_settling_count: 0, config: 0,},
                     {flow_settling_count: 0, config: 0,},
-                ]
+                ],
+                flow_delta: {
+                    cold: 4,
+                    hot: 10,
+                },
             };
             object = mergeConfigs(defaults, object);
 
@@ -156,6 +167,10 @@ function Encode_SD01L_Payload(object) {
                     | object.config_type[sensor].config & 0x0F
                 );
             }
+            bytes.push(
+              ((object.flow_delta.cold & 0xF) << 4 >>> 0)
+              | ((object.flow_delta.hot & 0xF) >>> 0)
+            )
             break;
 
         default:
@@ -268,6 +283,11 @@ function Decode_SD01L_Payload(bytes, port) {
                     flow_settling_count: (config >>> 4) & 0x0F >>> 0,
                     config: (config & 0x0F) >>> 0,
                 };
+            }
+            const flow_delta = (bytes[i++] & 0xFF) >>> 0;
+            object.flow_delta = {
+                cold: (flow_delta & 0xF0) >>> 4,
+                hot: (flow_delta & 0x0F) >>> 0,
             }
             break;
 

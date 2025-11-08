@@ -12,6 +12,7 @@ Feature: Uplink Install Response Decoding
       | 0x00                 | Sensor 1 Config          |
       | 0x00                 | Sensor 2 Config          |
       | 0x00                 | Sensor 3 Config          |
+      | 0x4A                 | Flow Delta               |
     And the uplink port is 4
     And the decoded data has the structure:
     """
@@ -43,7 +44,11 @@ Feature: Uplink Install Response Decoding
               "flow_settling_count": 0,
               "config": 0
           }
-      ]
+      ],
+      "flow_delta": {
+        "cold": 4,
+        "hot": 10
+      }
     }
     """
 

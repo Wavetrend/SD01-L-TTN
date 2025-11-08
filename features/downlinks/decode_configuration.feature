@@ -11,6 +11,7 @@ Feature: Downlink Configuration Decoding
       | 0x00                 | Sensor 1 Config          |
       | 0x00                 | Sensor 2 Config          |
       | 0x00                 | Sensor 3 Config          |
+      | 0x4A                 | Flow Delta               |
     And the downlink port is 2
     And the decoded data has the structure:
     """
@@ -42,7 +43,11 @@ Feature: Downlink Configuration Decoding
               "flow_settling_count": 0,
               "config": 0
           }
-      ]
+      ],
+      "flow_delta": {
+        "cold": 4,
+        "hot": 10
+      }
     }
     """
 
@@ -155,3 +160,15 @@ Feature: Downlink Configuration Decoding
       | 3      | 6      | Hot Unit Outlet Falling             |
       | 3      | 7      | Hot Unit Return Falling             |
       | 3      | 8      | Hot Unit Return Healthcare Falling  |
+
+  Scenario Outline: Decodes with flow delta of hot=<Hot> and cold=<Cold>
+    Given a flow delta of <Hot> and <Cold>
+    When the downlink is decoded
+    Then the v3 decode is successful
+    And the v2 decode is undefined
+
+    Examples:
+      | Hot | Cold         |
+      | 15  | 2            |
+      | 2   | 15           |
+

@@ -260,6 +260,16 @@ const downlinkPropertyMap = [
             configTypeHandler(1),
             configTypeHandler(2),
         ],
+        flow_delta: {
+            encode: (bytes, value) => {
+                bytes[9] = value.cold << 4 | value.hot
+                return bytes
+            },
+            decode: (object, value) => {
+                object.flow_delta = value
+                return object
+            },
+        }
     },
 ]
 

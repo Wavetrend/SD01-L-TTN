@@ -9,6 +9,7 @@ Before(function () {
     this.fPort = undefined
     this.isUplink = undefined
     this.decoded = {}
+    this.flow_delta = undefined
     delete this.v2actual
     delete this.v3actual
 })
@@ -59,6 +60,16 @@ Given("a sensor {int} {word} of {valueType}", function (sensor, property, value)
     map[this.fPort][property][sensor-1].must.have.property('decode')
     this.encoded = map[this.fPort][property][sensor-1].encode(this.encoded, value)
     this.decoded = map[this.fPort][property][sensor-1].decode(this.decoded, value)
+})
+
+Given("a flow delta of {int} and {int}", function (hot, cold) {
+    let map = this.isUplink ? uplinkPropertyMap : downlinkPropertyMap
+    map.must.have.property(this.fPort)
+    map[this.fPort].must.have.property('flow_delta')
+    map[this.fPort]['flow_delta'].must.have.property('encode')
+    map[this.fPort]['flow_delta'].must.have.property('decode')
+    this.encoded = map[2]['flow_delta'].encode(this.encoded, { hot, cold })
+    this.decoded = map[2]['flow_delta'].decode(this.decoded, { hot, cold })
 })
 
 When("the uplink is decoded", function () {
