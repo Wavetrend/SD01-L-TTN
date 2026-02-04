@@ -186,6 +186,37 @@ const uplinkPropertyMap = [
             decode: (object, value) => decodeHandler(object, value, 'temperature'),
         },
     },
+    // debug report (TODO)
+    {},
+    // simple report
+    {
+        timestamp: timestampHandler,
+        s1MinC: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 4, 1),
+            decode: (object, value) => decodeHandler(object, value, 's1MinC'),
+        },
+        s1MaxC: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 5, 1),
+            decode: (object, value) => decodeHandler(object, value, 's1MaxC'),
+        },
+        s2MinC: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 6, 1),
+            decode: (object, value) => decodeHandler(object, value, 's2MinC'),
+        },
+        s2MaxC: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 7, 1),
+            decode: (object, value) => decodeHandler(object, value, 's2MaxC'),
+        },
+        s3MinC: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 8, 1),
+            decode: (object, value) => decodeHandler(object, value, 's3MinC'),
+        },
+        s3MaxC: {
+            encode: (bytes, value) => unsignedEncode(bytes, value, 9, 1),
+            decode: (object, value) => decodeHandler(object, value, 's3MaxC'),
+        },
+    },
+
 ]
 
 const downlinkPropertyMap = [

@@ -4,7 +4,7 @@ Feature: Uplink Debug Report Decoding
     Given the encoded data has the structure:
       | Data                 | Description                                                          |
       | 0x00 0x00 0x00 0x00  | Timestamp                                                            |
-      | 0xD0                 | PVD (0:2), Interval (3:6), Divide (7)                                |
+      | 0xC2                 | PVD (5:7), Interval (1:4), Divide (0)                                |
       | 0x00 0x00            | S1: Temperature (0:10), Report (11), State (12:13) Direction (14:15) |
       | 0x00 0x00            | S2: Temperature (0:10), Report (11), State (12:13) Direction (14:15) |
       | 0x07 0xFF            | S3: Temperature (0:10), Report (11), State (12:13) Direction (14:15) |
@@ -16,10 +16,10 @@ Feature: Uplink Debug Report Decoding
     """
     {
       "timestamp": 0,
-      "pvd_level": 0,
+      "pvd_level": 6,
       "readings": [
         {
-          "timestamp": -1,
+          "timestamp": -10,
           "sensors": [
             {
               "state": 0,
